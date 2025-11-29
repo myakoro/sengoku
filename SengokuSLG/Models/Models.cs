@@ -14,6 +14,10 @@ namespace SengokuSLG.Models
     {
         private int _money;
         private int _evaluation;
+        private int _achievementMilitary;
+        private int _achievementPolitical;
+        private int _achievementSecret;
+        private int _favor;
         
         public string Name { get; set; } = "田中太郎";
         public string Affiliation { get; set; } = "織田家（羽柴家）";
@@ -31,15 +35,46 @@ namespace SengokuSLG.Models
             get => _evaluation;
             set { _evaluation = value; OnPropertyChanged(); }
         }
+
+        public int AchievementMilitary
+        {
+            get => _achievementMilitary;
+            set { _achievementMilitary = value; OnPropertyChanged(); }
+        }
+
+        public int AchievementPolitical
+        {
+            get => _achievementPolitical;
+            set { _achievementPolitical = value; OnPropertyChanged(); }
+        }
+
+        public int AchievementSecret
+        {
+            get => _achievementSecret;
+            set { _achievementSecret = value; OnPropertyChanged(); }
+        }
+
+        public int Favor
+        {
+            get => _favor;
+            set { _favor = value; OnPropertyChanged(); }
+        }
     }
 
     public class Village : BaseModel
     {
         private int _security;
         private int _development;
+        private int _population;
 
         public string Name { get; set; }
-        public int Population { get; set; }
+        
+        public int Population
+        {
+            get => _population;
+            set { _population = value; OnPropertyChanged(); }
+        }
+        
         public int Income { get; set; }
 
         public int Security
@@ -67,5 +102,27 @@ namespace SengokuSLG.Models
     public class Lord : BaseModel
     {
         public string Name { get; set; } = "羽柴秀吉";
+    }
+
+    public class DailyLog
+    {
+        public DateTime Date { get; set; }
+        public string ActionType { get; set; } // "公務" or "私事"
+        public string TaskName { get; set; }
+        public string Target { get; set; } // "村A", "村B", or ""
+        public string Result { get; set; }
+    }
+
+    public class MonthlySummary
+    {
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int PublicDutyCount { get; set; }
+        public int AchievementMilitaryGain { get; set; }
+        public int AchievementPoliticalGain { get; set; }
+        public int AchievementSecretGain { get; set; }
+        public int EvaluationChange { get; set; }
+        public int IncomeTotal { get; set; }
+        public int ExpenseTotal { get; set; }
     }
 }

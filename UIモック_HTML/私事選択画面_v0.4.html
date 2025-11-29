@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戦国立身出世SLG v0.4 - 私事選択画面</title>
+    <style>
+        body {
+            font-family: "Yu Mincho", "Hiragino Mincho ProN", "MS Mincho", serif;
+            background-color: #f8f3e7;
+            color: #2b2b2b;
+            margin: 0;
+            padding: 0;
+            min-width: 1280px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border-bottom: 2px solid #8b4513;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .kamon {
+            width: 40px;
+            height: 40px;
+            background-color: #c73940;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 20px;
+            border: 2px solid #8b4513;
+        }
+
+        .date-info {
+            flex: 1;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .koumu-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            border: 1px solid #8b4513;
+            background-color: #f8f3e7;
+            color: #2b2b2b;
+        }
+
+        /* メインコンテンツ */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* 左ナビ */
+        .left-nav {
+            width: 200px;
+            background: linear-gradient(180deg, #e7d8b1 0%, #d4c5a0 100%);
+            border-right: 2px solid #8b4513;
+            padding: 20px 15px;
+        }
+
+        .nav-section {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #d4c5a0;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .nav-item.active {
+            background-color: #1d3557;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-item.disabled {
+            color: #888;
+            font-style: italic;
+        }
+
+        .nav-item:hover:not(.disabled) {
+            background-color: #c73940;
+            color: white;
+        }
+
+        /* 中央エリア */
+        .center-area {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f3e7;
+            overflow-y: auto;
+        }
+
+        .action-title {
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* 私事タスクカード */
+        .private-task-card {
+            background: linear-gradient(135deg, #f0e6d2 0%, #e7d8b1 100%);
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .private-task-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            border-color: #1d3557;
+        }
+
+        .task-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .task-target {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .task-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .money-change {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .money-change.income {
+            color: #2d7a3e;
+        }
+
+        .money-change.expense {
+            color: #c73940;
+        }
+
+        .task-effects {
+            font-size: 13px;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .no-achievement {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* 戻るボタン */
+        .back-button {
+            background: linear-gradient(135deg, #d4c5a0 0%, #c7b896 100%);
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #c7b896 0%, #baa882 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* 右サイドバー */
+        .right-sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #e7d8b1 0%, #d4c5a0 100%);
+            border-left: 2px solid #8b4513;
+            padding: 20px 15px;
+        }
+
+        .sidebar-section {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #c73940;
+            border-bottom: 1px solid #c73940;
+            padding-bottom: 5px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 5px 0;
+        }
+
+        .status-label {
+            color: #555;
+        }
+
+        .status-value {
+            font-weight: bold;
+            color: #2b2b2b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <div class="kamon">◎</div>
+            <div class="date-info">1587年 3月 12日</div>
+            <div class="koumu-status">
+                <span>公務実施:</span>
+                <span class="status-indicator">OFF</span>
+            </div>
+        </div>
+
+        <!-- メインコンテンツ -->
+        <div class="main-content">
+            <!-- 左ナビ -->
+            <div class="left-nav">
+                <div class="nav-section">
+                    <div class="nav-item active">日常</div>
+                    <div class="nav-item">村情報</div>
+                    <div class="nav-item disabled">家臣（未実装）</div>
+                    <div class="nav-item disabled">軍事（未実装）</div>
+                    <div class="nav-item disabled">調略（未実装）</div>
+                    <div class="nav-item disabled">家・一族（未実装）</div>
+                    <div class="nav-item disabled">地方（未実装）</div>
+                </div>
+            </div>
+
+            <!-- 中央エリア -->
+            <div class="center-area">
+                <div class="action-title">私事を選ぶ</div>
+
+                <!-- 知行村の開発 -->
+                <div class="private-task-card">
+                    <div class="task-name">知行村の開発</div>
+                    <div class="task-target">対象: 村A or 村B</div>
+                    <div class="task-description">
+                        自家の知行村に投資し、発展させる。人口増加と開発度向上が期待できる。
+                    </div>
+                    <div class="money-change expense">金: -10貫</div>
+                    <div class="task-effects">開発 +2 / 人口 +5</div>
+                    <div class="no-achievement">※ 功績は発生しません</div>
+                </div>
+
+                <!-- 道整備 -->
+                <div class="private-task-card">
+                    <div class="task-name">道整備</div>
+                    <div class="task-target">対象: 村A or 村B</div>
+                    <div class="task-description">
+                        村内の道を整備し、通行を便利にする。開発度が向上する。
+                    </div>
+                    <div class="money-change expense">金: -5貫</div>
+                    <div class="task-effects">開発 +1</div>
+                    <div class="no-achievement">※ 功績は発生しません</div>
+                </div>
+
+                <!-- 村商人との取引 -->
+                <div class="private-task-card">
+                    <div class="task-name">村商人との取引</div>
+                    <div class="task-target">対象: 村A or 村B</div>
+                    <div class="task-description">
+                        村の商人と取引を行い、利益を得る。金銭を獲得できる。
+                    </div>
+                    <div class="money-change income">金: +10貫</div>
+                    <div class="task-effects">村パラメータ変化なし</div>
+                    <div class="no-achievement">※ 功績は発生しません</div>
+                </div>
+
+                <!-- 名産開発の準備 -->
+                <div class="private-task-card">
+                    <div class="task-name">名産開発の準備</div>
+                    <div class="task-target">対象: 村A or 村B</div>
+                    <div class="task-description">
+                        将来の名産品開発に向けた準備を行う。開発度が向上し、名産開発の基盤を作る。
+                    </div>
+                    <div class="money-change expense">金: -15貫</div>
+                    <div class="task-effects">開発 +1 / 名産開発フラグON（将来用）</div>
+                    <div class="no-achievement">※ 功績は発生しません</div>
+                </div>
+
+                <button class="back-button">戻る</button>
+            </div>
+
+            <!-- 右サイドバー -->
+            <div class="right-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■所属家 織田家（羽柴家）</div>
+                    <div class="status-item">
+                        <span class="status-label">氏名:</span>
+                        <span class="status-value">田中太郎</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">家格:</span>
+                        <span class="status-value">書役</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">所持金:</span>
+                        <span class="status-value">100貫</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">評価:</span>
+                        <span class="status-value">5</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">貸し:</span>
+                        <span class="status-value">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

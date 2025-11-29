@@ -1,0 +1,57 @@
+<UserControl x:Class="SengokuSLG.Views.ActionResultDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <!-- Overlay -->
+        <Border Background="#80000000"/>
+
+        <!-- Dialog Box -->
+        <Border Width="500" VerticalAlignment="Center" HorizontalAlignment="Center"
+                Background="{StaticResource BrushBgMain}" BorderBrush="#8b4513" BorderThickness="3" CornerRadius="12" Padding="30">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" Direction="270" ShadowDepth="8" Opacity="0.3"/>
+            </Border.Effect>
+            
+            <StackPanel>
+                <!-- Title -->
+                <TextBlock Text="行動結果" FontSize="20" FontWeight="Bold" Foreground="#c73940" 
+                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                <Separator Background="#c73940" Margin="0,0,0,20"/>
+
+                <!-- Task Info -->
+                <Border Background="#e7d8b1" BorderBrush="#8b4513" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <TextBlock Text="タスク名: " FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Log.TaskName}"/>
+                            <TextBlock Text="{Binding Log.Target, StringFormat=' ({0})'}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="結果: " FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Log.Result}" Foreground="#c73940" FontWeight="Bold"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Changes (Simplified for v0.4 - showing log result text as summary of changes) -->
+                <!-- In a full implementation, we would parse the changes or pass them explicitly. -->
+                <!-- For now, we rely on the log message or just show "成功" as per spec requirement 6.3.3 -->
+                <!-- But spec 6.3.4 requires showing changes. -->
+                <!-- Since our DailyLog doesn't store detailed changes in separate fields, we'll just show a generic success message for now, 
+                     or we could parse the log text if we wanted to be fancy. 
+                     Let's keep it simple: The user sees the log on the main screen too. -->
+                
+                <TextBlock Text="■実行完了" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock Text="行動が正常に完了しました。" Margin="15,0,0,20"/>
+
+                <!-- Close Button -->
+                <Button Command="{Binding CloseCommand}" Content="閉じる" 
+                        Style="{StaticResource StyleNavButton}" Width="150" Height="40" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

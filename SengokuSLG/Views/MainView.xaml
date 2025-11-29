@@ -3,40 +3,86 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SengokuSLG.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <!-- Title -->
-        <Border Background="{StaticResource BrushHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,20">
-            <TextBlock Text="今日の行動選択（一日一度）" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="250"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Sidebar: Player Info -->
+        <Border Grid.Column="0" Background="{StaticResource BrushPanelBg}" BorderBrush="#8b4513" BorderThickness="0,0,2,0">
+            <StackPanel Margin="15">
+                <TextBlock Text="【主人公】" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding Player.Name}" FontSize="18" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Player.Affiliation}" FontSize="12" Foreground="#555" Margin="0,0,0,20"/>
+
+                <TextBlock Text="身分: 地侍" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Player.Rank, StringFormat='役職: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Player.Money, StringFormat='所持金: {0}貫'}" FontWeight="Bold" Margin="0,0,0,20"/>
+
+                <Separator Background="#8b4513" Margin="0,0,0,15"/>
+
+                <TextBlock Text="【評価・功績】" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding Player.Evaluation, StringFormat='評価: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Player.AchievementMilitary, StringFormat='軍事功: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Player.AchievementPolitical, StringFormat='政務功: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Player.AchievementSecret, StringFormat='密功: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Player.Favor, StringFormat='貸し: {0}'}" Margin="0,0,0,5"/>
+            </StackPanel>
         </Border>
 
-        <!-- Public Actions -->
-        <StackPanel Margin="0,0,0,30">
-            <TextBlock Text="▼公務" Style="{StaticResource TextStyleSectionTitle}"/>
-            <WrapPanel>
-                <Button Content="村A巡察" Command="{Binding ExecuteActionCommand}" CommandParameter="巡察|村A" Style="{StaticResource ButtonStyleWood}"/>
-                <Button Content="村B巡察" Command="{Binding ExecuteActionCommand}" CommandParameter="巡察|村B" Style="{StaticResource ButtonStyleWood}"/>
-                <Button Content="村A治安維持" Command="{Binding ExecuteActionCommand}" CommandParameter="治安維持|村A" Style="{StaticResource ButtonStyleWood}"/>
-                <Button Content="村B治安維持" Command="{Binding ExecuteActionCommand}" CommandParameter="治安維持|村B" Style="{StaticResource ButtonStyleWood}"/>
-                <Button Content="書役仕事&#x0a;執務" Command="{Binding ExecuteActionCommand}" CommandParameter="書役仕事" Style="{StaticResource ButtonStyleWood}"/>
-            </WrapPanel>
-        </StackPanel>
+        <!-- Center: Action Area -->
+        <Grid Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Private Actions -->
-        <StackPanel Margin="0,0,0,30">
-            <TextBlock Text="▼私事" Style="{StaticResource TextStyleSectionTitle}"/>
-            <WrapPanel>
-                <Button Content="村A開発" Command="{Binding ExecuteActionCommand}" CommandParameter="開発|村A" Style="{StaticResource ButtonStyleWood}"/>
-                <Button Content="村B開発" Command="{Binding ExecuteActionCommand}" CommandParameter="開発|村B" Style="{StaticResource ButtonStyleWood}"/>
-                <Button Content="村A商人&#x0a;取引" Command="{Binding ExecuteActionCommand}" CommandParameter="取引|村A" Style="{StaticResource ButtonStyleWood}"/>
-                <Button Content="村B商人&#x0a;取引" Command="{Binding ExecuteActionCommand}" CommandParameter="取引|村B" Style="{StaticResource ButtonStyleWood}"/>
-            </WrapPanel>
-        </StackPanel>
+            <!-- Date Display -->
+            <Border Grid.Row="0" Background="{StaticResource BrushHeader}" Padding="15" CornerRadius="8" Margin="0,0,0,20">
+                <TextBlock Text="{Binding CurrentDateDisplay}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#2b2b2b"/>
+            </Border>
 
-        <!-- Notice -->
-        <Border Background="#fff8dc" BorderBrush="#ddd" BorderThickness="1" CornerRadius="5" Padding="10" Margin="20,0,0,0">
-            <TextBlock Text="※行動実行後は翌日まで選択不可" FontStyle="Italic" Foreground="#666"/>
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="本日の行動を選択してください" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                <Button Command="{Binding NavigatePublicDutyCommand}" Content="公務を行う" 
+                        Style="{StaticResource StyleActionButton}" Width="250" Height="60" Margin="0,0,0,20"
+                        IsEnabled="{Binding IsPublicDutyDone, Converter={StaticResource InverseBooleanConverter}}"/>
+                
+                <Button Command="{Binding NavigatePrivateTaskCommand}" Content="私事を行う" 
+                        Style="{StaticResource StyleActionButton}" Width="250" Height="60"/>
+                
+                <TextBlock Text="※公務は月1回必須です" FontSize="12" Foreground="#c73940" HorizontalAlignment="Center" Margin="0,10,0,0"
+                           Visibility="{Binding IsPublicDutyDone, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"/>
+                <TextBlock Text="今月の公務は完了しています" FontSize="12" Foreground="#2d7a3e" HorizontalAlignment="Center" Margin="0,10,0,0"
+                           Visibility="{Binding IsPublicDutyDone, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Right Sidebar: Log -->
+        <Border Grid.Column="2" Background="{StaticResource BrushPanelBg}" BorderBrush="#8b4513" BorderThickness="2,0,0,0">
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="【行動履歴】" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+                
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Logs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,0,0,8" FontSize="12"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
         </Border>
-    </StackPanel>
+    </Grid>
 </UserControl>

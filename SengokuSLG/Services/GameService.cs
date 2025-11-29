@@ -9,13 +9,20 @@ namespace SengokuSLG.Services
     public class GameService : INotifyPropertyChanged
     {
         private DateTime _currentDate;
-        private bool _hasDonePublicDuty;
+        private bool _hasPublicDutyThisMonth;
+        private int _publicDutyCountThisMonth;
+        private int _monthlyExpense;
+        private int _previousMonthMilitary;
+        private int _previousMonthPolitical;
+        private int _previousMonthSecret;
+        private int _previousEvaluation;
 
         public Player Player { get; private set; }
         public Village VillageA { get; private set; }
         public Village VillageB { get; private set; }
         public Lord Lord { get; private set; }
         public ObservableCollection<string> Logs { get; private set; }
+        public ObservableCollection<DailyLog> DailyLogs { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null) => 
@@ -27,10 +34,10 @@ namespace SengokuSLG.Services
             private set { _currentDate = value; OnPropertyChanged(); }
         }
 
-        public bool HasDonePublicDuty
+        public bool HasPublicDutyThisMonth
         {
-            get => _hasDonePublicDuty;
-            private set { _hasDonePublicDuty = value; OnPropertyChanged(); }
+            get => _hasPublicDutyThisMonth;
+            private set { _hasPublicDutyThisMonth = value; OnPropertyChanged(); }
         }
 
         public GameService()
@@ -40,62 +47,162 @@ namespace SengokuSLG.Services
 
         private void Initialize()
         {
-            Player = new Player();
+            Player = new Player 
+            { 
+                Money = 100,
+                Evaluation = 0,
+                AchievementMilitary = 0,
+                AchievementPolitical = 0,
+                AchievementSecret = 0,
+                Favor = 0
+            };
             VillageA = new Village("村A", 1000, 50, 100, 10);
             VillageB = new Village("村B", 500, 30, 50, 5);
             Lord = new Lord();
             CurrentDate = new DateTime(1587, 3, 12); 
             Logs = new ObservableCollection<string>();
-            HasDonePublicDuty = false;
+            DailyLogs = new ObservableCollection<DailyLog>();
+            HasPublicDutyThisMonth = false;
+            _publicDutyCountThisMonth = 0;
+            _monthlyExpense = 0;
+            _previousMonthMilitary = 0;
+            _previousMonthPolitical = 0;
+            _previousMonthSecret = 0;
+            _previousEvaluation = 0;
         }
 
-        public void ExecuteAction(string actionType, string target)
+        // ===== PUBLIC DUTIES (6 types) =====
+        // All public duties MUST grant achievements, MUST NOT grant money
+
+        public void ExecuteSecurityMaintenance(Village village)
         {
-            string log = $"{CurrentDate:MM/dd}: {actionType} ({target}) を実行しました。";
+            village.Security += 3;
+            Player.AchievementMilitary += 1;
+            HasPublicDutyThisMonth = true;
+            _publicDutyCountThisMonth++;
             
-            if (actionType == "巡察")
-            {
-                var v = target == "村A" ? VillageA : VillageB;
-                v.Security += 1;
-                Player.Evaluation += 1;
-                HasDonePublicDuty = true;
-                log += " 治安+1, 評価+1";
-            }
-            else if (actionType == "治安維持")
-            {
-                var v = target == "村A" ? VillageA : VillageB;
-                v.Security += 3;
-                Player.Evaluation += 1;
-                HasDonePublicDuty = true;
-                log += " 治安+3, 評価+1";
-            }
-            else if (actionType == "書役仕事")
-            {
-                Player.Evaluation += 1;
-                HasDonePublicDuty = true;
-                log += " 評価+1";
-            }
-            else if (actionType == "開発")
-            {
-                var v = target == "村A" ? VillageA : VillageB;
-                v.Development += 1;
-                Player.Money -= 10;
-                log += " 開発+1, 金-10";
-            }
-            else if (actionType == "取引")
-            {
-                Player.Money += 10;
-                log += " 金+10";
-            }
-
-            Logs.Insert(0, log);
-            AdvanceDay();
+            AddLog("公務", "治安維持", village.Name, "成功");
         }
 
-        private void AdvanceDay()
+        public void ExecutePatrol(Village village)
+        {
+            village.Security += 1;
+            Player.AchievementMilitary += 1;
+            HasPublicDutyThisMonth = true;
+            _publicDutyCountThisMonth++;
+            
+            AddLog("公務", "巡察", village.Name, "成功");
+        }
+
+        public void ExecuteLandSurvey(Village village)
+        {
+            Player.AchievementPolitical += 2;
+            Player.Favor += 1;
+            HasPublicDutyThisMonth = true;
+            _publicDutyCountThisMonth++;
+            
+            AddLog("公務", "検地補助", village.Name, "成功");
+        }
+
+        public void ExecuteConstruction(Village village)
+        {
+            village.Development += 1;
+            Player.AchievementPolitical += 1;
+            HasPublicDutyThisMonth = true;
+            _publicDutyCountThisMonth++;
+            
+            AddLog("公務", "普請補助", village.Name, "成功");
+        }
+
+        public void ExecuteDocumentCreation()
+        {
+            Player.AchievementSecret += 1;
+            HasPublicDutyThisMonth = true;
+            _publicDutyCountThisMonth++;
+            
+            AddLog("公務", "書状作成", "", "成功");
+        }
+
+        public void ExecuteInformationGathering()
+        {
+            Player.AchievementSecret += 2;
+            Player.Favor += 1;
+            HasPublicDutyThisMonth = true;
+            _publicDutyCountThisMonth++;
+            
+            AddLog("公務", "情報収集", "", "成功");
+        }
+
+        // ===== PRIVATE TASKS (4 types) =====
+        // All private tasks MUST NOT grant achievements
+
+        public void ExecuteVillageDevelopment(Village village)
+        {
+            village.Development += 2;
+            village.Population += 5;
+            Player.Money -= 10;
+            _monthlyExpense += 10;
+            
+            AddLog("私事", "知行村の開発", village.Name, "成功");
+        }
+
+        public void ExecuteRoadMaintenance(Village village)
+        {
+            village.Development += 1;
+            Player.Money -= 5;
+            _monthlyExpense += 5;
+            
+            AddLog("私事", "道整備", village.Name, "成功");
+        }
+
+        public void ExecuteVillageMerchantTrade(Village village)
+        {
+            Player.Money += 10;
+            
+            AddLog("私事", "村商人との取引", village.Name, "成功");
+        }
+
+        public void ExecuteSpecialtyPreparation(Village village)
+        {
+            village.Development += 1;
+            Player.Money -= 15;
+            _monthlyExpense += 15;
+            
+            AddLog("私事", "名産開発の準備", village.Name, "成功");
+        }
+
+        private void AddLog(string actionType, string taskName, string target, string result)
+        {
+            var dailyLog = new DailyLog
+            {
+                Date = CurrentDate,
+                ActionType = actionType,
+                TaskName = taskName,
+                Target = target,
+                Result = result
+            };
+            DailyLogs.Insert(0, dailyLog);
+            
+            string logText = $"{CurrentDate:M/d}: {taskName}";
+            if (!string.IsNullOrEmpty(target))
+            {
+                logText += $"({target})";
+            }
+            logText += " 成功";
+            Logs.Insert(0, logText);
+            
+            // Keep only recent 5 logs in simple log
+            while (Logs.Count > 5)
+            {
+                Logs.RemoveAt(Logs.Count - 1);
+            }
+        }
+
+        public void AdvanceDay()
         {
             CurrentDate = CurrentDate.AddDays(1);
             
+            // Month boundary detection
             if (CurrentDate.Day == 1)
             {
                 ProcessMonthly();
@@ -104,24 +211,58 @@ namespace SengokuSLG.Services
 
         private void ProcessMonthly()
         {
+            // Calculate income
             int totalIncome = VillageA.Income + VillageB.Income;
             Player.Money += totalIncome;
-            string log = $"【月次処理】収入+{totalIncome}";
-
-            if (HasDonePublicDuty)
-            {
-                Player.Evaluation += 1;
-                log += ", 公務評価+1";
-            }
-
-            HasDonePublicDuty = false;
-            Logs.Insert(0, log);
             
-            // Here we should trigger the Monthly Summary View.
-            // In this simple architecture, we might need an event.
-            OnMonthlyProcessed?.Invoke(this, EventArgs.Empty);
+            // Calculate achievement gains
+            int militaryGain = Player.AchievementMilitary - _previousMonthMilitary;
+            int politicalGain = Player.AchievementPolitical - _previousMonthPolitical;
+            int secretGain = Player.AchievementSecret - _previousMonthSecret;
+            
+            // Update evaluation
+            int evaluationChange = 0;
+            if (HasPublicDutyThisMonth)
+            {
+                evaluationChange += 1;
+            }
+            if (militaryGain + politicalGain + secretGain >= 5)
+            {
+                evaluationChange += 1;
+            }
+            if (Player.Favor >= 3)
+            {
+                evaluationChange += 1;
+            }
+            Player.Evaluation += evaluationChange;
+            
+            // Create monthly summary
+            var summary = new MonthlySummary
+            {
+                Year = CurrentDate.Year,
+                Month = CurrentDate.Month - 1 == 0 ? 12 : CurrentDate.Month - 1,
+                PublicDutyCount = _publicDutyCountThisMonth,
+                AchievementMilitaryGain = militaryGain,
+                AchievementPoliticalGain = politicalGain,
+                AchievementSecretGain = secretGain,
+                EvaluationChange = evaluationChange,
+                IncomeTotal = totalIncome,
+                ExpenseTotal = _monthlyExpense
+            };
+            
+            // Reset monthly counters
+            HasPublicDutyThisMonth = false;
+            _publicDutyCountThisMonth = 0;
+            _monthlyExpense = 0;
+            _previousMonthMilitary = Player.AchievementMilitary;
+            _previousMonthPolitical = Player.AchievementPolitical;
+            _previousMonthSecret = Player.AchievementSecret;
+            _previousEvaluation = Player.Evaluation;
+            
+            // Trigger monthly summary event
+            OnMonthlyProcessed?.Invoke(this, summary);
         }
 
-        public event EventHandler OnMonthlyProcessed;
+        public event EventHandler<MonthlySummary> OnMonthlyProcessed;
     }
 }

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET10_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\App.xaml
-5221080086
+81086056054
 
-11993353206
+14-2117240106
 205-764538886
-MainWindow.xaml;Resources\Styles.xaml;Views\MainView.xaml;Views\MonthlySummaryView.xaml;Views\VillageView.xaml;
+MainWindow.xaml;Resources\Styles.xaml;Views\ActionResultDialog.xaml;Views\MainView.xaml;Views\MonthlySummaryView.xaml;Views\PrivateTaskSelectionView.xaml;Views\PublicDutySelectionView.xaml;Views\VillageView.xaml;
 
 False
 

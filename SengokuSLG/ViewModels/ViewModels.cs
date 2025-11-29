@@ -54,6 +54,7 @@ namespace SengokuSLG.ViewModels
     {
         private readonly GameService _gameService;
         private object _currentView;
+        private object _dialogViewModel;
 
         public MainViewModel()
         {
@@ -62,10 +63,46 @@ namespace SengokuSLG.ViewModels
             _gameService.OnMonthlyProcessed += OnMonthlyProcessed;
 
             // Initial View
-            CurrentView = new DailyActionViewModel(_gameService);
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask);
             
-            NavigateDailyCommand = new RelayCommand(() => CurrentView = new DailyActionViewModel(_gameService));
+            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask));
             NavigateVillageCommand = new RelayCommand(() => CurrentView = new VillageViewModel(_gameService));
+        }
+
+        private void NavigateToPublicDuty()
+        {
+            CurrentView = new PublicDutySelectionViewModel(_gameService, 
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask),
+                OnActionExecuted);
+        }
+
+        private void NavigateToPrivateTask()
+        {
+            CurrentView = new PrivateTaskSelectionViewModel(_gameService, 
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask),
+                OnActionExecuted);
+        }
+
+        private void OnActionExecuted(string taskName, string target)
+        {
+            // Show Result Dialog
+            // For simplicity in this MVVM setup without a dialog service, we'll switch the view to the Result View
+            // In a real app, this might be a modal window.
+            // But per specs, "Action Result Dialog" is a screen/overlay.
+            // Let's implement it as a View switching for now, or we can use a Popup in the View.
+            // Given the constraints, switching view is safest to ensure it works.
+            // Wait, the spec says "Dialog". 
+            // Let's try to use a separate property for DialogViewModel to show it as an overlay in MainWindow.
+            
+            // Actually, let's stick to View switching for simplicity and robustness if "Dialog" is just a name.
+            // But "Dialog" implies overlay. 
+            // Let's add a DialogViewModel property to MainViewModel.
+            
+            var log = _gameService.DailyLogs[0]; // The latest log
+            DialogViewModel = new ActionResultViewModel(log, () => DialogViewModel = null);
+            
+            // Also return to Main Screen behind the dialog
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask);
         }
 
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -74,26 +111,21 @@ namespace SengokuSLG.ViewModels
             {
                 OnPropertyChanged(nameof(CurrentDateDisplay));
             }
-            if (e.PropertyName == nameof(GameService.HasDonePublicDuty))
+            if (e.PropertyName == nameof(GameService.HasPublicDutyThisMonth))
             {
                 OnPropertyChanged(nameof(IsPublicDutyDone));
             }
         }
 
-        private void OnMonthlyProcessed(object sender, EventArgs e)
+        private void OnMonthlyProcessed(object sender, MonthlySummary summary)
         {
             // Switch to Monthly Summary
-            CurrentView = new MonthlySummaryViewModel(_gameService, () => CurrentView = new DailyActionViewModel(_gameService));
+            CurrentView = new MonthlySummaryViewModel(_gameService, summary, () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask));
         }
 
         public Player Player => _gameService.Player;
-        public string CurrentDateDisplay => _gameService.CurrentDate.ToString("D"); // e.g. "Monday, November 29, 2025" -> Japanese locale needed for "天正..." but standard date for now.
-        // To match mock "天正15年3月12日", I should format it manually or use a custom calendar.
-        // For v0.3, I'll stick to standard or simple string format.
-        // Mock: "天正15年3月12日". 1587 is Tensho 15.
-        // I'll just format it simply.
-        
-        public bool IsPublicDutyDone => _gameService.HasDonePublicDuty;
+        public string CurrentDateDisplay => _gameService.CurrentDate.ToString("D");
+        public bool IsPublicDutyDone => _gameService.HasPublicDutyThisMonth;
         public ObservableCollection<string> Logs => _gameService.Logs;
 
         public object CurrentView
@@ -102,28 +134,141 @@ namespace SengokuSLG.ViewModels
             set { _currentView = value; OnPropertyChanged(); }
         }
 
+        public object DialogViewModel
+        {
+            get => _dialogViewModel;
+            set { _dialogViewModel = value; OnPropertyChanged(); }
+        }
+
         public ICommand NavigateDailyCommand { get; }
         public ICommand NavigateVillageCommand { get; }
     }
 
-    public class DailyActionViewModel : ViewModelBase
+    public class MainScreenViewModel : ViewModelBase
     {
         private readonly GameService _gameService;
+        public ICommand NavigatePublicDutyCommand { get; }
+        public ICommand NavigatePrivateTaskCommand { get; }
 
-        public DailyActionViewModel(GameService service)
+        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask)
         {
             _gameService = service;
-            ExecuteActionCommand = new RelayCommandWithParam(Execute);
+            NavigatePublicDutyCommand = new RelayCommand(onPublicDuty);
+            NavigatePrivateTaskCommand = new RelayCommand(onPrivateTask);
         }
 
-        public ICommand ExecuteActionCommand { get; }
+        public GameService Service => _gameService;
+    }
 
-        private void Execute(object parameter)
+    public class PublicDutySelectionViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand ExecuteSecurityMaintenanceCommand { get; }
+        public ICommand ExecutePatrolCommand { get; }
+        public ICommand ExecuteLandSurveyCommand { get; }
+        public ICommand ExecuteConstructionCommand { get; }
+        public ICommand ExecuteDocumentCreationCommand { get; }
+        public ICommand ExecuteInformationGatheringCommand { get; }
+        public ICommand BackCommand { get; }
+
+        public PublicDutySelectionViewModel(GameService service, Action onBack, Action<string, string> onActionExecuted)
         {
-            var args = parameter as string; 
-            if (string.IsNullOrEmpty(args)) return;
-            var parts = args.Split('|');
-            _gameService.ExecuteAction(parts[0], parts.Length > 1 ? parts[1] : "");
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+
+            ExecuteSecurityMaintenanceCommand = new RelayCommandWithParam(p => {
+                var target = p as string; // "村A" or "村B"
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecuteSecurityMaintenance(village);
+                onActionExecuted("治安維持", target);
+            });
+
+            ExecutePatrolCommand = new RelayCommandWithParam(p => {
+                var target = p as string;
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecutePatrol(village);
+                onActionExecuted("巡察", target);
+            });
+
+            ExecuteLandSurveyCommand = new RelayCommandWithParam(p => {
+                var target = p as string;
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecuteLandSurvey(village);
+                onActionExecuted("検地補助", target);
+            });
+
+            ExecuteConstructionCommand = new RelayCommandWithParam(p => {
+                var target = p as string;
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecuteConstruction(village);
+                onActionExecuted("普請補助", target);
+            });
+
+            ExecuteDocumentCreationCommand = new RelayCommand(() => {
+                _gameService.ExecuteDocumentCreation();
+                onActionExecuted("書状作成", "");
+            });
+
+            ExecuteInformationGatheringCommand = new RelayCommand(() => {
+                _gameService.ExecuteInformationGathering();
+                onActionExecuted("情報収集", "");
+            });
+        }
+    }
+
+    public class PrivateTaskSelectionViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand ExecuteVillageDevelopmentCommand { get; }
+        public ICommand ExecuteRoadMaintenanceCommand { get; }
+        public ICommand ExecuteVillageMerchantTradeCommand { get; }
+        public ICommand ExecuteSpecialtyPreparationCommand { get; }
+        public ICommand BackCommand { get; }
+
+        public PrivateTaskSelectionViewModel(GameService service, Action onBack, Action<string, string> onActionExecuted)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+
+            ExecuteVillageDevelopmentCommand = new RelayCommandWithParam(p => {
+                var target = p as string;
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecuteVillageDevelopment(village);
+                onActionExecuted("知行村の開発", target);
+            });
+
+            ExecuteRoadMaintenanceCommand = new RelayCommandWithParam(p => {
+                var target = p as string;
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecuteRoadMaintenance(village);
+                onActionExecuted("道整備", target);
+            });
+
+            ExecuteVillageMerchantTradeCommand = new RelayCommandWithParam(p => {
+                var target = p as string;
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecuteVillageMerchantTrade(village);
+                onActionExecuted("村商人との取引", target);
+            });
+
+            ExecuteSpecialtyPreparationCommand = new RelayCommandWithParam(p => {
+                var target = p as string;
+                var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
+                _gameService.ExecuteSpecialtyPreparation(village);
+                onActionExecuted("名産開発の準備", target);
+            });
+        }
+    }
+
+    public class ActionResultViewModel : ViewModelBase
+    {
+        public DailyLog Log { get; }
+        public ICommand CloseCommand { get; }
+
+        public ActionResultViewModel(DailyLog log, Action onClose)
+        {
+            Log = log;
+            CloseCommand = new RelayCommand(onClose);
         }
     }
 
@@ -136,11 +281,13 @@ namespace SengokuSLG.ViewModels
     public class MonthlySummaryViewModel : ViewModelBase
     {
         public GameService Service { get; }
+        public MonthlySummary Summary { get; }
         public ICommand NextMonthCommand { get; }
 
-        public MonthlySummaryViewModel(GameService service, Action onNext)
+        public MonthlySummaryViewModel(GameService service, MonthlySummary summary, Action onNext)
         {
             Service = service;
+            Summary = summary;
             NextMonthCommand = new RelayCommand(onNext);
         }
     }

@@ -4,39 +4,71 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Border Background="{StaticResource BrushPanelBg}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="30" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="600">
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Background="{StaticResource BrushBgMain}">
+        <Border Margin="50" Background="{StaticResource BrushPanelBg}" BorderBrush="#8b4513" BorderThickness="3" CornerRadius="12" Padding="40">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" Direction="270" ShadowDepth="10" Opacity="0.3"/>
+            </Border.Effect>
+            
             <StackPanel>
-                <TextBlock Text="【月次報告】" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="{StaticResource BrushAccent}"/>
-                
-                <TextBlock Text="今月の収支報告を行います。" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-                
-                <Grid Margin="0,0,0,20">
+                <TextBlock Text="【月次報告】" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding Summary.Year, StringFormat='天正{0}年'}" FontSize="20" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Summary.Month, StringFormat='{}{0}月'}" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                <Separator Background="#8b4513" Margin="0,0,0,30"/>
+
+                <Grid Margin="0,0,0,30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="・村A収入" FontSize="16"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Service.VillageA.Income, StringFormat='{}{0}貫'}" FontSize="16" FontWeight="Bold"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="・村B収入" FontSize="16"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Service.VillageB.Income, StringFormat='{}{0}貫'}" FontSize="16" FontWeight="Bold"/>
+                    
+                    <!-- Left: Financials -->
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Text="収支報告" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        <Grid Margin="0,0,0,10">
+                            <TextBlock Text="知行収入:" FontSize="16"/>
+                            <TextBlock Text="{Binding Summary.IncomeTotal, StringFormat='{}{0}貫'}" FontSize="16" FontWeight="Bold" Foreground="#2d7a3e" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,10">
+                            <TextBlock Text="私事支出:" FontSize="16"/>
+                            <TextBlock Text="{Binding Summary.ExpenseTotal, StringFormat='{}{0}貫'}" FontSize="16" FontWeight="Bold" Foreground="#c73940" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Separator Background="#ccc" Margin="0,10"/>
+                        <Grid>
+                            <TextBlock Text="収支合計:" FontSize="16" FontWeight="Bold"/>
+                            <!-- Simple calculation for display, or bind to a net property if available. 
+                                 Since we don't have a NetIncome property in Summary, we'll just show the components. 
+                                 Or we can use a MultiBinding converter, but let's keep it simple. -->
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Right: Achievements -->
+                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                        <TextBlock Text="功績・評価" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        <Grid Margin="0,0,0,10">
+                            <TextBlock Text="公務実施:" FontSize="16"/>
+                            <TextBlock Text="{Binding Summary.PublicDutyCount, StringFormat='{}{0}回'}" FontSize="16" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,10">
+                            <TextBlock Text="獲得功績:" FontSize="16"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock Text="{Binding Summary.AchievementMilitaryGain, StringFormat='軍{0} '}" FontSize="14" Foreground="#c73940"/>
+                                <TextBlock Text="{Binding Summary.AchievementPoliticalGain, StringFormat='政{0} '}" FontSize="14" Foreground="#1d3557"/>
+                                <TextBlock Text="{Binding Summary.AchievementSecretGain, StringFormat='密{0}'}" FontSize="14" Foreground="#2b2b2b"/>
+                            </StackPanel>
+                        </Grid>
+                        <Separator Background="#ccc" Margin="0,10"/>
+                        <Grid>
+                            <TextBlock Text="評価変動:" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Summary.EvaluationChange, StringFormat='{}{0}'}" FontSize="24" FontWeight="Bold" Foreground="#c73940" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
                 </Grid>
 
-                <Separator Margin="0,0,0,20" Background="{StaticResource BrushBorder}"/>
-
-                <TextBlock Text="主君からの評価" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
-                <TextBlock Text="公務の実施を確認しました。" FontSize="14" Margin="0,0,0,5"/>
-                <TextBlock Text="評価が上昇しました。" FontSize="14" Foreground="{StaticResource BrushAccent}" FontWeight="Bold"/>
-
-                <Button Content="次月へ" Command="{Binding NextMonthCommand}" Style="{StaticResource ButtonStyleWood}" HorizontalAlignment="Center" Margin="0,30,0,0"/>
+                <Button Command="{Binding NextMonthCommand}" Content="翌月へ" 
+                        Style="{StaticResource StyleActionButton}" Width="200" Height="50" HorizontalAlignment="Center" Margin="0,20,0,0"/>
             </StackPanel>
         </Border>
     </Grid>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戦国立身出世SLG v0.4 - 行動結果ダイアログ</title>
+    <style>
+        body {
+            font-family: "Yu Mincho", "Hiragino Mincho ProN", "MS Mincho", serif;
+            background-color: #f8f3e7;
+            color: #2b2b2b;
+            margin: 0;
+            padding: 0;
+            min-width: 1280px;
+        }
+
+        /* ダイアログ背景（暗幕） */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* ダイアログ本体 */
+        .result-dialog {
+            background: linear-gradient(135deg, #f8f3e7 0%, #f0e6d2 100%);
+            border: 3px solid #8b4513;
+            border-radius: 12px;
+            padding: 30px;
+            width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* ダイアログタイトル */
+        .dialog-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #c73940;
+            border-bottom: 2px solid #c73940;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* タスク情報枠 */
+        .task-info {
+            background-color: #e7d8b1;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .task-info-item {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .task-info-value {
+            color: #2b2b2b;
+        }
+
+        .result-success {
+            color: #2d7a3e;
+            font-weight: bold;
+        }
+
+        /* 変動内容セクション */
+        .changes-section {
+            margin-bottom: 20px;
+        }
+
+        .changes-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2b2b2b;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #d4c5a0;
+            padding-bottom: 5px;
+        }
+
+        .change-item {
+            margin-left: 15px;
+            margin-bottom: 5px;
+            color: #c73940;
+            font-weight: bold;
+        }
+
+        /* 現在の状態セクション */
+        .current-state {
+            margin-bottom: 20px;
+        }
+
+        .state-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2b2b2b;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #d4c5a0;
+            padding-bottom: 5px;
+        }
+
+        .state-item {
+            margin-left: 15px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .state-change {
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* 閉じるボタン */
+        .close-button {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: all 0.3s;
+        }
+
+        .close-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* 説明テキスト */
+        .note {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- ダイアログ背景 -->
+    <div class="dialog-overlay">
+        <!-- ダイアログ本体 -->
+        <div class="result-dialog">
+            <!-- タイトル -->
+            <div class="dialog-title">行動結果</div>
+
+            <!-- タスク情報 -->
+            <div class="task-info">
+                <div class="task-info-item">
+                    <span class="task-info-label">タスク名:</span>
+                    <span class="task-info-value">治安維持（村A）</span>
+                </div>
+                <div class="task-info-item">
+                    <span class="task-info-label">結果:</span>
+                    <span class="result-success">成功</span>
+                </div>
+            </div>
+
+            <!-- 変動内容 -->
+            <div class="changes-section">
+                <div class="changes-title">■変動内容</div>
+                <div class="change-item">・軍事功: +1</div>
+                <div class="change-item">・村A治安: +3</div>
+            </div>
+
+            <!-- 現在の状態 -->
+            <div class="current-state">
+                <div class="state-title">■現在の状態</div>
+                <div class="state-item">
+                    ・軍事功: 11 <span class="state-change">(10 → 11)</span>
+                </div>
+                <div class="state-item">
+                    ・村A治安: 53 <span class="state-change">(50 → 53)</span>
+                </div>
+            </div>
+
+            <!-- 閉じるボタン -->
+            <button class="close-button">閉じる</button>
+
+            <!-- 説明 -->
+            <div class="note">
+                ※ このダイアログはUIモックです。実際の実装ではJavaScriptで制御されます。
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+    実装時の注意:
+    - 「閉じる」ボタンクリックでダイアログを非表示にする
+    - 背景クリックでも閉じる動作を実装可能
+    - 変動内容と現在の状態は動的に生成する
+    -->
+</body>
+</html>

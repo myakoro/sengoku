@@ -1,0 +1,205 @@
+<UserControl x:Class="SengokuSLG.Views.PublicDutySelectionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="TaskCardStyle" TargetType="Border">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#f0e6d2" Offset="0"/>
+                        <GradientStop Color="#e7d8b1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#8b4513"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#1d3557"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" Direction="270" ShadowDepth="3" Opacity="0.15"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BadgeStyle" TargetType="TextBlock">
+            <Setter Property="Padding" Value="10,3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#f8f3e7">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <Border Grid.Row="0" Background="{StaticResource BrushHeader}" Padding="15" BorderBrush="#8b4513" BorderThickness="0,0,0,2">
+            <TextBlock Text="公務を選ぶ" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#2b2b2b"/>
+        </Border>
+
+        <!-- Task List -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel MaxWidth="600">
+                <!-- 治安維持 -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteSecurityMaintenanceCommand}" CommandParameter="村A"/>
+                    </Border.InputBindings>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Border Background="#c73940" CornerRadius="12" Margin="0,0,10,0">
+                                    <TextBlock Text="軍事功" Style="{StaticResource BadgeStyle}"/>
+                                </Border>
+                                <TextBlock Text="治安維持（村A）" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+                            <TextBlock Text="村Aの治安を回復させる" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                            <TextBlock Text="功績+1 / 治安+3" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- 巡察 -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecutePatrolCommand}" CommandParameter="村A"/>
+                    </Border.InputBindings>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Border Background="#c73940" CornerRadius="12" Margin="0,0,10,0">
+                                    <TextBlock Text="軍事功" Style="{StaticResource BadgeStyle}"/>
+                                </Border>
+                                <TextBlock Text="巡察（村A）" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+                            <TextBlock Text="村Aを見回る" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                            <TextBlock Text="功績+1 / 治安+1" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- 検地補助 -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteLandSurveyCommand}" CommandParameter="村A"/>
+                    </Border.InputBindings>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Border Background="#1d3557" CornerRadius="12" Margin="0,0,10,0">
+                                    <TextBlock Text="政務功" Style="{StaticResource BadgeStyle}"/>
+                                </Border>
+                                <TextBlock Text="検地補助（村A）" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+                            <TextBlock Text="村Aの検地作業を補助する" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                            <TextBlock Text="功績+2 / 貸し+1" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- 普請補助 -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteConstructionCommand}" CommandParameter="村A"/>
+                    </Border.InputBindings>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Border Background="#1d3557" CornerRadius="12" Margin="0,0,10,0">
+                                    <TextBlock Text="政務功" Style="{StaticResource BadgeStyle}"/>
+                                </Border>
+                                <TextBlock Text="普請補助（村A）" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+                            <TextBlock Text="村Aの普請作業を手伝う" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                            <TextBlock Text="功績+1 / 開発+1" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- 書状作成 -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteDocumentCreationCommand}"/>
+                    </Border.InputBindings>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Border Background="#2b2b2b" CornerRadius="12" Margin="0,0,10,0">
+                                    <TextBlock Text="密功" Style="{StaticResource BadgeStyle}"/>
+                                </Border>
+                                <TextBlock Text="書状作成" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+                            <TextBlock Text="公式な書状を作成する" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                            <TextBlock Text="功績+1" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- 情報収集 -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteInformationGatheringCommand}"/>
+                    </Border.InputBindings>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Border Background="#2b2b2b" CornerRadius="12" Margin="0,0,10,0">
+                                    <TextBlock Text="密功" Style="{StaticResource BadgeStyle}"/>
+                                </Border>
+                                <TextBlock Text="情報収集" FontSize="18" FontWeight="Bold"/>
+                            </StackPanel>
+                            <TextBlock Text="周辺の情報を集める" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                            <TextBlock Text="功績+2 / 貸し+1" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Back Button -->
+        <Button Grid.Row="2" Command="{Binding BackCommand}" Content="戻る" 
+                Style="{StaticResource StyleNavButton}" Width="200" Height="50" Margin="20"/>
+    </Grid>
+</UserControl>
