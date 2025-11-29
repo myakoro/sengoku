@@ -100,7 +100,8 @@ namespace SengokuSLG.ViewModels
 
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(GameService.CurrentDate))
+            if (e.PropertyName == nameof(GameService.CurrentDate) || 
+                e.PropertyName == nameof(GameService.CurrentDateDisplay))
             {
                 OnPropertyChanged(nameof(CurrentDateDisplay));
             }
@@ -117,7 +118,7 @@ namespace SengokuSLG.ViewModels
         }
 
         public Player Player => _gameService.Player;
-        public string CurrentDateDisplay => _gameService.CurrentDate.ToString("D");
+        public string CurrentDateDisplay => _gameService.CurrentDateDisplay;
         public bool IsPublicDutyDone => _gameService.HasPublicDutyThisMonth;
         public ObservableCollection<string> Logs => _gameService.Logs;
 
@@ -153,7 +154,8 @@ namespace SengokuSLG.ViewModels
 
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(GameService.CurrentDate))
+            if (e.PropertyName == nameof(GameService.CurrentDate) || 
+                e.PropertyName == nameof(GameService.CurrentDateDisplay))
             {
                 OnPropertyChanged(nameof(CurrentDateDisplay));
             }
@@ -164,7 +166,7 @@ namespace SengokuSLG.ViewModels
         }
 
         public GameService Service => _gameService;
-        public string CurrentDateDisplay => $"{_gameService.CurrentDate.Year}年 {_gameService.CurrentDate.Month}月 {_gameService.CurrentDate.Day}日";
+        public string CurrentDateDisplay => _gameService.CurrentDateDisplay;
         public bool IsPublicDutyDone => _gameService.HasPublicDutyThisMonth;
     }
 

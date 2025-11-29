@@ -8,7 +8,7 @@ namespace SengokuSLG.Services
 {
     public class GameService : INotifyPropertyChanged
     {
-        private DateTime _currentDate;
+        private GameDate _currentDate;
         private bool _hasPublicDutyThisMonth;
         private int _publicDutyCountThisMonth;
         private int _monthlyExpense;
@@ -16,6 +16,10 @@ namespace SengokuSLG.Services
         private int _previousMonthPolitical;
         private int _previousMonthSecret;
         private int _previousEvaluation;
+        private int _villageADevelopmentStart;
+        private int _villageBDevelopmentStart;
+        private int _villageAPopulationStart;
+        private int _villageBPopulationStart;
 
         public Player Player { get; private set; }
         public Village VillageA { get; private set; }
@@ -23,16 +27,19 @@ namespace SengokuSLG.Services
         public Lord Lord { get; private set; }
         public ObservableCollection<string> Logs { get; private set; }
         public ObservableCollection<DailyLog> DailyLogs { get; private set; }
+        public bool HasSpecialtyPreparationFlag { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public DateTime CurrentDate
+        public GameDate CurrentDate
         {
             get => _currentDate;
-            private set { _currentDate = value; OnPropertyChanged(); }
+            private set { _currentDate = value; OnPropertyChanged(); OnPropertyChanged(nameof(CurrentDateDisplay)); }
         }
+
+        public string CurrentDateDisplay => _currentDate?.ToString() ?? "";
 
         public bool HasPublicDutyThisMonth
         {
@@ -59,16 +66,21 @@ namespace SengokuSLG.Services
             VillageA = new Village("村A", 1000, 50, 100, 10);
             VillageB = new Village("村B", 500, 30, 50, 5);
             Lord = new Lord();
-            CurrentDate = new DateTime(1587, 3, 12); 
+            CurrentDate = new GameDate(1587, 3, 12); 
             Logs = new ObservableCollection<string>();
             DailyLogs = new ObservableCollection<DailyLog>();
             HasPublicDutyThisMonth = false;
+            HasSpecialtyPreparationFlag = false;
             _publicDutyCountThisMonth = 0;
             _monthlyExpense = 0;
             _previousMonthMilitary = 0;
             _previousMonthPolitical = 0;
             _previousMonthSecret = 0;
             _previousEvaluation = 0;
+            _villageADevelopmentStart = VillageA.Development;
+            _villageBDevelopmentStart = VillageB.Development;
+            _villageAPopulationStart = VillageA.Population;
+            _villageBPopulationStart = VillageB.Population;
         }
 
         // ===== PUBLIC DUTIES (6 types) =====
@@ -167,6 +179,7 @@ namespace SengokuSLG.Services
             village.Development += 1;
             Player.Money -= 15;
             _monthlyExpense += 15;
+            HasSpecialtyPreparationFlag = true; // 名産開発フラグON（将来拡張用）
             
             AddLog("私事", "名産開発の準備", village.Name, "成功");
         }
@@ -175,7 +188,7 @@ namespace SengokuSLG.Services
         {
             var dailyLog = new DailyLog
             {
-                Date = CurrentDate,
+                Date = new GameDate(CurrentDate.Year, CurrentDate.Month, CurrentDate.Day),
                 ActionType = actionType,
                 TaskName = taskName,
                 Target = target,
@@ -183,7 +196,7 @@ namespace SengokuSLG.Services
             };
             DailyLogs.Insert(0, dailyLog);
             
-            string logText = $"{CurrentDate:M/d}: {taskName}";
+            string logText = $"{CurrentDate.Month}/{CurrentDate.Day}: {taskName}";
             if (!string.IsNullOrEmpty(target))
             {
                 logText += $"({target})";
@@ -200,10 +213,27 @@ namespace SengokuSLG.Services
 
         public void AdvanceDay()
         {
-            CurrentDate = CurrentDate.AddDays(1);
+            int previousMonth = CurrentDate.Month;
+            int newDay = CurrentDate.Day + 1;
+            int newMonth = CurrentDate.Month;
+            int newYear = CurrentDate.Year;
             
-            // Month boundary detection
-            if (CurrentDate.Day == 1)
+            if (newDay > 30)
+            {
+                newDay = 1;
+                newMonth++;
+                if (newMonth > 12)
+                {
+                    newMonth = 1;
+                    newYear++;
+                }
+            }
+            
+            // Create new GameDate to trigger PropertyChanged properly
+            CurrentDate = new GameDate(newYear, newMonth, newDay);
+            
+            // Month boundary detection (30 days fixed per month)
+            if (newMonth != previousMonth)
             {
                 ProcessMonthly();
             }
@@ -219,6 +249,12 @@ namespace SengokuSLG.Services
             int militaryGain = Player.AchievementMilitary - _previousMonthMilitary;
             int politicalGain = Player.AchievementPolitical - _previousMonthPolitical;
             int secretGain = Player.AchievementSecret - _previousMonthSecret;
+            
+            // Calculate village changes
+            int villageADevChange = VillageA.Development - _villageADevelopmentStart;
+            int villageBDevChange = VillageB.Development - _villageBDevelopmentStart;
+            int villageAPopChange = VillageA.Population - _villageAPopulationStart;
+            int villageBPopChange = VillageB.Population - _villageBPopulationStart;
             
             // Update evaluation
             int evaluationChange = 0;
@@ -242,22 +278,33 @@ namespace SengokuSLG.Services
                 Year = CurrentDate.Year,
                 Month = CurrentDate.Month - 1 == 0 ? 12 : CurrentDate.Month - 1,
                 PublicDutyCount = _publicDutyCountThisMonth,
+                PublicDutySuccessRate = 100, // v0.4では常に100%
                 AchievementMilitaryGain = militaryGain,
                 AchievementPoliticalGain = politicalGain,
                 AchievementSecretGain = secretGain,
                 EvaluationChange = evaluationChange,
                 IncomeTotal = totalIncome,
-                ExpenseTotal = _monthlyExpense
+                ExpenseTotal = _monthlyExpense,
+                MoneyBalance = totalIncome - _monthlyExpense,
+                VillageADevelopmentChange = villageADevChange,
+                VillageBDevelopmentChange = villageBDevChange,
+                VillageAPopulationChange = villageAPopChange,
+                VillageBPopulationChange = villageBPopChange
             };
             
             // Reset monthly counters
             HasPublicDutyThisMonth = false;
+            HasSpecialtyPreparationFlag = false; // 名産開発フラグもリセット
             _publicDutyCountThisMonth = 0;
             _monthlyExpense = 0;
             _previousMonthMilitary = Player.AchievementMilitary;
             _previousMonthPolitical = Player.AchievementPolitical;
             _previousMonthSecret = Player.AchievementSecret;
             _previousEvaluation = Player.Evaluation;
+            _villageADevelopmentStart = VillageA.Development;
+            _villageBDevelopmentStart = VillageB.Development;
+            _villageAPopulationStart = VillageA.Population;
+            _villageBPopulationStart = VillageB.Population;
             
             // Trigger monthly summary event
             OnMonthlyProcessed?.Invoke(this, summary);

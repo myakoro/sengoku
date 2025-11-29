@@ -104,9 +104,42 @@ namespace SengokuSLG.Models
         public string Name { get; set; } = "羽柴秀吉";
     }
 
+    public class GameDate
+    {
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
+
+        public GameDate(int year, int month, int day)
+        {
+            Year = year;
+            Month = month;
+            Day = day;
+        }
+
+        public void AdvanceDay()
+        {
+            Day++;
+            if (Day > 30)
+            {
+                Day = 1;
+                Month++;
+                if (Month > 12)
+                {
+                    Month = 1;
+                    Year++;
+                }
+            }
+        }
+
+        public bool IsNewMonth => Day == 1;
+
+        public override string ToString() => $"{Year}年{Month}月{Day}日";
+    }
+
     public class DailyLog
     {
-        public DateTime Date { get; set; }
+        public GameDate Date { get; set; }
         public string ActionType { get; set; } // "公務" or "私事"
         public string TaskName { get; set; }
         public string Target { get; set; } // "村A", "村B", or ""
@@ -118,11 +151,17 @@ namespace SengokuSLG.Models
         public int Year { get; set; }
         public int Month { get; set; }
         public int PublicDutyCount { get; set; }
+        public int PublicDutySuccessRate { get; set; } = 100; // v0.4では常に100%
         public int AchievementMilitaryGain { get; set; }
         public int AchievementPoliticalGain { get; set; }
         public int AchievementSecretGain { get; set; }
         public int EvaluationChange { get; set; }
         public int IncomeTotal { get; set; }
         public int ExpenseTotal { get; set; }
+        public int MoneyBalance { get; set; } // 収入 - 支出
+        public int VillageADevelopmentChange { get; set; }
+        public int VillageBDevelopmentChange { get; set; }
+        public int VillageAPopulationChange { get; set; }
+        public int VillageBPopulationChange { get; set; }
     }
 }
