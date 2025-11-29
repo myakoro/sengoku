@@ -85,23 +85,16 @@ namespace SengokuSLG.ViewModels
 
         private void OnActionExecuted(string taskName, string target)
         {
-            // Show Result Dialog
-            // For simplicity in this MVVM setup without a dialog service, we'll switch the view to the Result View
-            // In a real app, this might be a modal window.
-            // But per specs, "Action Result Dialog" is a screen/overlay.
-            // Let's implement it as a View switching for now, or we can use a Popup in the View.
-            // Given the constraints, switching view is safest to ensure it works.
-            // Wait, the spec says "Dialog". 
-            // Let's try to use a separate property for DialogViewModel to show it as an overlay in MainWindow.
-            
-            // Actually, let's stick to View switching for simplicity and robustness if "Dialog" is just a name.
-            // But "Dialog" implies overlay. 
-            // Let's add a DialogViewModel property to MainViewModel.
-            
             var log = _gameService.DailyLogs[0]; // The latest log
-            DialogViewModel = new ActionResultViewModel(log, () => DialogViewModel = null);
             
-            // Also return to Main Screen behind the dialog
+            // Show result dialog, and advance day when closed
+            DialogViewModel = new ActionResultViewModel(log, () => {
+                DialogViewModel = null;
+                // Advance day after closing result dialog (per spec: タスク実行 → 結果表示 → 日付+1)
+                _gameService.AdvanceDay();
+            });
+            
+            // Return to Main Screen behind the dialog
             CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask);
         }
 
