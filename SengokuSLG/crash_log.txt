@@ -1,0 +1,15 @@
+MainWindow Initialization Error: ''System.Windows.StaticResourceExtension' の値の指定時に例外がスローされました。' 行番号 '49'、行位置 '70'。
+
+Stack Trace:
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at SengokuSLG.MainWindow.InitializeComponent() in C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\MainWindow.xaml:line 1
+   at SengokuSLG.MainWindow..ctor() in C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\MainWindow.xaml.cs:line 26
+
+Inner Exception:
+'StyleNavButton' という名前のリソースが見つかりません。リソース名は大文字と小文字を区別します。
+   at System.Windows.StaticResourceExtension.ProvideValueInternal(IServiceProvider serviceProvider, Boolean allowDeferredReference)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)

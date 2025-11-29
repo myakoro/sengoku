@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戦国立身出世SLG v0.5 - 家臣詳細</title>
+    <style>
+        body {
+            font-family: "Yu Mincho", "Hiragino Mincho ProN", "MS Mincho", serif;
+            background-color: #f8f3e7;
+            color: #2b2b2b;
+            margin: 0;
+            padding: 0;
+            min-width: 1280px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border-bottom: 2px solid #8b4513;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .kamon {
+            width: 40px;
+            height: 40px;
+            background-color: #c73940;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 20px;
+            border: 2px solid #8b4513;
+        }
+
+        .date-info {
+            flex: 1;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* メインコンテンツ */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* 左ナビ */
+        .left-nav {
+            width: 200px;
+            background: linear-gradient(180deg, #e7d8b1 0%, #d4c5a0 100%);
+            border-right: 2px solid #8b4513;
+            padding: 20px 15px;
+        }
+
+        .nav-section {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #d4c5a0;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-item:hover:not(.active):not(.disabled) {
+            background-color: #fff8dc;
+        }
+
+        .nav-item.disabled {
+            color: #888888;
+            cursor: not-allowed;
+        }
+
+        /* 中央エリア */
+        .center-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+        }
+
+        /* 家臣情報カード */
+        .vassal-card {
+            background-color: #f0e6d2;
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .vassal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #8b4513;
+        }
+
+        .vassal-name {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .rank-juboku {
+            background-color: #888888;
+        }
+
+        .rank-toshi {
+            background-color: #1d3557;
+        }
+
+        .rank-kumigashira {
+            background-color: #c73940;
+        }
+
+        .status-badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .badge-advisor {
+            background-color: #e7f3ff;
+            color: #1d3557;
+            border: 1px solid #1d3557;
+        }
+
+        /* 基本情報 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background-color: #fff8dc;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #888888;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* 能力値セクション */
+        .abilities-section {
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .abilities-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 8px;
+        }
+
+        .ability-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .ability-item {
+            text-align: center;
+            padding: 15px;
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+        }
+
+        .ability-name {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #2b2b2b;
+        }
+
+        .ability-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #c73940;
+        }
+
+        .ability-unknown {
+            font-size: 24px;
+            color: #888888;
+            font-style: italic;
+        }
+
+        .ability-locked {
+            background-color: #e0e0e0;
+            opacity: 0.7;
+        }
+
+        .lock-icon {
+            font-size: 20px;
+            color: #888888;
+        }
+
+        /* 経歴・参加履歴 */
+        .history-section {
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .history-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 8px;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 6px;
+        }
+
+        /* アクションボタンエリア */
+        .action-area {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn-promote {
+            background-color: #c73940;
+            color: white;
+            border-color: #c73940;
+        }
+
+        .btn-promote:hover:not(:disabled) {
+            background-color: #a02d33;
+        }
+
+        .btn-advisor {
+            background-color: #1d3557;
+            color: white;
+            border-color: #1d3557;
+        }
+
+        .btn-advisor:hover:not(:disabled) {
+            background-color: #152d47;
+        }
+
+        .btn-dismiss {
+            background-color: #888888;
+            color: white;
+            border-color: #888888;
+        }
+
+        .btn-dismiss:hover:not(:disabled) {
+            background-color: #666666;
+        }
+
+        .action-button:disabled {
+            background-color: #d4c5a0;
+            color: #888888;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* 右サイドバー */
+        .right-sidebar {
+            width: 280px;
+            background-color: #f0e6d2;
+            border-left: 2px solid #8b4513;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #c73940;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 5px;
+        }
+
+        .info-text {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #2b2b2b;
+        }
+
+        .loyalty-gauge {
+            margin-top: 10px;
+        }
+
+        .gauge-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f8f3e7;
+            border: 1px solid #8b4513;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gauge-fill {
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .gauge-high {
+            background: linear-gradient(90deg, #2d7a3e 0%, #4caf50 100%);
+        }
+
+        .gauge-medium {
+            background: linear-gradient(90deg, #f39c12 0%, #f1c40f 100%);
+        }
+
+        .gauge-low {
+            background: linear-gradient(90deg, #c73940 0%, #e74c3c 100%);
+        }
+
+        .gauge-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #2b2b2b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <div class="kamon">家紋</div>
+            <div class="date-info">天正15年（1587年） 3月 12日</div>
+        </div>
+
+        <div class="main-content">
+            <!-- 左ナビゲーション -->
+            <div class="left-nav">
+                <div class="nav-section">
+                    <div class="nav-item">日常</div>
+                    <div class="nav-item">村情報</div>
+                    <div class="nav-item active">家臣団</div>
+                    <div class="nav-item disabled">軍事（未実装）</div>
+                    <div class="nav-item disabled">調略（未実装）</div>
+                    <div class="nav-item disabled">家族（未実装）</div>
+                    <div class="nav-item disabled">地方（未実装）</div>
+                </div>
+            </div>
+
+            <!-- 中央エリア -->
+            <div class="center-area">
+                <div class="section-title">
+                    <span>家臣詳細</span>
+                    <button class="back-button">← 家臣一覧に戻る</button>
+                </div>
+
+                <!-- 家臣情報カード -->
+                <div class="vassal-card">
+                    <div class="vassal-header">
+                        <div>
+                            <div class="vassal-name">山田次郎</div>
+                            <div class="status-badges">
+                                <span class="status-badge badge-advisor">補佐官</span>
+                            </div>
+                        </div>
+                        <span class="rank-badge rank-toshi">徒士</span>
+                    </div>
+
+                    <!-- 基本情報 -->
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">年齢</div>
+                            <div class="info-value">30歳</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">忠誠</div>
+                            <div class="info-value" style="color: #2d7a3e;">82</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">功績</div>
+                            <div class="info-value">18</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">俸給</div>
+                            <div class="info-value">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 能力値 -->
+                <div class="abilities-section">
+                    <div class="abilities-title">■ 能力値</div>
+                    <div class="ability-grid">
+                        <div class="ability-item">
+                            <div class="ability-name">戦闘</div>
+                            <div class="ability-value">62</div>
+                        </div>
+                        <div class="ability-item">
+                            <div class="ability-name">政務</div>
+                            <div class="ability-value">75</div>
+                        </div>
+                        <div class="ability-item">
+                            <div class="ability-name">知略</div>
+                            <div class="ability-value">68</div>
+                        </div>
+                        <div class="ability-item">
+                            <div class="ability-name">判断</div>
+                            <div class="ability-value">70</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: #2d7a3e;">
+                        ✓ 補佐官任命により全能力が開示されています
+                    </div>
+                </div>
+
+                <!-- 参加履歴 -->
+                <div class="history-section">
+                    <div class="history-title">■ 参加履歴</div>
+                    <div class="history-grid">
+                        <div class="history-item">
+                            <span>戦闘参加回数</span>
+                            <span style="font-weight: bold;">5回</span>
+                        </div>
+                        <div class="history-item">
+                            <span>公務参加回数</span>
+                            <span style="font-weight: bold;">8回</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: #2b2b2b;">
+                        ※ 戦闘3回以上で戦闘能力開示、公務3〜6回で政務系能力開示
+                    </div>
+                </div>
+
+                <!-- アクションボタン -->
+                <div class="action-area">
+                    <button class="action-button btn-promote" disabled>
+                        組頭に昇格
+                    </button>
+                    <button class="action-button btn-dismiss">
+                        補佐官を解任
+                    </button>
+                </div>
+
+                <div style="margin-top: 15px; padding: 12px; background-color: #fff8dc; border: 1px solid #8b4513; border-radius: 6px; font-size: 12px;">
+                    <strong>昇格条件:</strong> 功績30以上 かつ 主人公が組頭以上<br>
+                    <span style="color: #c73940;">※ 現在、主人公は徒士のため、組頭昇格は不可</span>
+                </div>
+            </div>
+
+            <!-- 右サイドバー -->
+            <div class="right-sidebar">
+                <!-- 忠誠度詳細 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 忠誠度</div>
+                    <div class="loyalty-gauge">
+                        <div class="gauge-bar">
+                            <div class="gauge-fill gauge-high" style="width: 82%;"></div>
+                            <div class="gauge-text">82 / 100</div>
+                        </div>
+                    </div>
+                    <div class="info-text" style="margin-top: 10px;">
+                        <p style="margin: 0 0 8px 0;"><strong>状態:</strong> 高忠誠</p>
+                        <p style="margin: 0;">昇格や補佐官任命により忠誠が上昇しています。</p>
+                    </div>
+                </div>
+
+                <!-- 補佐官補正 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 補佐官補正</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 10px 0;">この家臣は現在補佐官に任命されています。</p>
+                        <p style="margin: 0 0 8px 0;"><strong>主人公への補正:</strong></p>
+                        <p style="margin: 0 0 5px 0; color: #c73940;">政務: +4（差分10×0.4）</p>
+                        <p style="margin: 0 0 5px 0; color: #c73940;">知略: +5（差分13×0.4）</p>
+                        <p style="margin: 0 0 10px 0; color: #c73940;">判断: +5（差分12×0.4）</p>
+                        <p style="margin: 0; font-size: 11px; color: #888888;">※ 戦闘能力は補正対象外</p>
+                    </div>
+                </div>
+
+                <!-- 能力開示状況 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 能力開示状況</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 8px 0;">✓ 戦闘: 開示済み</p>
+                        <p style="margin: 0 0 8px 0;">✓ 政務: 開示済み</p>
+                        <p style="margin: 0 0 8px 0;">✓ 知略: 開示済み</p>
+                        <p style="margin: 0 0 10px 0;">✓ 判断: 開示済み</p>
+                        <p style="margin: 0; font-size: 11px; color: #2d7a3e;">補佐官任命により全能力が開示されています。</p>
+                    </div>
+                </div>
+
+                <!-- 昇格について -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 昇格について</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 10px 0;"><strong>徒士→組頭の条件:</strong></p>
+                        <p style="margin: 0 0 5px 0;">1. 家臣の功績が30以上</p>
+                        <p style="margin: 0 0 10px 0;">2. 主人公が組頭以上</p>
+                        <p style="margin: 0; color: #c73940;">現在、主人公は徒士のため、この家臣を組頭に昇格させることはできません。</p>
+                    </div>
+                </div>
+
+                <!-- 補佐官解任について -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 補佐官解任</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 10px 0;">補佐官を解任すると:</p>
+                        <p style="margin: 0 0 5px 0;">・忠誠 -3</p>
+                        <p style="margin: 0 0 5px 0;">・能力補正が失われる</p>
+                        <p style="margin: 0;">・能力開示状態は維持</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

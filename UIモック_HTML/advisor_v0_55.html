@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戦国立身出世SLG v0.55 - 補佐官設定</title>
+    <style>
+        body {
+            font-family: "Yu Mincho", "Hiragino Mincho ProN", "MS Mincho", serif;
+            background-color: #f8f3e7;
+            color: #2b2b2b;
+            margin: 0;
+            padding: 0;
+            min-width: 1280px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border-bottom: 2px solid #8b4513;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .kamon {
+            width: 40px;
+            height: 40px;
+            background-color: #c73940;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 20px;
+            border: 2px solid #8b4513;
+            font-size: 12px;
+        }
+
+        .date-info {
+            flex: 1;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* メインコンテンツ */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* 左ナビ */
+        .left-nav {
+            width: 200px;
+            background: linear-gradient(180deg, #e7d8b1 0%, #d4c5a0 100%);
+            border-right: 2px solid #8b4513;
+            padding: 20px 15px;
+        }
+
+        .nav-section {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #d4c5a0;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-item:hover:not(.active):not(.disabled) {
+            background-color: #fff8dc;
+        }
+
+        .nav-item.disabled {
+            color: #888888;
+            cursor: not-allowed;
+        }
+
+        /* 中央エリア */
+        .center-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+        }
+
+        /* 現在の補佐官セクション */
+        .current-advisor-section {
+            background-color: #e7f3ff;
+            border: 2px solid #1d3557;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .current-advisor-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1d3557;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #1d3557;
+            padding-bottom: 10px;
+        }
+
+        .advisor-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #1d3557;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .advisor-info {
+            flex: 1;
+        }
+
+        .advisor-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .advisor-rank {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #1d3557;
+            color: white;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+
+        /* 能力グリッド */
+        .abilities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .ability-box {
+            text-align: center;
+            padding: 12px;
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 6px;
+        }
+
+        .ability-icon {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .icon-combat { color: #c73940; }
+        .icon-leadership { color: #1d3557; }
+        .icon-politics { color: #2d7a3e; }
+        .icon-intrigue { color: #8b4513; }
+
+        .ability-label {
+            font-size: 11px;
+            color: #2b2b2b;
+            margin-bottom: 5px;
+        }
+
+        .ability-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c73940;
+        }
+
+        /* 補正比較テーブル */
+        .comparison-table {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff8dc;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+        }
+
+        .comparison-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #c73940;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .comparison-header {
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            background-color: #e7d8b1;
+            border-radius: 4px;
+        }
+
+        .comparison-label {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .comparison-value {
+            text-align: center;
+            font-size: 13px;
+            padding: 5px;
+            background-color: #f0e6d2;
+            border-radius: 4px;
+        }
+
+        .bonus-value {
+            color: #2d7a3e;
+            font-weight: bold;
+        }
+
+        .final-value {
+            color: #1d3557;
+            font-weight: bold;
+        }
+
+        .dismiss-button {
+            padding: 12px 30px;
+            background-color: #888888;
+            color: white;
+            border: 2px solid #888888;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .dismiss-button:hover {
+            background-color: #666666;
+            border-color: #666666;
+        }
+
+        /* 候補リストセクション */
+        .candidates-section {
+            background-color: #f0e6d2;
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .candidates-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 10px;
+        }
+
+        /* 候補テーブル */
+        .candidates-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .candidates-table thead {
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+        }
+
+        .candidates-table th {
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 2px solid #8b4513;
+            font-size: 13px;
+        }
+
+        .candidates-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #d4c5a0;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .candidates-table tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .candidates-table tbody tr:hover {
+            background-color: #f0e6d2;
+        }
+
+        .candidates-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .candidates-table tbody tr.current-advisor-row {
+            background-color: #e7f3ff;
+        }
+
+        .candidates-table tbody tr.current-advisor-row:hover {
+            background-color: #d6e9f8;
+        }
+
+        /* 名前列は左寄せ */
+        .candidates-table td:first-child,
+        .candidates-table th:first-child {
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .rank-juboku {
+            background-color: #888888;
+        }
+
+        .rank-toshi {
+            background-color: #1d3557;
+        }
+
+        .rank-kumigashira {
+            background-color: #c73940;
+        }
+
+        .bonus-positive {
+            color: #2d7a3e;
+            font-weight: bold;
+        }
+
+        .bonus-zero {
+            color: #888888;
+        }
+
+        .table-btn {
+            padding: 6px 12px;
+            border: 1px solid #8b4513;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+            background-color: #1d3557;
+            color: white;
+        }
+
+        .table-btn:hover {
+            background-color: #152d47;
+        }
+
+        .table-btn.current-btn {
+            background-color: #c73940;
+            border-color: #c73940;
+            cursor: default;
+        }
+
+        .ability-unknown {
+            color: #888888;
+            font-style: italic;
+        }
+
+        /* 右サイドバー */
+        .right-sidebar {
+            width: 300px;
+            background-color: #f0e6d2;
+            border-left: 2px solid #8b4513;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #c73940;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 5px;
+        }
+
+        .info-text {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #2b2b2b;
+        }
+
+        .player-stats {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 6px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <div class="kamon">家紋</div>
+            <div class="date-info">天正15年（1587年） 3月 12日</div>
+        </div>
+
+        <div class="main-content">
+            <!-- 左ナビゲーション -->
+            <div class="left-nav">
+                <div class="nav-section">
+                    <div class="nav-item active">日常</div>
+                    <div class="nav-item">村情報</div>
+                    <div class="nav-item">家臣団</div>
+                    <div class="nav-item disabled">軍事（未実装）</div>
+                    <div class="nav-item disabled">調略（未実装）</div>
+                    <div class="nav-item disabled">家族（未実装）</div>
+                    <div class="nav-item disabled">地方（未実装）</div>
+                </div>
+            </div>
+
+            <!-- 中央エリア -->
+            <div class="center-area">
+                <div class="section-title">
+                    <span>補佐官設定</span>
+                    <button class="back-button">← メイン画面に戻る</button>
+                </div>
+
+                <!-- 現在の補佐官 -->
+                <div class="current-advisor-section">
+                    <div class="current-advisor-title">■ 現在の補佐官</div>
+                    <div class="advisor-card">
+                        <div class="advisor-info">
+                            <div class="advisor-name">
+                                山田次郎
+                                <span class="advisor-rank">徒士</span>
+                            </div>
+                            <div class="abilities-grid">
+                                <div class="ability-box">
+                                    <div class="ability-icon icon-combat">⚔</div>
+                                    <div class="ability-label">個人戦闘</div>
+                                    <div class="ability-value">62</div>
+                                </div>
+                                <div class="ability-box">
+                                    <div class="ability-icon icon-leadership">🛡</div>
+                                    <div class="ability-label">統率</div>
+                                    <div class="ability-value">40</div>
+                                </div>
+                                <div class="ability-box">
+                                    <div class="ability-icon icon-politics">📜</div>
+                                    <div class="ability-label">政務</div>
+                                    <div class="ability-value">75</div>
+                                </div>
+                                <div class="ability-box">
+                                    <div class="ability-icon icon-intrigue">🎯</div>
+                                    <div class="ability-label">知略</div>
+                                    <div class="ability-value">68</div>
+                                </div>
+                            </div>
+                            <div class="comparison-table">
+                                <div class="comparison-title">主人公への補正（差分×40%）</div>
+                                <div class="comparison-grid">
+                                    <div></div>
+                                    <div class="comparison-header">主人公</div>
+                                    <div class="comparison-header">補佐官</div>
+                                    <div class="comparison-header">補正</div>
+                                    <div class="comparison-header">最終値</div>
+                                    
+                                    <div class="comparison-label">政務</div>
+                                    <div class="comparison-value">65</div>
+                                    <div class="comparison-value">75</div>
+                                    <div class="comparison-value bonus-value">+4</div>
+                                    <div class="comparison-value final-value">69</div>
+                                    
+                                    <div class="comparison-label">知略</div>
+                                    <div class="comparison-value">55</div>
+                                    <div class="comparison-value">68</div>
+                                    <div class="comparison-value bonus-value">+5</div>
+                                    <div class="comparison-value final-value">60</div>
+                                </div>
+                                <div style="margin-top: 10px; font-size: 11px; color: #888888;">
+                                    ※ 個人戦闘能力・統率は補正対象外
+                                </div>
+                            </div>
+                        </div>
+                        <button class="dismiss-button">解任する</button>
+                    </div>
+                </div>
+
+                <!-- 補佐官候補リスト -->
+                <div class="candidates-section">
+                    <div class="candidates-title">■ 補佐官候補（全家臣）</div>
+
+                    <!-- 候補テーブル -->
+                    <table class="candidates-table">
+                        <thead>
+                            <tr>
+                                <th>名前</th>
+                                <th>役職</th>
+                                <th><span class="ability-icon icon-combat">⚔</span>個人戦闘</th>
+                                <th><span class="ability-icon icon-leadership">🛡</span>統率</th>
+                                <th><span class="ability-icon icon-politics">📜</span>政務</th>
+                                <th><span class="ability-icon icon-intrigue">🎯</span>知略</th>
+                                <th>補正プレビュー</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 現在の補佐官 -->
+                            <tr class="current-advisor-row">
+                                <td>山田次郎</td>
+                                <td><span class="rank-badge rank-toshi">徒士</span></td>
+                                <td>62</td>
+                                <td>40</td>
+                                <td><strong>75</strong></td>
+                                <td><strong>68</strong></td>
+                                <td>
+                                    <span class="bonus-positive">政務+4</span> / 
+                                    <span class="bonus-positive">知略+5</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn current-btn">現在の補佐官</button>
+                                </td>
+                            </tr>
+
+                            <!-- 候補2 -->
+                            <tr>
+                                <td>伊藤五郎</td>
+                                <td><span class="rank-badge rank-toshi">徒士</span></td>
+                                <td>70</td>
+                                <td>35</td>
+                                <td>58</td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td>
+                                    <span class="bonus-zero">政務+0</span> / 
+                                    <span class="bonus-zero">知略？</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn appoint-btn">任命する</button>
+                                </td>
+                            </tr>
+
+                            <!-- 候補3 -->
+                            <tr>
+                                <td>小林九郎</td>
+                                <td><span class="rank-badge rank-kumigashira">組頭</span></td>
+                                <td>72</td>
+                                <td>65</td>
+                                <td><strong>68</strong></td>
+                                <td><strong>62</strong></td>
+                                <td>
+                                    <span class="bonus-positive">政務+1</span> / 
+                                    <span class="bonus-positive">知略+3</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn appoint-btn">任命する</button>
+                                </td>
+                            </tr>
+
+                            <!-- 候補4 -->
+                            <tr>
+                                <td>佐藤一郎</td>
+                                <td><span class="rank-badge rank-juboku">従僕</span></td>
+                                <td>68</td>
+                                <td>15</td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td>
+                                    <span class="bonus-zero">政務？</span> / 
+                                    <span class="bonus-zero">知略？</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn appoint-btn">任命する</button>
+                                </td>
+                            </tr>
+
+                            <!-- 候補5 -->
+                            <tr>
+                                <td>渡辺六郎</td>
+                                <td><span class="rank-badge rank-toshi">徒士</span></td>
+                                <td>65</td>
+                                <td>28</td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td>
+                                    <span class="bonus-zero">政務？</span> / 
+                                    <span class="bonus-zero">知略？</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn appoint-btn">任命する</button>
+                                </td>
+                            </tr>
+
+                            <!-- 候補6 -->
+                            <tr>
+                                <td>中村七郎</td>
+                                <td><span class="rank-badge rank-toshi">徒士</span></td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td><strong>60</strong></td>
+                                <td>55</td>
+                                <td>
+                                    <span class="bonus-zero">政務+0</span> / 
+                                    <span class="bonus-zero">知略+0</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn appoint-btn">任命する</button>
+                                </td>
+                            </tr>
+
+                            <!-- 候補7 -->
+                            <tr>
+                                <td>加藤八郎</td>
+                                <td><span class="rank-badge rank-toshi">徒士</span></td>
+                                <td>58</td>
+                                <td>32</td>
+                                <td>62</td>
+                                <td>58</td>
+                                <td>
+                                    <span class="bonus-zero">政務+0</span> / 
+                                    <span class="bonus-positive">知略+1</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn appoint-btn">任命する</button>
+                                </td>
+                            </tr>
+
+                            <!-- 候補8 -->
+                            <tr>
+                                <td>鈴木三郎</td>
+                                <td><span class="rank-badge rank-juboku">従僕</span></td>
+                                <td>55</td>
+                                <td>12</td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td><span class="ability-unknown">？</span></td>
+                                <td>
+                                    <span class="bonus-zero">政務？</span> / 
+                                    <span class="bonus-zero">知略？</span>
+                                </td>
+                                <td>
+                                    <button class="table-btn appoint-btn">任命する</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 右サイドバー -->
+            <div class="right-sidebar">
+                <!-- 主人公の能力 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 主人公の能力</div>
+                    <div class="player-stats">
+                        <div class="stat-row">
+                            <span><span class="ability-icon icon-combat">⚔</span>個人戦闘:</span>
+                            <span style="font-weight: bold;">60</span>
+                        </div>
+                        <div class="stat-row">
+                            <span><span class="ability-icon icon-leadership">🛡</span>統率:</span>
+                            <span style="font-weight: bold;">35</span>
+                        </div>
+                        <div class="stat-row">
+                            <span><span class="ability-icon icon-politics">📜</span>政務:</span>
+                            <span style="font-weight: bold;">65</span>
+                        </div>
+                        <div class="stat-row">
+                            <span><span class="ability-icon icon-intrigue">🎯</span>知略:</span>
+                            <span style="font-weight: bold;">55</span>
+                        </div>
+                    </div>
+                    <div class="info-text" style="margin-top: 10px;">
+                        <p style="margin: 0;">※ 補佐官の政務・知略が主人公を上回る場合、差分の40%が補正として加算されます。</p>
+                    </div>
+                </div>
+
+                <!-- 補佐官の効果 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 補佐官の効果</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 10px 0;"><strong>補正対象:</strong></p>
+                        <p style="margin: 0 0 5px 0;">・政務能力</p>
+                        <p style="margin: 0 0 15px 0;">・知略能力</p>
+                        <p style="margin: 0 0 10px 0;"><strong>補正計算式:</strong></p>
+                        <p style="margin: 0 0 15px 0;">補正値 = max(補佐官能力 - 主人公能力, 0) × 0.4</p>
+                        <p style="margin: 0; color: #c73940;">※ 個人戦闘能力・統率は補正対象外</p>
+                    </div>
+                </div>
+
+                <!-- 任命時の効果 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 任命時の効果</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 10px 0;"><strong>補佐官に任命すると:</strong></p>
+                        <p style="margin: 0 0 5px 0;">・全能力が即座に開示</p>
+                        <p style="margin: 0 0 5px 0;">・忠誠 +5</p>
+                        <p style="margin: 0 0 15px 0;">・能力補正が適用</p>
+                        <p style="margin: 0 0 10px 0;"><strong>解任すると:</strong></p>
+                        <p style="margin: 0 0 5px 0;">・忠誠 -3</p>
+                        <p style="margin: 0 0 5px 0;">・能力補正が失われる</p>
+                        <p style="margin: 0;">・能力開示状態は維持</p>
+                    </div>
+                </div>
+
+                <!-- 補佐官の選び方 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 補佐官の選び方</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 10px 0;">補佐官は家臣であれば誰でも任命可能です。</p>
+                        <p style="margin: 0 0 10px 0;"><strong>ポイント:</strong></p>
+                        <p style="margin: 0 0 5px 0;">・政務・知略が高い家臣を選ぶ</p>
+                        <p style="margin: 0 0 5px 0;">・能力が開示済みの家臣が望ましい</p>
+                        <p style="margin: 0 0 5px 0;">・従僕でも任命可能</p>
+                        <p style="margin: 0;">・個人戦闘・統率は補正に影響しない</p>
+                    </div>
+                </div>
+
+                <!-- 注意事項 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">■ 注意事項</div>
+                    <div class="info-text">
+                        <p style="margin: 0 0 10px 0;">・補佐官は1名のみ任命可能</p>
+                        <p style="margin: 0 0 10px 0;">・新しい補佐官を任命すると、現在の補佐官は自動的に解任されます</p>
+                        <p style="margin: 0;">・能力が未開示の家臣を任命すると、任命時に全能力が開示されます</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
