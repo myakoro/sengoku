@@ -1,0 +1,135 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Colors -->
+    <Color x:Key="ColorBgMain">#f8f3e7</Color>
+    <Color x:Key="ColorTextMain">#2b2b2b</Color>
+    <Color x:Key="ColorAccent">#c73940</Color>
+    <Color x:Key="ColorHover">#1d3557</Color>
+    <Color x:Key="ColorBorder">#8b4513</Color>
+    <Color x:Key="ColorPanelBg">#f0e6d2</Color>
+    <Color x:Key="ColorNavBgStart">#e7d8b1</Color>
+    <Color x:Key="ColorNavBgEnd">#d4c5a0</Color>
+
+    <SolidColorBrush x:Key="BrushBgMain" Color="{StaticResource ColorBgMain}"/>
+    <SolidColorBrush x:Key="BrushTextMain" Color="{StaticResource ColorTextMain}"/>
+    <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ColorAccent}"/>
+    <SolidColorBrush x:Key="BrushBorder" Color="{StaticResource ColorBorder}"/>
+    <SolidColorBrush x:Key="BrushPanelBg" Color="{StaticResource ColorPanelBg}"/>
+    <SolidColorBrush x:Key="BrushHover" Color="{StaticResource ColorHover}"/>
+
+    <!-- Gradients -->
+    <LinearGradientBrush x:Key="BrushHeader" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#e7d8b1" Offset="0.0"/>
+        <GradientStop Color="#f0e6d2" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BrushLeftNav" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#e7d8b1" Offset="0.0"/>
+        <GradientStop Color="#d4c5a0" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BrushButtonNormal" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#e7d8b1" Offset="0.0"/>
+        <GradientStop Color="#f0e6d2" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BrushButtonHover" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#1d3557" Offset="0.0"/>
+        <GradientStop Color="#2a4a6b" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- Fonts -->
+    <FontFamily x:Key="FontMain">Yu Mincho, Hiragino Mincho ProN, MS Mincho, serif</FontFamily>
+
+    <!-- Text Styles -->
+    <Style x:Key="TextStyleBase" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontMain}"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushTextMain}"/>
+    </Style>
+
+    <Style x:Key="TextStyleHeader" TargetType="TextBlock" BasedOn="{StaticResource TextStyleBase}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="TextStyleSectionTitle" TargetType="TextBlock" BasedOn="{StaticResource TextStyleBase}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushAccent}"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+
+    <!-- Button Style -->
+    <Style x:Key="ButtonStyleWood" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource BrushButtonNormal}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushTextMain}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontMain}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="20,15"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="8">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushButtonHover}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="2"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Nav Item Style -->
+    <Style x:Key="StyleNavItem" TargetType="RadioButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushTextMain}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontMain}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="15,12"/>
+        <Setter Property="BorderBrush" Value="#d4c5a0"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="#1d3557"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#c73940"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

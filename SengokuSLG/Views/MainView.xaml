@@ -1,0 +1,42 @@
+<UserControl x:Class="SengokuSLG.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <!-- Title -->
+        <Border Background="{StaticResource BrushHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+            <TextBlock Text="今日の行動選択（一日一度）" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+        </Border>
+
+        <!-- Public Actions -->
+        <StackPanel Margin="0,0,0,30">
+            <TextBlock Text="▼公務" Style="{StaticResource TextStyleSectionTitle}"/>
+            <WrapPanel>
+                <Button Content="村A巡察" Command="{Binding ExecuteActionCommand}" CommandParameter="巡察|村A" Style="{StaticResource ButtonStyleWood}"/>
+                <Button Content="村B巡察" Command="{Binding ExecuteActionCommand}" CommandParameter="巡察|村B" Style="{StaticResource ButtonStyleWood}"/>
+                <Button Content="村A治安維持" Command="{Binding ExecuteActionCommand}" CommandParameter="治安維持|村A" Style="{StaticResource ButtonStyleWood}"/>
+                <Button Content="村B治安維持" Command="{Binding ExecuteActionCommand}" CommandParameter="治安維持|村B" Style="{StaticResource ButtonStyleWood}"/>
+                <Button Content="書役仕事&#x0a;執務" Command="{Binding ExecuteActionCommand}" CommandParameter="書役仕事" Style="{StaticResource ButtonStyleWood}"/>
+            </WrapPanel>
+        </StackPanel>
+
+        <!-- Private Actions -->
+        <StackPanel Margin="0,0,0,30">
+            <TextBlock Text="▼私事" Style="{StaticResource TextStyleSectionTitle}"/>
+            <WrapPanel>
+                <Button Content="村A開発" Command="{Binding ExecuteActionCommand}" CommandParameter="開発|村A" Style="{StaticResource ButtonStyleWood}"/>
+                <Button Content="村B開発" Command="{Binding ExecuteActionCommand}" CommandParameter="開発|村B" Style="{StaticResource ButtonStyleWood}"/>
+                <Button Content="村A商人&#x0a;取引" Command="{Binding ExecuteActionCommand}" CommandParameter="取引|村A" Style="{StaticResource ButtonStyleWood}"/>
+                <Button Content="村B商人&#x0a;取引" Command="{Binding ExecuteActionCommand}" CommandParameter="取引|村B" Style="{StaticResource ButtonStyleWood}"/>
+            </WrapPanel>
+        </StackPanel>
+
+        <!-- Notice -->
+        <Border Background="#fff8dc" BorderBrush="#ddd" BorderThickness="1" CornerRadius="5" Padding="10" Margin="20,0,0,0">
+            <TextBlock Text="※行動実行後は翌日まで選択不可" FontStyle="Italic" Foreground="#666"/>
+        </Border>
+    </StackPanel>
+</UserControl>

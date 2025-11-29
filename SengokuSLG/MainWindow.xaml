@@ -1,0 +1,145 @@
+﻿<Window x:Class="SengokuSLG.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:SengokuSLG.ViewModels"
+        xmlns:v="clr-namespace:SengokuSLG.Views"
+        mc:Ignorable="d"
+        Title="戦国立身出世SLG v0.3" Height="720" Width="1280" MinWidth="1280"
+        Background="{StaticResource BrushBgMain}"
+        FontFamily="{StaticResource FontMain}">
+    
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DailyActionViewModel}">
+            <v:MainView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VillageViewModel}">
+            <v:VillageView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MonthlySummaryViewModel}">
+            <v:MonthlySummaryView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Header -->
+            <RowDefinition Height="*"/>    <!-- Content -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource BrushHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,2" Padding="20,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Kamon -->
+                <Border Grid.Column="0" Width="40" Height="40" Background="{StaticResource BrushAccent}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="20" Margin="0,0,20,0">
+                    <TextBlock Text="◎" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                </Border>
+                
+                <!-- Date -->
+                <TextBlock Grid.Column="1" Text="{Binding CurrentDateDisplay}" Style="{StaticResource TextStyleHeader}" VerticalAlignment="Center"/>
+                
+                <!-- Status -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="公務実施:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Border Background="{Binding IsPublicDutyDone, Converter={StaticResource BooleanToBrushConverter}}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="15" Padding="15,5">
+                        <TextBlock Text="{Binding IsPublicDutyDone, Converter={StaticResource BooleanToTextConverter}}" FontWeight="Bold" Foreground="{Binding IsPublicDutyDone, Converter={StaticResource BooleanToForegroundConverter}}"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Body -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/> <!-- Left Nav -->
+                <ColumnDefinition Width="*"/>   <!-- Center -->
+                <ColumnDefinition Width="300"/> <!-- Right Sidebar -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Nav -->
+            <Border Grid.Column="0" Background="{StaticResource BrushLeftNav}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,2,0" Padding="15,20">
+                <StackPanel>
+                    <Border Background="{StaticResource BrushPanelBg}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
+                        <StackPanel>
+                            <RadioButton Content="●日常" Command="{Binding NavigateDailyCommand}" Style="{StaticResource StyleNavItem}" IsChecked="True"/>
+                            <RadioButton Content="村情報" Command="{Binding NavigateVillageCommand}" Style="{StaticResource StyleNavItem}"/>
+                            <RadioButton Content="家臣*" IsEnabled="False" Style="{StaticResource StyleNavItem}"/>
+                            <RadioButton Content="軍事*" IsEnabled="False" Style="{StaticResource StyleNavItem}"/>
+                            <RadioButton Content="調略*" IsEnabled="False" Style="{StaticResource StyleNavItem}"/>
+                            <RadioButton Content="家族*" IsEnabled="False" Style="{StaticResource StyleNavItem}"/>
+                            <RadioButton Content="地方*" IsEnabled="False" Style="{StaticResource StyleNavItem}"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="*未実装" FontSize="12" Foreground="#666" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Center Content -->
+            <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="20"/>
+
+            <!-- Right Sidebar -->
+            <Border Grid.Column="2" Background="{StaticResource BrushLeftNav}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2,0,0,0" Padding="15,20">
+                <StackPanel>
+                    <!-- Player Info -->
+                    <Border Background="{StaticResource BrushPanelBg}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="■所属家 織田家（羽柴家）" Style="{StaticResource TextStyleSectionTitle}"/>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="氏名:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Player.Name}" Foreground="{StaticResource BrushHover}" FontWeight="Bold"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="家格:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Player.Rank}" Foreground="{StaticResource BrushHover}" FontWeight="Bold"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="所持金:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Player.Money, StringFormat='{}{0}貫'}" Foreground="{StaticResource BrushHover}" FontWeight="Bold"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="評価:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Player.Evaluation}" Foreground="{StaticResource BrushHover}" FontWeight="Bold"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="役割:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Player.Role}" Foreground="{StaticResource BrushHover}" FontWeight="Bold"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Logs -->
+                    <Border Background="{StaticResource BrushPanelBg}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="■行動記録" Style="{StaticResource TextStyleSectionTitle}"/>
+                            <Border Background="White" BorderBrush="#ddd" BorderThickness="1" CornerRadius="5" Padding="10" MinHeight="150">
+                                <ItemsControl ItemsSource="{Binding Logs}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="12" Foreground="#666" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
