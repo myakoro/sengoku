@@ -11,6 +11,8 @@
             <c:BooleanToBrushConverter x:Key="BooleanToBrushConverter"/>
             <c:BooleanToTextConverter x:Key="BooleanToTextConverter"/>
             <c:BooleanToForegroundConverter x:Key="BooleanToForegroundConverter"/>
+            <c:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <c:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -17,21 +17,21 @@
         <Border Grid.Column="0" Background="{StaticResource BrushPanelBg}" BorderBrush="#8b4513" BorderThickness="0,0,2,0">
             <StackPanel Margin="15">
                 <TextBlock Text="【主人公】" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
-                <TextBlock Text="{Binding Player.Name}" FontSize="18" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Player.Affiliation}" FontSize="12" Foreground="#555" Margin="0,0,0,20"/>
+                <TextBlock Text="{Binding Service.Player.Name}" FontSize="18" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Service.Player.Affiliation}" FontSize="12" Foreground="#555" Margin="0,0,0,20"/>
 
                 <TextBlock Text="身分: 地侍" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Player.Rank, StringFormat='役職: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Player.Money, StringFormat='所持金: {0}貫'}" FontWeight="Bold" Margin="0,0,0,20"/>
+                <TextBlock Text="{Binding Service.Player.Rank, StringFormat='役職: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Service.Player.Money, StringFormat='所持金: {0}貫'}" FontWeight="Bold" Margin="0,0,0,20"/>
 
                 <Separator Background="#8b4513" Margin="0,0,0,15"/>
 
                 <TextBlock Text="【評価・功績】" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
-                <TextBlock Text="{Binding Player.Evaluation, StringFormat='評価: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Player.AchievementMilitary, StringFormat='軍事功: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Player.AchievementPolitical, StringFormat='政務功: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Player.AchievementSecret, StringFormat='密功: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Player.Favor, StringFormat='貸し: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Service.Player.Evaluation, StringFormat='評価: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Service.Player.AchievementMilitary, StringFormat='軍事功: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Service.Player.AchievementPolitical, StringFormat='政務功: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Service.Player.AchievementSecret, StringFormat='密功: {0}'}" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Service.Player.Favor, StringFormat='貸し: {0}'}" Margin="0,0,0,5"/>
             </StackPanel>
         </Border>
 
@@ -75,7 +75,7 @@
                 
                 <TextBlock Grid.Row="0" Text="【行動履歴】" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
                 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding Logs}">
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Service.Logs}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,0,0,8" FontSize="12"/>

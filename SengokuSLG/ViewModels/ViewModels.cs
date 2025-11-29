@@ -153,11 +153,26 @@ namespace SengokuSLG.ViewModels
         public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask)
         {
             _gameService = service;
+            _gameService.PropertyChanged += OnServicePropertyChanged;
             NavigatePublicDutyCommand = new RelayCommand(onPublicDuty);
             NavigatePrivateTaskCommand = new RelayCommand(onPrivateTask);
         }
 
+        private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GameService.CurrentDate))
+            {
+                OnPropertyChanged(nameof(CurrentDateDisplay));
+            }
+            if (e.PropertyName == nameof(GameService.HasPublicDutyThisMonth))
+            {
+                OnPropertyChanged(nameof(IsPublicDutyDone));
+            }
+        }
+
         public GameService Service => _gameService;
+        public string CurrentDateDisplay => $"{_gameService.CurrentDate.Year}年 {_gameService.CurrentDate.Month}月 {_gameService.CurrentDate.Day}日";
+        public bool IsPublicDutyDone => _gameService.HasPublicDutyThisMonth;
     }
 
     public class PublicDutySelectionViewModel : ViewModelBase
