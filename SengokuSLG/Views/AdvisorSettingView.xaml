@@ -59,7 +59,7 @@
                     
                     <!-- Show when no advisor -->
                     <TextBlock Text="補佐官は任命されていません" FontSize="16" Foreground="#888" 
-                               Visibility="{Binding HasAdvisor, Converter={StaticResource InverseBooleanConverter}}"/>
+                               Visibility="{Binding HasAdvisor, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"/>
                 </StackPanel>
             </Border>
 
@@ -92,7 +92,7 @@
 
                                             <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" VerticalAlignment="Center"/>
                                             
-                                            <Border Grid.Column="1" Background="{StaticResource BrushAccentBlue}" CornerRadius="8" Padding="8,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <Border Grid.Column="1" Background="{Binding Rank, Converter={StaticResource RankToColorConverter}}" CornerRadius="8" Padding="8,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Rank, Converter={StaticResource RankToTextConverter}}" Foreground="White" FontSize="11" FontWeight="Bold"/>
                                             </Border>
 
@@ -101,7 +101,7 @@
                                                 <TextBlock Text="⚔" FontSize="10" Foreground="{StaticResource BrushAccentRed}" HorizontalAlignment="Center"/>
                                                 <TextBlock HorizontalAlignment="Center" FontWeight="Bold">
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                        <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                             <Binding Path="AbilityCombat"/>
                                                             <Binding Path="AbilityDisclosure.CombatDisclosed"/>
                                                         </MultiBinding>
@@ -113,7 +113,7 @@
                                                 <TextBlock Text="🛡" FontSize="10" Foreground="{StaticResource BrushAccentBlue}" HorizontalAlignment="Center"/>
                                                 <TextBlock HorizontalAlignment="Center" FontWeight="Bold">
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                        <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                             <Binding Path="AbilityLeadership"/>
                                                             <Binding Path="AbilityDisclosure.LeadershipDisclosed"/>
                                                         </MultiBinding>
@@ -125,7 +125,7 @@
                                                 <TextBlock Text="📜" FontSize="10" Foreground="{StaticResource BrushAccentGreen}" HorizontalAlignment="Center"/>
                                                 <TextBlock HorizontalAlignment="Center" FontWeight="Bold">
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                        <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                             <Binding Path="AbilityPolitics"/>
                                                             <Binding Path="AbilityDisclosure.PoliticsDisclosed"/>
                                                         </MultiBinding>
@@ -137,7 +137,7 @@
                                                 <TextBlock Text="🎯" FontSize="10" Foreground="{StaticResource BrushBorder}" HorizontalAlignment="Center"/>
                                                 <TextBlock HorizontalAlignment="Center" FontWeight="Bold">
                                                     <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                        <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                             <Binding Path="AbilityIntrigue"/>
                                                             <Binding Path="AbilityDisclosure.IntrigueDisclosed"/>
                                                         </MultiBinding>
@@ -169,8 +169,7 @@
                             <TextBlock Text="■ 補佐官について" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
                             <TextBlock Text="補佐官は家臣であれば誰でも任命可能です。" TextWrapping="Wrap" Margin="0,0,0,10"/>
                             <TextBlock Text="効果:" FontWeight="Bold" Margin="0,0,0,5"/>
-                            <TextBlock Text="・政務・知略能力が補正される" Margin="10,0,0,5"/>
-                            <TextBlock Text="・全能力が即座に開示" Margin="10,0,0,5"/>
+                            <TextBlock Text="・統率・政務・知略能力が補正される" Margin="10,0,0,5"/>
                             <TextBlock Text="・忠誠 +5" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Border>

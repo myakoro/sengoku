@@ -87,10 +87,14 @@
         <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <conv:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <conv:DisclosureConverter x:Key="DisclosureConverter"/>
+        <conv:AbilityDisclosureConverter x:Key="AbilityDisclosureConverter"/>
         <conv:BonusConverter x:Key="BonusConverter"/>
         <conv:FinalValueConverter x:Key="FinalValueConverter"/>
         <conv:RankToTextConverter x:Key="RankToTextConverter"/>
+        <conv:RankToColorConverter x:Key="RankToColorConverter"/>
         <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <conv:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
+        <conv:AdvisorBonusConverter x:Key="AdvisorBonusConverter"/>
 
     </Application.Resources>
 </Application>

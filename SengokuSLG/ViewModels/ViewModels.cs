@@ -170,6 +170,22 @@ namespace SengokuSLG.ViewModels
         {
             _gameService = service;
             _gameService.PropertyChanged += OnServicePropertyChanged;
+            
+            // Subscribe to Player property changes for advisor updates
+            _gameService.Player.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(_gameService.Player.AdvisorId))
+                {
+                    OnPropertyChanged(nameof(HasAdvisor));
+                    OnPropertyChanged(nameof(LeadershipBonus));
+                    OnPropertyChanged(nameof(PoliticsBonus));
+                    OnPropertyChanged(nameof(IntrigueBonus));
+                    OnPropertyChanged(nameof(EffectiveLeadership));
+                    OnPropertyChanged(nameof(EffectivePolitics));
+                    OnPropertyChanged(nameof(EffectiveIntrigue));
+                }
+            };
+            
             NavigatePublicDutyCommand = new RelayCommand(onPublicDuty);
             NavigatePrivateTaskCommand = new RelayCommand(onPrivateTask);
             NavigateVassalListCommand = new RelayCommand(onVassalList);
@@ -197,6 +213,45 @@ namespace SengokuSLG.ViewModels
         public GameService Service => _gameService;
         public string CurrentDateDisplay => _gameService.CurrentDateDisplay;
         public bool IsPublicDutyDone => _gameService.HasPublicDutyThisMonth;
+        
+        public bool HasAdvisor => !string.IsNullOrEmpty(_gameService.Player.AdvisorId);
+        
+        public int LeadershipBonus
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_gameService.Player.AdvisorId)) return 0;
+                var advisor = _gameService.Vassals.FirstOrDefault(v => v.Id == _gameService.Player.AdvisorId);
+                if (advisor == null) return 0;
+                return Math.Max(advisor.AbilityLeadership - _gameService.Player.AbilityLeadership, 0) * 4 / 10;
+            }
+        }
+        
+        public int PoliticsBonus
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_gameService.Player.AdvisorId)) return 0;
+                var advisor = _gameService.Vassals.FirstOrDefault(v => v.Id == _gameService.Player.AdvisorId);
+                if (advisor == null) return 0;
+                return Math.Max(advisor.AbilityPolitics - _gameService.Player.AbilityPolitics, 0) * 4 / 10;
+            }
+        }
+        
+        public int IntrigueBonus
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_gameService.Player.AdvisorId)) return 0;
+                var advisor = _gameService.Vassals.FirstOrDefault(v => v.Id == _gameService.Player.AdvisorId);
+                if (advisor == null) return 0;
+                return Math.Max(advisor.AbilityIntrigue - _gameService.Player.AbilityIntrigue, 0) * 4 / 10;
+            }
+        }
+        
+        public int EffectiveLeadership => _gameService.Player.AbilityLeadership + LeadershipBonus;
+        public int EffectivePolitics => _gameService.Player.AbilityPolitics + PoliticsBonus;
+        public int EffectiveIntrigue => _gameService.Player.AbilityIntrigue + IntrigueBonus;
     }
 
     public class PublicDutySelectionViewModel : ViewModelBase
@@ -376,6 +431,16 @@ namespace SengokuSLG.ViewModels
         {
             _gameService = service;
             BackCommand = new RelayCommand(onBack);
+            
+            // Subscribe to Player property changes
+            _gameService.Player.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(_gameService.Player.AdvisorId))
+                {
+                    OnPropertyChanged(nameof(CurrentAdvisor));
+                    OnPropertyChanged(nameof(HasAdvisor));
+                }
+            };
             
             AppointCommand = new RelayCommandWithParam(id => {
                 _gameService.AppointAdvisor((string)id);

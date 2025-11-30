@@ -116,7 +116,7 @@
                             </Grid>
                             <Grid Margin="0,0,0,8">
                                 <TextBlock Text="役職"/>
-                                <Border Background="{StaticResource BrushAccentBlue}" CornerRadius="10" Padding="10,2" HorizontalAlignment="Right">
+                                <Border Background="{Binding Service.Player.Rank, Converter={StaticResource RankToColorConverter}}" CornerRadius="10" Padding="10,2" HorizontalAlignment="Right">
                                     <TextBlock Text="{Binding Service.Player.Rank, Converter={StaticResource RankToTextConverter}}" Foreground="White" FontSize="12" FontWeight="Bold"/>
                                 </Border>
                             </Grid>
@@ -150,7 +150,10 @@
                                     <StackPanel HorizontalAlignment="Center">
                                         <TextBlock Text="🛡" FontSize="20" Foreground="{StaticResource BrushAccentBlue}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                                         <TextBlock Text="統率" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding Service.Player.AbilityLeadership}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding Service.Player.AbilityLeadership}" FontSize="18" FontWeight="Bold"/>
+                                            <TextBlock Text="+?" FontSize="14" Foreground="{StaticResource BrushAccentGreen}" Margin="3,0,0,0" Visibility="{Binding HasAdvisor, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                                 <!-- Politics -->
@@ -158,7 +161,10 @@
                                     <StackPanel HorizontalAlignment="Center">
                                         <TextBlock Text="📜" FontSize="20" Foreground="{StaticResource BrushAccentGreen}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                                         <TextBlock Text="政務" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding Service.Player.AbilityPolitics}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding Service.Player.AbilityPolitics}" FontSize="18" FontWeight="Bold"/>
+                                            <TextBlock Text="+?" FontSize="14" Foreground="{StaticResource BrushAccentGreen}" Margin="3,0,0,0" Visibility="{Binding HasAdvisor, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                                 <!-- Intrigue -->
@@ -166,7 +172,10 @@
                                     <StackPanel HorizontalAlignment="Center">
                                         <TextBlock Text="🎯" FontSize="20" Foreground="{StaticResource BrushBorder}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                                         <TextBlock Text="知略" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                        <TextBlock Text="{Binding Service.Player.AbilityIntrigue}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding Service.Player.AbilityIntrigue}" FontSize="18" FontWeight="Bold"/>
+                                            <TextBlock Text="+?" FontSize="14" Foreground="{StaticResource BrushAccentGreen}" Margin="3,0,0,0" Visibility="{Binding HasAdvisor, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                             </UniformGrid>

@@ -99,14 +99,14 @@
                                             <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center" FontWeight="Bold"/>
                                             <TextBlock Grid.Column="1" Text="{Binding Age}" VerticalAlignment="Center"/>
                                             
-                                            <Border Grid.Column="2" Background="{StaticResource BrushAccentBlue}" CornerRadius="8" Padding="8,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <Border Grid.Column="2" Background="{Binding Rank, Converter={StaticResource RankToColorConverter}}" CornerRadius="8" Padding="8,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Rank, Converter={StaticResource RankToTextConverter}}" Foreground="White" FontSize="11" FontWeight="Bold"/>
                                             </Border>
 
                                             <!-- Stats with Disclosure Check -->
                                             <TextBlock Grid.Column="3" VerticalAlignment="Center" FontWeight="Bold">
                                                 <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                    <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                         <Binding Path="AbilityCombat"/>
                                                         <Binding Path="AbilityDisclosure.CombatDisclosed"/>
                                                     </MultiBinding>
@@ -114,7 +114,7 @@
                                             </TextBlock>
                                             <TextBlock Grid.Column="4" VerticalAlignment="Center" FontWeight="Bold">
                                                 <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                    <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                         <Binding Path="AbilityLeadership"/>
                                                         <Binding Path="AbilityDisclosure.LeadershipDisclosed"/>
                                                     </MultiBinding>
@@ -122,7 +122,7 @@
                                             </TextBlock>
                                             <TextBlock Grid.Column="5" VerticalAlignment="Center" FontWeight="Bold">
                                                 <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                    <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                         <Binding Path="AbilityPolitics"/>
                                                         <Binding Path="AbilityDisclosure.PoliticsDisclosed"/>
                                                     </MultiBinding>
@@ -130,7 +130,7 @@
                                             </TextBlock>
                                             <TextBlock Grid.Column="6" VerticalAlignment="Center" FontWeight="Bold">
                                                 <TextBlock.Text>
-                                                    <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                    <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                         <Binding Path="AbilityIntrigue"/>
                                                         <Binding Path="AbilityDisclosure.IntrigueDisclosed"/>
                                                     </MultiBinding>

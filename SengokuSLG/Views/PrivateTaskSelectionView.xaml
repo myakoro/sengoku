@@ -112,6 +112,72 @@
                     </StackPanel>
                 </Border>
 
+                <!-- 村B タスク -->
+                <TextBlock Text="■ 村B" FontSize="20" FontWeight="Bold" Foreground="{StaticResource BrushAccentBlue}" Margin="0,20,0,15"/>
+
+                <!-- 知行村の開発（村B） -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteVillageDevelopmentCommand}" CommandParameter="村B"/>
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="知行村の開発（村B）" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="村Bの発展に投資する" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="金-10" FontSize="16" FontWeight="Bold" Foreground="#c73940" Margin="0,0,15,0"/>
+                            <TextBlock Text="開発+2 / 人口+5" FontSize="13" FontWeight="Bold" Foreground="#2b2b2b"/>
+                        </StackPanel>
+                        <TextBlock Text="功績なし" FontSize="12" FontStyle="Italic" Foreground="#888" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 道整備（村B） -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteRoadMaintenanceCommand}" CommandParameter="村B"/>
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="道整備（村B）" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="村B周辺の道を整備する" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="金-5" FontSize="16" FontWeight="Bold" Foreground="#c73940" Margin="0,0,15,0"/>
+                            <TextBlock Text="開発+1" FontSize="13" FontWeight="Bold" Foreground="#2b2b2b"/>
+                        </StackPanel>
+                        <TextBlock Text="功績なし" FontSize="12" FontStyle="Italic" Foreground="#888" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 村商人との取引（村B） -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteVillageMerchantTradeCommand}" CommandParameter="村B"/>
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="村商人との取引（村B）" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="村Bの商人と取引を行う" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="金+10" FontSize="16" FontWeight="Bold" Foreground="#2d7a3e" Margin="0,0,15,0"/>
+                        </StackPanel>
+                        <TextBlock Text="功績なし" FontSize="12" FontStyle="Italic" Foreground="#888" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 名産開発の準備（村B） -->
+                <Border Style="{StaticResource TaskCardStyle}">
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteSpecialtyPreparationCommand}" CommandParameter="村B"/>
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="名産開発の準備（村B）" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="村Bで名産品の開発準備を行う" FontSize="14" Foreground="#555" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="金-15" FontSize="16" FontWeight="Bold" Foreground="#c73940" Margin="0,0,15,0"/>
+                            <TextBlock Text="開発+1" FontSize="13" FontWeight="Bold" Foreground="#2b2b2b"/>
+                        </StackPanel>
+                        <TextBlock Text="功績なし" FontSize="12" FontStyle="Italic" Foreground="#888" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
             </StackPanel>
         </ScrollViewer>
 

@@ -76,6 +76,23 @@ namespace SengokuSLG.Converters
         }
     }
 
+    public class AbilityDisclosureConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Length >= 2 && values[0] is int abilityValue && values[1] is bool isDisclosed)
+            {
+                return isDisclosed ? abilityValue.ToString() : "?";
+            }
+            return "?";
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class BonusConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -116,16 +133,15 @@ namespace SengokuSLG.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int rank)
+            if (value is Models.Rank rank)
             {
                 return rank switch
                 {
-                    1 => "足軽",
-                    2 => "足軽組頭",
-                    3 => "足軽大将",
-                    4 => "侍大将",
-                    5 => "部将",
-                    6 => "家老",
+                    Models.Rank.Juboku => "従僕",
+                    Models.Rank.Toshi => "徒士",
+                    Models.Rank.Kumigashira => "組頭",
+                    Models.Rank.Busho => "部将",
+                    Models.Rank.Jidaisho => "侍大将",
                     _ => "不明"
                 };
             }
@@ -143,6 +159,66 @@ namespace SengokuSLG.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value != null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class RankToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Models.Rank rank)
+            {
+                return rank switch
+                {
+                    Models.Rank.Juboku => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888")),      // 従僕: グレー
+                    Models.Rank.Toshi => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1d3557")),       // 徒士: 紺藍
+                    Models.Rank.Kumigashira => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2d7a3e")), // 組頭: 緑
+                    Models.Rank.Busho => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#c73940")),       // 部将: 赤
+                    Models.Rank.Jidaisho => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8b4513")),    // 侍大将: 茶
+                    _ => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888"))
+                };
+            }
+            return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888"));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class IntToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int intValue)
+            {
+                return intValue > 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AdvisorBonusConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            // Always show "+?" when there is an advisor (value is not null and >= 0)
+            if (value is int)
+            {
+                return "+?";
+            }
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

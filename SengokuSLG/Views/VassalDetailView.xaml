@@ -75,7 +75,7 @@
                                         <TextBlock Text="⚔ 武芸" FontSize="14" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,5"/>
                                         <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center">
                                             <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                     <Binding Path="Vassal.AbilityCombat"/>
                                                     <Binding Path="Vassal.AbilityDisclosure.CombatDisclosed"/>
                                                 </MultiBinding>
@@ -90,7 +90,7 @@
                                         <TextBlock Text="🛡 統率" FontSize="14" Foreground="{StaticResource BrushAccentBlue}" Margin="0,0,0,5"/>
                                         <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center">
                                             <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                     <Binding Path="Vassal.AbilityLeadership"/>
                                                     <Binding Path="Vassal.AbilityDisclosure.LeadershipDisclosed"/>
                                                 </MultiBinding>
@@ -105,7 +105,7 @@
                                         <TextBlock Text="📜 政務" FontSize="14" Foreground="{StaticResource BrushAccentGreen}" Margin="0,0,0,5"/>
                                         <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center">
                                             <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                     <Binding Path="Vassal.AbilityPolitics"/>
                                                     <Binding Path="Vassal.AbilityDisclosure.PoliticsDisclosed"/>
                                                 </MultiBinding>
@@ -120,7 +120,7 @@
                                         <TextBlock Text="🎯 知略" FontSize="14" Foreground="{StaticResource BrushBorder}" Margin="0,0,0,5"/>
                                         <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center">
                                             <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource DisclosureConverter}">
+                                                <MultiBinding Converter="{StaticResource AbilityDisclosureConverter}">
                                                     <Binding Path="Vassal.AbilityIntrigue"/>
                                                     <Binding Path="Vassal.AbilityDisclosure.IntrigueDisclosed"/>
                                                 </MultiBinding>

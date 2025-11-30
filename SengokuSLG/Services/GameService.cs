@@ -77,7 +77,7 @@ namespace SengokuSLG.Services
             VillageA = new Village("村A", 1000, 50, 100, 10);
             VillageB = new Village("村B", 500, 30, 50, 5);
             Lord = new Lord();
-            CurrentDate = new GameDate(1587, 3, 12); 
+            CurrentDate = new GameDate(1587, 3, 23); 
             Logs = new ObservableCollection<string>();
             DailyLogs = new ObservableCollection<DailyLog>();
             Vassals = new ObservableCollection<Vassal>();
@@ -142,13 +142,6 @@ namespace SengokuSLG.Services
             Player.AdvisorId = vassalId;
             vassal.IsAdvisor = true;
             vassal.Loyalty += 5;
-            
-            // Full disclosure
-            vassal.AbilityDisclosure.FullDisclosed = true;
-            vassal.AbilityDisclosure.CombatDisclosed = true;
-            vassal.AbilityDisclosure.LeadershipDisclosed = true;
-            vassal.AbilityDisclosure.PoliticsDisclosed = true;
-            vassal.AbilityDisclosure.IntrigueDisclosed = true;
 
             AddLog("人事", "補佐官任命", vassal.Name, "成功");
         }
@@ -166,16 +159,17 @@ namespace SengokuSLG.Services
             Player.AdvisorId = null;
         }
 
-        private (int politics, int intrigue) CalculateAdvisorBonus()
+        private (int leadership, int politics, int intrigue) CalculateAdvisorBonus()
         {
-            if (string.IsNullOrEmpty(Player.AdvisorId)) return (0, 0);
+            if (string.IsNullOrEmpty(Player.AdvisorId)) return (0, 0, 0);
             var advisor = Vassals.FirstOrDefault(v => v.Id == Player.AdvisorId);
-            if (advisor == null) return (0, 0);
+            if (advisor == null) return (0, 0, 0);
 
+            int leadBonus = Math.Max(advisor.AbilityLeadership - Player.AbilityLeadership, 0) * 4 / 10; // 40%
             int polBonus = Math.Max(advisor.AbilityPolitics - Player.AbilityPolitics, 0) * 4 / 10; // 40%
             int intBonus = Math.Max(advisor.AbilityIntrigue - Player.AbilityIntrigue, 0) * 4 / 10; // 40%
             
-            return (polBonus, intBonus);
+            return (leadBonus, polBonus, intBonus);
         }
 
         // ===== PUBLIC DUTIES (6 types) =====
@@ -183,7 +177,7 @@ namespace SengokuSLG.Services
 
         private bool AttemptPublicDuty(int difficulty)
         {
-            var (polBonus, _) = CalculateAdvisorBonus();
+            var (_, polBonus, __) = CalculateAdvisorBonus();
             int effectivePol = Player.AbilityPolitics + polBonus;
             
             // Simple success check: (Ability / Difficulty) * 100 > Random(0-100)
@@ -202,6 +196,7 @@ namespace SengokuSLG.Services
             {
                 village.Security += 3;
                 Player.AchievementMilitary += 1;
+                Player.Achievement += 1; // Add to cumulative achievement immediately
                 AddLog("公務", "治安維持", village.Name, "成功");
             }
             else
@@ -220,6 +215,7 @@ namespace SengokuSLG.Services
             {
                 village.Security += 1;
                 Player.AchievementMilitary += 1;
+                Player.Achievement += 1; // Add to cumulative achievement immediately
                 AddLog("公務", "巡察", village.Name, "成功");
             }
             else
@@ -237,6 +233,7 @@ namespace SengokuSLG.Services
             if (success)
             {
                 Player.AchievementPolitical += 2;
+                Player.Achievement += 2; // Add to cumulative achievement immediately
                 Player.Favor += 1;
                 AddLog("公務", "検地補助", village.Name, "成功");
             }
@@ -256,6 +253,7 @@ namespace SengokuSLG.Services
             {
                 village.Development += 1;
                 Player.AchievementPolitical += 1;
+                Player.Achievement += 1; // Add to cumulative achievement immediately
                 AddLog("公務", "普請補助", village.Name, "成功");
             }
             else
@@ -273,6 +271,7 @@ namespace SengokuSLG.Services
             if (success)
             {
                 Player.AchievementSecret += 1;
+                Player.Achievement += 1; // Add to cumulative achievement immediately
                 AddLog("公務", "書状作成", "", "成功");
             }
             else
@@ -286,13 +285,14 @@ namespace SengokuSLG.Services
 
         public void ExecuteInformationGathering()
         {
-            var (_, intBonus) = CalculateAdvisorBonus();
+            var (_, __, intBonus) = CalculateAdvisorBonus();
             int effectiveInt = Player.AbilityIntrigue + intBonus;
             double successChance = (double)effectiveInt / 60.0; // Difficulty 60
             
             if (_random.NextDouble() < successChance)
             {
                 Player.AchievementSecret += 2;
+                Player.Achievement += 2; // Add to cumulative achievement immediately
                 Player.Favor += 1;
                 AddLog("公務", "情報収集", "", "成功");
             }
