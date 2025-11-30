@@ -12,8 +12,8 @@ namespace SengokuSLG.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
@@ -22,17 +22,17 @@ namespace SengokuSLG.ViewModels
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
+        private readonly Func<bool>? _canExecute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public RelayCommand(Action execute, Func<bool>? canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
         }
 
-        public bool CanExecute(object parameter) => _canExecute == null || _canExecute();
-        public void Execute(object parameter) => _execute();
-        public event EventHandler CanExecuteChanged
+        public bool CanExecute(object? parameter) => _canExecute == null || _canExecute();
+        public void Execute(object? parameter) => _execute();
+        public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
@@ -41,11 +41,11 @@ namespace SengokuSLG.ViewModels
 
     public class RelayCommandWithParam : ICommand
     {
-        private readonly Action<object> _execute;
-        public RelayCommandWithParam(Action<object> execute) { _execute = execute; }
-        public bool CanExecute(object parameter) => true;
-        public void Execute(object parameter) => _execute(parameter);
-        public event EventHandler CanExecuteChanged
+        private readonly Action<object?> _execute;
+        public RelayCommandWithParam(Action<object?> execute) { _execute = execute; }
+        public bool CanExecute(object? parameter) => true;
+        public void Execute(object? parameter) => _execute(parameter);
+        public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }

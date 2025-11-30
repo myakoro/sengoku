@@ -33,8 +33,8 @@ namespace SengokuSLG.Services
         public ObservableCollection<Vassal> Vassals { get; private set; }
         public bool HasSpecialtyPreparationFlag { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null) => 
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? name = null) => 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         public GameDate CurrentDate
