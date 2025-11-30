@@ -39,7 +39,7 @@ namespace SengokuSLG.Models
         private bool _isAdvisor;
         
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public int Age { get; set; }
         
         public Rank Rank
@@ -110,7 +110,7 @@ namespace SengokuSLG.Models
         private int _abilityLeadership;
         private int _abilityPolitics;
         private int _abilityIntrigue;
-        private string _advisorId;
+        private string _advisorId = "";
         private int _jubokuSlots = 3;
         private int _achievement; // Cumulative achievement for promotion
         
@@ -297,11 +297,11 @@ namespace SengokuSLG.Models
 
     public class DailyLog
     {
-        public GameDate Date { get; set; }
-        public string ActionType { get; set; } // "公務" or "私事" or "戦闘"
-        public string TaskName { get; set; }
-        public string Target { get; set; } // "村A", "村B", or ""
-        public string Result { get; set; }
+        public GameDate Date { get; set; } = new GameDate(1582, 1, 1);
+        public string ActionType { get; set; } = ""; // "公務" or "私事" or "戦闘"
+        public string TaskName { get; set; } = "";
+        public string Target { get; set; } = ""; // "村A", "村B", or ""
+        public string Result { get; set; } = "";
         public List<string> ParticipatingVassalIds { get; set; } = new List<string>();
     }
 
