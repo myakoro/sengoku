@@ -4,85 +4,216 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SengokuSLG.Views"
+             xmlns:conv="clr-namespace:SengokuSLG.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="720" d:DesignWidth="1080">
+    
+    <Grid Margin="20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="320"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left Sidebar: Player Info -->
-        <Border Grid.Column="0" Background="{StaticResource BrushPanelBg}" BorderBrush="#8b4513" BorderThickness="0,0,2,0">
-            <StackPanel Margin="15">
-                <TextBlock Text="【主人公】" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
-                <TextBlock Text="{Binding Service.Player.Name}" FontSize="18" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Service.Player.Affiliation}" FontSize="12" Foreground="#555" Margin="0,0,0,20"/>
-
-                <TextBlock Text="身分: 地侍" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Service.Player.Rank, StringFormat='役職: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Service.Player.Money, StringFormat='所持金: {0}貫'}" FontWeight="Bold" Margin="0,0,0,20"/>
-
-                <Separator Background="#8b4513" Margin="0,0,0,15"/>
-
-                <TextBlock Text="【評価・功績】" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
-                <TextBlock Text="{Binding Service.Player.Evaluation, StringFormat='評価: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Service.Player.AchievementMilitary, StringFormat='軍事功: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Service.Player.AchievementPolitical, StringFormat='政務功: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Service.Player.AchievementSecret, StringFormat='密功: {0}'}" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Service.Player.Favor, StringFormat='貸し: {0}'}" Margin="0,0,0,5"/>
-            </StackPanel>
-        </Border>
-
-        <!-- Center: Action Area -->
-        <Grid Grid.Column="1" Margin="20">
+        <!-- Center Area -->
+        <Grid Grid.Column="0" Margin="0,0,20,0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Date Display -->
-            <Border Grid.Row="0" Background="{StaticResource BrushHeader}" Padding="15" CornerRadius="8" Margin="0,0,0,20">
-                <TextBlock Text="{Binding CurrentDateDisplay}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#2b2b2b"/>
-            </Border>
+            <!-- Section Title -->
+            <TextBlock Grid.Row="0" Text="今日の行動を選ぶ" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"
+                       Foreground="{StaticResource BrushTextMain}"
+                       TextDecorations="Underline"/>
 
             <!-- Action Buttons -->
-            <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="本日の行動を選択してください" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+            <UniformGrid Grid.Row="1" Columns="2" Rows="2" Margin="0,0,0,30">
+                <Button Command="{Binding NavigatePublicDutyCommand}" Style="{StaticResource StyleActionButton}" Margin="0,0,10,10" Height="100"
+                        IsEnabled="{Binding IsPublicDutyDone, Converter={StaticResource InverseBooleanConverter}}">
+                    <StackPanel>
+                        <TextBlock Text="公務を行う" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="主家のために働き、功績を積む" FontSize="12" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
-                <Button Command="{Binding NavigatePublicDutyCommand}" Content="公務を行う" 
-                        Style="{StaticResource StyleActionButton}" Width="250" Height="60" Margin="0,0,0,20"
-                        IsEnabled="{Binding IsPublicDutyDone, Converter={StaticResource InverseBooleanConverter}}"/>
-                
-                <Button Command="{Binding NavigatePrivateTaskCommand}" Content="私事を行う" 
-                        Style="{StaticResource StyleActionButton}" Width="250" Height="60"/>
-                
-                <TextBlock Text="※公務は月1回必須です" FontSize="12" Foreground="#c73940" HorizontalAlignment="Center" Margin="0,10,0,0"
-                           Visibility="{Binding IsPublicDutyDone, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"/>
-                <TextBlock Text="今月の公務は完了しています" FontSize="12" Foreground="#2d7a3e" HorizontalAlignment="Center" Margin="0,10,0,0"
-                           Visibility="{Binding IsPublicDutyDone, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            </StackPanel>
+                <Button Command="{Binding NavigatePrivateTaskCommand}" Style="{StaticResource StyleActionButton}" Margin="10,0,0,10" Height="100">
+                    <StackPanel>
+                        <TextBlock Text="私事を行う" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="自家の発展のために行動する" FontSize="12" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding NavigateVassalListCommand}" Style="{StaticResource StyleActionButton}" Margin="0,10,10,0" Height="100">
+                    <StackPanel>
+                        <TextBlock Text="家臣一覧" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="家臣の管理・昇格を行う" FontSize="12" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding NavigateAdvisorSettingCommand}" Style="{StaticResource StyleActionButton}" Margin="10,10,0,0" Height="100">
+                    <StackPanel>
+                        <TextBlock Text="補佐官設定" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                        <TextBlock Text="補佐官の任命・変更を行う" FontSize="12" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </UniformGrid>
+
+            <!-- Territory Panel -->
+            <Border Grid.Row="2" Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="12" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" Text="■ 知行の概況" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                    
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Service.Villages}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="2"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="5">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+                                        <Grid Margin="0,0,0,5">
+                                            <TextBlock Text="人口" HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding Population, StringFormat='{}{0}人'}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                        <Grid Margin="0,0,0,5">
+                                            <TextBlock Text="治安" HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding Security}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                        <Grid>
+                                            <TextBlock Text="開発" HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding Development}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
         </Grid>
 
-        <!-- Right Sidebar: Log -->
-        <Border Grid.Column="2" Background="{StaticResource BrushPanelBg}" BorderBrush="#8b4513" BorderThickness="2,0,0,0">
-            <Grid Margin="15">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                
-                <TextBlock Grid.Row="0" Text="【行動履歴】" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
-                
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding Service.Logs}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,0,0,8" FontSize="12"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
+        <!-- Right Sidebar -->
+        <Border Grid.Column="1" Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2,0,0,0" Padding="20">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <!-- Player Info -->
+                    <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Service.Player.Affiliation, StringFormat='■ 所属家 {0}'}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
+                            
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="氏名"/>
+                                <TextBlock Text="{Binding Service.Player.Name}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="役職"/>
+                                <Border Background="{StaticResource BrushAccentBlue}" CornerRadius="10" Padding="10,2" HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding Service.Player.Rank, Converter={StaticResource RankToTextConverter}}" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                                </Border>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="家格"/>
+                                <TextBlock Text="{Binding Service.Player.HouseGrade}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock Text="所持金"/>
+                                <TextBlock Text="{Binding Service.Player.Money, StringFormat='{}{0}貫'}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Abilities -->
+                    <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="■ 能力（補佐官補正込み）" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
+                            
+                            <UniformGrid Columns="2" Rows="2">
+                                <!-- Combat -->
+                                <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,5,5">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="⚔" FontSize="20" Foreground="{StaticResource BrushAccentRed}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="個人戦闘" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding Service.Player.AbilityCombat}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <!-- Leadership -->
+                                <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="5,0,0,5">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="🛡" FontSize="20" Foreground="{StaticResource BrushAccentBlue}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="統率" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding Service.Player.AbilityLeadership}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <!-- Politics -->
+                                <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,5,5,0">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="📜" FontSize="20" Foreground="{StaticResource BrushAccentGreen}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="政務" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding Service.Player.AbilityPolitics}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <!-- Intrigue -->
+                                <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="5,5,0,0">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="🎯" FontSize="20" Foreground="{StaticResource BrushBorder}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="知略" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                        <TextBlock Text="{Binding Service.Player.AbilityIntrigue}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Achievement -->
+                    <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="■ 功績" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
+                            <Grid>
+                                <TextBlock Text="累積功績"/>
+                                <TextBlock Text="{Binding Service.Player.Achievement}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Juboku Slots -->
+                    <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="■ 従僕枠（護衛小隊）" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="現在 / 上限"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding Service.Player.JubokuIds.Count}" FontWeight="Bold"/>
+                                    <TextBlock Text=" / "/>
+                                    <TextBlock Text="{Binding Service.Player.JubokuSlots}" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Action Log -->
+                    <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="■ 行動ログ" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
+                            <ItemsControl ItemsSource="{Binding Service.Logs}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,0,0,8" FontSize="12" LineHeight="16"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
         </Border>
     </Grid>
 </UserControl>

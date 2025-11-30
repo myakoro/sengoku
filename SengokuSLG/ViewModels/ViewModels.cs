@@ -5,6 +5,8 @@ using System.Windows.Input;
 using SengokuSLG.Models;
 using SengokuSLG.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Data;
 
 namespace SengokuSLG.ViewModels
 {
@@ -63,39 +65,56 @@ namespace SengokuSLG.ViewModels
             _gameService.OnMonthlyProcessed += OnMonthlyProcessed;
 
             // Initial View
-            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask);
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting);
             
-            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask));
+            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting));
             NavigateVillageCommand = new RelayCommand(() => CurrentView = new VillageViewModel(_gameService));
+            NavigateVassalListCommand = new RelayCommand(NavigateToVassalList);
         }
 
         private void NavigateToPublicDuty()
         {
             CurrentView = new PublicDutySelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask),
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
                 OnActionExecuted);
         }
 
         private void NavigateToPrivateTask()
         {
             CurrentView = new PrivateTaskSelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask),
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
                 OnActionExecuted);
+        }
+
+        private void NavigateToVassalList()
+        {
+            CurrentView = new VassalListViewModel(_gameService, 
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
+                NavigateToVassalDetail);
+        }
+
+        private void NavigateToVassalDetail(string vassalId)
+        {
+            CurrentView = new VassalDetailViewModel(_gameService, vassalId,
+                () => CurrentView = new VassalListViewModel(_gameService, 
+                    () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
+                    NavigateToVassalDetail));
+        }
+
+        private void NavigateToAdvisorSetting()
+        {
+            CurrentView = new AdvisorSettingViewModel(_gameService,
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting));
         }
 
         private void OnActionExecuted(string taskName, string target)
         {
-            var log = _gameService.DailyLogs[0]; // The latest log
-            
-            // Show result dialog, and advance day when closed
+            var log = _gameService.DailyLogs[0];
             DialogViewModel = new ActionResultViewModel(log, () => {
                 DialogViewModel = null;
-                // Advance day after closing result dialog (per spec: タスク実行 → 結果表示 → 日付+1)
                 _gameService.AdvanceDay();
             });
-            
-            // Return to Main Screen behind the dialog
-            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask);
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting);
         }
 
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -113,8 +132,7 @@ namespace SengokuSLG.ViewModels
 
         private void OnMonthlyProcessed(object sender, MonthlySummary summary)
         {
-            // Switch to Monthly Summary
-            CurrentView = new MonthlySummaryViewModel(_gameService, summary, () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask));
+            CurrentView = new MonthlySummaryViewModel(_gameService, summary, () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting));
         }
 
         public Player Player => _gameService.Player;
@@ -136,6 +154,7 @@ namespace SengokuSLG.ViewModels
 
         public ICommand NavigateDailyCommand { get; }
         public ICommand NavigateVillageCommand { get; }
+        public ICommand NavigateVassalListCommand { get; }
     }
 
     public class MainScreenViewModel : ViewModelBase
@@ -143,13 +162,23 @@ namespace SengokuSLG.ViewModels
         private readonly GameService _gameService;
         public ICommand NavigatePublicDutyCommand { get; }
         public ICommand NavigatePrivateTaskCommand { get; }
+        public ICommand NavigateVassalListCommand { get; }
+        public ICommand NavigateAdvisorSettingCommand { get; }
+        public ICommand ExecuteBattleCommand { get; }
 
-        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask)
+        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask, Action onVassalList, Action onAdvisorSetting)
         {
             _gameService = service;
             _gameService.PropertyChanged += OnServicePropertyChanged;
             NavigatePublicDutyCommand = new RelayCommand(onPublicDuty);
             NavigatePrivateTaskCommand = new RelayCommand(onPrivateTask);
+            NavigateVassalListCommand = new RelayCommand(onVassalList);
+            NavigateAdvisorSettingCommand = new RelayCommand(onAdvisorSetting);
+            
+            // Debug/Simulate Battle Command
+            ExecuteBattleCommand = new RelayCommand(() => {
+                _gameService.ExecuteBattle();
+            });
         }
 
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -187,7 +216,7 @@ namespace SengokuSLG.ViewModels
             BackCommand = new RelayCommand(onBack);
 
             ExecuteSecurityMaintenanceCommand = new RelayCommandWithParam(p => {
-                var target = p as string; // "村A" or "村B"
+                var target = p as string;
                 var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
                 _gameService.ExecuteSecurityMaintenance(village);
                 onActionExecuted("治安維持", target);
@@ -268,6 +297,111 @@ namespace SengokuSLG.ViewModels
                 onActionExecuted("名産開発の準備", target);
             });
         }
+    }
+
+    public class VassalListViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        private ICollectionView _vassalView;
+
+        public ICollectionView VassalView => _vassalView;
+        public ICommand BackCommand { get; }
+        public ICommand DetailCommand { get; }
+        public ICommand FilterCommand { get; }
+        public ICommand PromoteToToshiCommand { get; }
+        public ICommand PromoteToKumigashiraCommand { get; }
+
+        public VassalListViewModel(GameService service, Action onBack, Action<string> onDetail)
+        {
+            _gameService = service;
+            _vassalView = CollectionViewSource.GetDefaultView(_gameService.Vassals);
+            
+            BackCommand = new RelayCommand(onBack);
+            DetailCommand = new RelayCommandWithParam(id => onDetail((string)id));
+            
+            FilterCommand = new RelayCommandWithParam(param => {
+                string filter = param as string;
+                _vassalView.Filter = v => {
+                    if (string.IsNullOrEmpty(filter) || filter == "All") return true;
+                    var vassal = v as Vassal;
+                    if (vassal == null) return false;
+                    
+                    if (filter == "Juboku") return vassal.Rank == Rank.Juboku;
+                    if (filter == "Toshi") return vassal.Rank == Rank.Toshi;
+                    if (filter == "Kumigashira") return vassal.Rank == Rank.Kumigashira;
+                    if (filter == "Busho") return vassal.Rank == Rank.Busho;
+                    return true;
+                };
+                _vassalView.Refresh();
+            });
+
+            PromoteToToshiCommand = new RelayCommandWithParam(id => {
+                _gameService.PromoteVassal((string)id, Rank.Toshi);
+            });
+            
+            PromoteToKumigashiraCommand = new RelayCommandWithParam(id => {
+                _gameService.PromoteVassal((string)id, Rank.Kumigashira);
+            });
+        }
+    }
+
+    public class VassalDetailViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public Vassal Vassal { get; }
+        public ICommand BackCommand { get; }
+        public ICommand AppointAdvisorCommand { get; }
+
+        public VassalDetailViewModel(GameService service, string vassalId, Action onBack)
+        {
+            _gameService = service;
+            Vassal = _gameService.Vassals.FirstOrDefault(v => v.Id == vassalId);
+            BackCommand = new RelayCommand(onBack);
+            
+            AppointAdvisorCommand = new RelayCommand(() => {
+                _gameService.AppointAdvisor(vassalId);
+            });
+        }
+    }
+
+    public class AdvisorSettingViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ObservableCollection<Vassal> Vassals => _gameService.Vassals;
+        public ICommand BackCommand { get; }
+        public ICommand AppointCommand { get; }
+        public ICommand DismissCommand { get; }
+
+        public AdvisorSettingViewModel(GameService service, Action onBack)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+            
+            AppointCommand = new RelayCommandWithParam(id => {
+                _gameService.AppointAdvisor((string)id);
+                OnPropertyChanged(nameof(CurrentAdvisor));
+                OnPropertyChanged(nameof(HasAdvisor));
+                OnPropertyChanged(nameof(Vassals));
+            });
+            
+            DismissCommand = new RelayCommand(() => {
+                _gameService.DismissAdvisor();
+                OnPropertyChanged(nameof(CurrentAdvisor));
+                OnPropertyChanged(nameof(HasAdvisor));
+                OnPropertyChanged(nameof(Vassals));
+            });
+        }
+        
+        public Vassal CurrentAdvisor
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_gameService.Player.AdvisorId)) return null;
+                return _gameService.Vassals.FirstOrDefault(val => val.Id == _gameService.Player.AdvisorId);
+            }
+        }
+        
+        public bool HasAdvisor => !string.IsNullOrEmpty(_gameService.Player.AdvisorId);
     }
 
     public class ActionResultViewModel : ViewModelBase

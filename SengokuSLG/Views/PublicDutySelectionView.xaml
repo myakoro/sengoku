@@ -50,7 +50,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title -->
-        <Border Grid.Row="0" Background="{StaticResource BrushHeader}" Padding="15" BorderBrush="#8b4513" BorderThickness="0,0,0,2">
+        <Border Grid.Row="0" Background="{StaticResource BrushBgHeader}" Padding="15" BorderBrush="#8b4513" BorderThickness="0,0,0,2">
             <TextBlock Text="公務を選ぶ" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#2b2b2b"/>
         </Border>
 

@@ -6,13 +6,11 @@
         xmlns:vm="clr-namespace:SengokuSLG.ViewModels"
         xmlns:v="clr-namespace:SengokuSLG.Views"
         mc:Ignorable="d"
-        Title="戦国立身出世SLG v0.3" Height="720" Width="1280" MinWidth="1280"
+        Title="戦国立身出世SLG v0.55" Height="720" Width="1280" MinWidth="1280"
         Background="{StaticResource BrushBgMain}"
         FontFamily="{StaticResource FontMain}">
     
-    <Window.DataContext>
-        <vm:MainViewModel/>
-    </Window.DataContext>
+    <!-- DataContext will be set in code-behind -->
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:MainScreenViewModel}">
@@ -33,31 +31,62 @@
         <DataTemplate DataType="{x:Type vm:ActionResultViewModel}">
             <v:ActionResultDialog/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VassalListViewModel}">
+            <v:VassalListView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:VassalDetailViewModel}">
+            <v:VassalDetailView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AdvisorSettingViewModel}">
+            <v:AdvisorSettingView/>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/> <!-- Header -->
+            <RowDefinition Height="*"/>    <!-- Main Content -->
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="{StaticResource BrushHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,2" Padding="15">
+        <Border Grid.Row="0" Background="{StaticResource BrushBgHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,2" Padding="15,10">
             <Grid>
-                <TextBlock Text="戦国立身出世SLG v0.4" FontSize="20" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" VerticalAlignment="Center"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Command="{Binding NavigateDailyCommand}" Content="日常" Style="{StaticResource StyleNavButton}" Margin="5,0"/>
-                    <Button Command="{Binding NavigateVillageCommand}" Content="村情報" Style="{StaticResource StyleNavButton}" Margin="5,0"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="40" Height="40" Background="{StaticResource BrushAccentRed}" CornerRadius="20" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" Margin="0,0,20,0">
+                        <TextBlock Text="家紋" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+                    </Border>
+                    <TextBlock Text="{Binding CurrentDateDisplay}" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Main Content -->
-        <ContentControl Grid.Row="1" Content="{Binding CurrentView}"/>
+        <!-- Main Content Area (Left Nav + Center Content) -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/> <!-- Left Nav -->
+                <ColumnDefinition Width="*"/>   <!-- Dynamic Content -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Navigation -->
+            <Border Grid.Column="0" Background="{StaticResource BrushBgHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,2,0" Padding="15,20">
+                <StackPanel>
+                    <Button Command="{Binding NavigateDailyCommand}" Content="日常" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    <Button Command="{Binding NavigateVillageCommand}" Content="村情報" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    <Button Command="{Binding NavigateVassalListCommand}" Content="家臣団" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    
+                    <!-- Disabled/Future Features -->
+                    <Button Content="軍事（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    <Button Content="調略（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    <Button Content="家族（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    <Button Content="地方（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Dynamic Content (MainView, AdvisorSettingView, etc.) -->
+            <ContentControl Grid.Column="1" Content="{Binding CurrentView}"/>
+        </Grid>
         
         <!-- Dialog Overlay -->
         <ContentControl Grid.Row="0" Grid.RowSpan="2" Content="{Binding DialogViewModel}" Panel.ZIndex="100"/>
     </Grid>
 </Window>
-
-
