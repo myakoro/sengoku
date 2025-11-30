@@ -40,6 +40,9 @@
         <DataTemplate DataType="{x:Type vm:AdvisorSettingViewModel}">
             <v:AdvisorSettingView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BattleLogViewModel}">
+            <v:BattleLogView/>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>

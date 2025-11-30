@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戦場ログ - 戦国立身出世SLG v0.6</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Yu Gothic", "Meiryo", sans-serif;
+            background: linear-gradient(to bottom, #f8f3e7 0%, #ede4d3 100%);
+            color: #2b2b2b;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #f8f3e7;
+            border: 3px solid #5d4037;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(to bottom, #8b6f47 0%, #6d5638 100%);
+            color: #f8f3e7;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #5d4037;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .header .date {
+            font-size: 14px;
+        }
+        
+        .main-content {
+            display: flex;
+            height: 700px;
+        }
+        
+        .command-panel {
+            width: 30%;
+            background: #faf6ed;
+            border-right: 3px solid #5d4037;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .command-panel h2 {
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #5d4037;
+            border-bottom: 2px solid #8b6f47;
+            padding-bottom: 10px;
+        }
+        
+        .command-button {
+            background: linear-gradient(to bottom, #f8f3e7 0%, #ede4d3 100%);
+            border: 2px solid #8b6f47;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2b2b2b;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .command-button:hover {
+            background: linear-gradient(to bottom, #ede4d3 0%, #ddd5c3 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .command-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .log-panel {
+            width: 70%;
+            background: #fdfbf7;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f3e7;
+            border-left: 4px solid #8b6f47;
+            border-radius: 4px;
+        }
+        
+        .turn-header {
+            font-size: 16px;
+            font-weight: bold;
+            color: #5d4037;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #d4c4a8;
+        }
+        
+        .log-line {
+            padding: 5px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .log-line.success {
+            color: #2d5a8c;
+        }
+        
+        .log-line.warning {
+            color: #d4a017;
+        }
+        
+        .log-line.danger {
+            color: #c73940;
+        }
+        
+        .log-line.normal {
+            color: #2b2b2b;
+        }
+        
+        .indent {
+            padding-left: 20px;
+        }
+        
+        .footer-button {
+            background: linear-gradient(to bottom, #8b6f47 0%, #6d5638 100%);
+            border: 2px solid #5d4037;
+            border-radius: 6px;
+            padding: 15px 40px;
+            margin: 20px auto;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #f8f3e7;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .footer-button:hover {
+            background: linear-gradient(to bottom, #6d5638 0%, #5d4037 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>【戦場ログ】</h1>
+            <div class="date">天正15年 3月23日</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="command-panel">
+                <h2>戦術命令</h2>
+                <button class="command-button">前進</button>
+                <button class="command-button">維持</button>
+                <button class="command-button">後退</button>
+            </div>
+            
+            <div class="log-panel">
+                <div class="log-entry">
+                    <div class="turn-header">ターン1</div>
+                    <div class="log-line normal">主人公小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣A小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣B小隊：維持</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">敵小隊A：前進</div>
+                    <div class="log-line normal">敵小隊B：前進</div>
+                </div>
+                
+                <div class="log-entry">
+                    <div class="turn-header">ターン2</div>
+                    <div class="log-line normal">主人公小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣A小隊：前進</div>
+                    <div class="log-line warning indent">命令ズレ（維持）</div>
+                    <div class="log-line normal">家臣B小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">接敵発生</div>
+                    <div class="log-line danger indent">味方損害：3名</div>
+                    <div class="log-line danger indent">敵損害：5名</div>
+                </div>
+                
+                <div class="log-entry">
+                    <div class="turn-header">ターン3</div>
+                    <div class="log-line normal">主人公小隊：維持</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣A小隊：維持</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣B小隊：維持</div>
+                    <div class="log-line warning indent">混乱発生</div>
+                    <div class="log-line normal">敵小隊A：前進</div>
+                    <div class="log-line normal">接敵発生</div>
+                    <div class="log-line danger indent">味方損害：2名</div>
+                    <div class="log-line danger indent">敵損害：4名</div>
+                </div>
+                
+                <div class="log-entry">
+                    <div class="turn-header">ターン4</div>
+                    <div class="log-line normal">主人公小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣A小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣B小隊：後退</div>
+                    <div class="log-line warning indent">命令ズレ（維持）</div>
+                    <div class="log-line normal">敵小隊B：後退</div>
+                    <div class="log-line normal">接敵発生</div>
+                    <div class="log-line danger indent">味方損害：4名</div>
+                    <div class="log-line danger indent">敵損害：7名</div>
+                </div>
+                
+                <div class="log-entry">
+                    <div class="turn-header">ターン5</div>
+                    <div class="log-line normal">主人公小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣A小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">家臣B小隊：前進</div>
+                    <div class="log-line success indent">命令遵守 ✓</div>
+                    <div class="log-line normal">敵小隊C：離脱</div>
+                    <div class="log-line normal">敵小隊A：後退</div>
+                    <div class="log-line danger indent">味方損害：1名</div>
+                    <div class="log-line danger indent">敵損害：3名</div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="footer-button">戦闘終了</button>
+    </div>
+</body>
+</html>

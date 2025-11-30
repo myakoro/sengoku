@@ -1,0 +1,383 @@
+/* ===================================
+   戦国立身出世SLG v0.7 共通スタイル
+   =================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Yu Mincho", "游明朝", "YuMincho", "Hiragino Mincho ProN", "HG明朝E", serif;
+    background: linear-gradient(to bottom, #f8f3e7 0%, #ede4d3 100%);
+    color: #2b2b2b;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* ===================================
+   コンテナ
+   =================================== */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #f8f3e7;
+    border: 3px solid #5d4037;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* ===================================
+   ヘッダー
+   =================================== */
+
+.header {
+    background: linear-gradient(to bottom, #8b6f47 0%, #6d5638 100%);
+    color: #f8f3e7;
+    padding: 20px 30px;
+    border-bottom: 2px solid #5d4037;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.header .subtitle {
+    font-size: 16px;
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+/* ===================================
+   セクションタイトル
+   =================================== */
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #c73940;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #8b6f47;
+}
+
+/* ===================================
+   パネル
+   =================================== */
+
+.panel {
+    background: #fdfbf7;
+    border: 2px solid #d4c4a8;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.panel-header {
+    background: #faf6ed;
+    border: 2px solid #d4c4a8;
+    border-radius: 6px 6px 0 0;
+    padding: 15px 20px;
+    border-bottom: none;
+}
+
+.panel-body {
+    background: #fdfbf7;
+    border: 2px solid #d4c4a8;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    padding: 20px;
+}
+
+/* ===================================
+   カード
+   =================================== */
+
+.card {
+    background: #fdfbf7;
+    border: 2px solid #8b6f47;
+    border-radius: 6px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #5d4037;
+    margin-bottom: 10px;
+}
+
+.card-content {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ===================================
+   プログレスバー
+   =================================== */
+
+.progress-container {
+    width: 100%;
+    height: 24px;
+    background: #ddd5c3;
+    border: 2px solid #8b6f47;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, #8b6f47 0%, #a0826d 100%);
+    transition: width 0.3s ease;
+}
+
+.progress-bar.high {
+    background: linear-gradient(to right, #2d7a3e 0%, #4caf50 100%);
+}
+
+.progress-bar.medium {
+    background: linear-gradient(to right, #d4a017 0%, #f4c430 100%);
+}
+
+.progress-bar.low {
+    background: linear-gradient(to right, #c73940 0%, #e74c3c 100%);
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+    color: #2b2b2b;
+    text-shadow: 0 0 3px #fff;
+}
+
+/* ===================================
+   テーブル
+   =================================== */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fdfbf7;
+}
+
+.table th {
+    background: #8b6f47;
+    color: #f8f3e7;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    border: 1px solid #5d4037;
+}
+
+.table td {
+    padding: 10px 12px;
+    border: 1px solid #d4c4a8;
+}
+
+.table tr:nth-child(even) {
+    background: #faf6ed;
+}
+
+.table tr:hover {
+    background: #f0e9d8;
+}
+
+/* ===================================
+   リスト
+   =================================== */
+
+.list {
+    list-style: none;
+}
+
+.list-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #d4c4a8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-item:hover {
+    background: #faf6ed;
+}
+
+/* ===================================
+   ボタン
+   =================================== */
+
+.button {
+    background: linear-gradient(to bottom, #8b6f47 0%, #6d5638 100%);
+    border: 2px solid #5d4037;
+    border-radius: 6px;
+    padding: 12px 30px;
+    color: #f8f3e7;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button:hover {
+    background: linear-gradient(to bottom, #6d5638 0%, #5d4037 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+/* ===================================
+   バッジ
+   =================================== */
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-acquaintance {
+    background: #ddd5c3;
+    color: #5d4037;
+}
+
+.badge-regular {
+    background: #d4a017;
+    color: #fff;
+}
+
+.badge-vip {
+    background: #c73940;
+    color: #fff;
+}
+
+.badge-village {
+    background: #8b6f47;
+    color: #f8f3e7;
+}
+
+.badge-town {
+    background: #2d5a8c;
+    color: #f8f3e7;
+}
+
+/* ===================================
+   グリッドレイアウト
+   =================================== */
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+/* ===================================
+   ユーティリティ
+   =================================== */
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-large {
+    font-size: 20px;
+}
+
+.text-small {
+    font-size: 12px;
+}
+
+.text-red {
+    color: #c73940;
+}
+
+.text-green {
+    color: #2d7a3e;
+}
+
+.text-blue {
+    color: #2d5a8c;
+}
+
+.text-gold {
+    color: #d4a017;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* ===================================
+   レスポンシブ
+   =================================== */
+
+@media (max-width: 1200px) {
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+}

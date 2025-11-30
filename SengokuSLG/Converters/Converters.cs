@@ -19,8 +19,18 @@ namespace SengokuSLG.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (bool)value ? "■ON" : "□OFF";
+            bool boolValue = (bool)value;
+            if (parameter != null && parameter is string paramStr)
+            {
+                var parts = paramStr.Split('|');
+                if (parts.Length == 2)
+                {
+                    return boolValue ? parts[0] : parts[1];
+                }
+            }
+            return boolValue ? "公開" : "未公開";
         }
+
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 

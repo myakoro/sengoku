@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家臣詳細 - 戦国立身出世SLG v0.6</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Yu Gothic", "Meiryo", sans-serif;
+            background: linear-gradient(to bottom, #f8f3e7 0%, #ede4d3 100%);
+            color: #2b2b2b;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #f8f3e7;
+            border: 3px solid #5d4037;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b6f47;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .back-button {
+            background: linear-gradient(to bottom, #8b6f47 0%, #6d5638 100%);
+            border: 2px solid #5d4037;
+            border-radius: 4px;
+            padding: 6px 16px;
+            color: #f8f3e7;
+            text-decoration: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 15px;
+        }
+        
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .portrait {
+            width: 100%;
+            height: 120px;
+            background: #ddd5c3;
+            border: 2px solid #8b6f47;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #888;
+        }
+        
+        .info-box {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            width: 70px;
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .info-value {
+            flex: 1;
+        }
+        
+        .center-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .section-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #5d4037;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #d4c4a8;
+        }
+        
+        .abilities {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .ability-box {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .ability-name {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .ability-value {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .ability-value.leadership {
+            color: #2d5a8c;
+        }
+        
+        .note {
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: #fdfbf7;
+            border-left: 3px solid #d4c4a8;
+        }
+        
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .promotion-box {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .promotion-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .promotion-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .promotion-label {
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .loyalty-box {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .loyalty-bar-container {
+            width: 100%;
+            height: 24px;
+            background: #ddd5c3;
+            border: 2px solid #8b6f47;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        
+        .loyalty-bar {
+            height: 100%;
+            width: 80%;
+            background: linear-gradient(to right, #c73940 0%, #e74c3c 100%);
+        }
+        
+        .loyalty-text {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .action-button {
+            background: linear-gradient(to bottom, #8b6f47 0%, #6d5638 100%);
+            border: 2px solid #5d4037;
+            border-radius: 6px;
+            padding: 10px 25px;
+            color: #f8f3e7;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-button:hover {
+            background: linear-gradient(to bottom, #6d5638 0%, #5d4037 100%);
+        }
+        
+        .action-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>【家臣詳細】</h1>
+            <a href="#" class="back-button">← 一覧に戻る</a>
+        </div>
+        
+        <div class="main-content">
+            <!-- 左列：顔と基本情報 -->
+            <div class="left-column">
+                <div class="portrait">顔</div>
+                <div class="info-box">
+                    <div class="info-row">
+                        <div class="info-label">氏名：</div>
+                        <div class="info-value">山田太郎</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">年齢：</div>
+                        <div class="info-value">25歳</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">身分：</div>
+                        <div class="info-value">従僕</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">俸禄：</div>
+                        <div class="info-value">10貫</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中央列：能力値 -->
+            <div class="center-column">
+                <div>
+                    <div class="section-title">■ 能力値</div>
+                    <div class="abilities">
+                        <div class="ability-box">
+                            <div class="ability-name">武芸</div>
+                            <div class="ability-value">65</div>
+                        </div>
+                        <div class="ability-box">
+                            <div class="ability-name">統率</div>
+                            <div class="ability-value leadership">45</div>
+                        </div>
+                        <div class="ability-box">
+                            <div class="ability-name">政務</div>
+                            <div class="ability-value">30</div>
+                        </div>
+                        <div class="ability-box">
+                            <div class="ability-name">知略</div>
+                            <div class="ability-value">50</div>
+                        </div>
+                    </div>
+                    <div class="note">※統率：戦場での小隊の命令遵守率に影響</div>
+                </div>
+            </div>
+            
+            <!-- 右列：昇格条件と忠誠 -->
+            <div class="right-column">
+                <div>
+                    <div class="section-title">■ 昇格条件</div>
+                    <div class="promotion-box">
+                        <div class="promotion-row">
+                            <span class="promotion-label">次の身分：</span>
+                            <span>徒士</span>
+                        </div>
+                        <div class="promotion-row">
+                            <span class="promotion-label">必要功績：</span>
+                            <span>50</span>
+                        </div>
+                        <div class="promotion-row">
+                            <span class="promotion-label">現在功績：</span>
+                            <span>30</span>
+                        </div>
+                        <div class="note">※昇格は功績のみで判定</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="section-title">■ 忠誠心</div>
+                    <div class="loyalty-box">
+                        <div class="loyalty-bar-container">
+                            <div class="loyalty-bar"></div>
+                        </div>
+                        <div class="loyalty-text">80 / 100</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-button" disabled>昇格させる</button>
+            <button class="action-button">補佐官に任命</button>
+        </div>
+    </div>
+</body>
+</html>

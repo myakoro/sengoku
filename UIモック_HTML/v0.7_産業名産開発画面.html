@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>産業・名産開発画面 - 戦国立身出世SLG v0.7</title>
+    <link rel="stylesheet" href="v0.7_styles.css">
+    <style>
+        .main-content {
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 15px;
+        }
+        
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .industry-section {
+            margin-bottom: 0;
+        }
+        
+        .industry-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .industry-card {
+            background: #fdfbf7;
+            border: 2px solid #8b6f47;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .industry-card.empty {
+            background: #f0e9d8;
+            border-style: dashed;
+            border-color: #bbb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .industry-header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #d4c4a8;
+        }
+        
+        .industry-type {
+            font-size: 14px;
+            font-weight: bold;
+            color: #5d4037;
+            margin-bottom: 5px;
+        }
+        
+        .industry-level {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2d5a8c;
+        }
+        
+        .progress-section {
+            margin-bottom: 8px;
+        }
+        
+        .progress-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .next-level-info {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .meisan-section {
+            background: #faf6ed;
+            border: 2px solid #d4a017;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 0;
+        }
+        
+        .progress-container {
+            height: 20px;
+        }
+        
+        .progress-text {
+            font-size: 11px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+        }
+        
+        .meisan-progress {
+            margin-bottom: 12px;
+        }
+        
+        .meisan-current {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .meisan-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+        
+        .meisan-label {
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .meisan-value {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .meisan-effects {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .effect-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #c8e6c9;
+        }
+        
+        .effect-row:last-child {
+            border-bottom: none;
+        }
+        
+        .effect-label {
+            font-weight: bold;
+            color: #2d7a3e;
+        }
+        
+        .effect-value {
+            font-weight: bold;
+            color: #1b5e20;
+        }
+        
+        .info-box {
+            background: #fff9e6;
+            border: 2px solid #d4a017;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .info-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #5d4037;
+            margin-bottom: 6px;
+        }
+        
+        .info-text {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #2b2b2b;
+        }
+        
+        .action-info {
+            background: #e3f2fd;
+            border: 2px solid #2d5a8c;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        
+        .action-list {
+            list-style: none;
+            margin-top: 6px;
+        }
+        
+        .action-item {
+            padding: 5px 0;
+            padding-left: 15px;
+            position: relative;
+            font-size: 12px;
+        }
+        
+        .action-item:before {
+            content: "●";
+            position: absolute;
+            left: 0;
+            color: #2d5a8c;
+            font-size: 10px;
+        }
+        
+        .button-container {
+            text-align: center;
+            padding: 12px;
+        }
+        
+        @media (max-width: 1024px) {
+            .industry-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .industry-slots {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>【産業・名産開発】</h1>
+            <div class="subtitle">村名：中野村</div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="main-content">
+            <!-- 左セクション：産業スロット -->
+            <div class="left-section">
+                <div class="industry-section">
+                    <div class="section-title">■ 産業スロット</div>
+                    <div class="industry-slots">
+                    <!-- スロット1：農業 -->
+                    <div class="industry-card">
+                        <div class="industry-header">
+                            <div class="industry-type">農業</div>
+                            <div class="industry-level">Lv.3</div>
+                        </div>
+                        <div class="progress-section">
+                            <div class="progress-label">進捗</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 50%;"></div>
+                                <div class="progress-text">50 / 100</div>
+                            </div>
+                            <div class="next-level-info">次レベルまで: 50pt</div>
+                        </div>
+                    </div>
+                    
+                    <!-- スロット2：鍛冶 -->
+                    <div class="industry-card">
+                        <div class="industry-header">
+                            <div class="industry-type">鍛冶</div>
+                            <div class="industry-level">Lv.2</div>
+                        </div>
+                        <div class="progress-section">
+                            <div class="progress-label">進捗</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 30%;"></div>
+                                <div class="progress-text">30 / 100</div>
+                            </div>
+                            <div class="next-level-info">次レベルまで: 70pt</div>
+                        </div>
+                    </div>
+                    
+                    <!-- スロット3：未開発 -->
+                    <div class="industry-card empty">
+                        <div>未開発</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右セクション：名産情報 -->
+            <div class="right-section">
+                <div class="meisan-section">
+                <div class="section-title">■ 名産情報</div>
+                
+                <!-- 名産進捗 -->
+                <div class="meisan-progress">
+                    <div class="progress-label">名産進捗</div>
+                    <div class="progress-container">
+                        <div class="progress-bar high" style="width: 80%;"></div>
+                        <div class="progress-text">80 / 100</div>
+                    </div>
+                </div>
+                
+                <!-- 現在の名産 -->
+                <div class="meisan-current">
+                    <div class="meisan-status">
+                        <span class="meisan-label">現在の名産：</span>
+                        <span class="meisan-value">なし</span>
+                    </div>
+                </div>
+                
+                <!-- 名産候補発生条件 -->
+                <div class="info-box">
+                    <div class="info-title">■ 名産候補発生条件</div>
+                    <div class="info-text">
+                        ・いずれかの産業がLv.5以上で名産候補が発生します
+                    </div>
+                </div>
+                
+                <!-- 名産効果（名産がある場合のみ表示） -->
+                <!-- この例では非表示ですが、名産がある場合は以下のように表示 -->
+                <!--
+                <div class="meisan-effects">
+                    <div class="info-title">■ 名産効果</div>
+                    <div class="effect-row">
+                        <span class="effect-label">信用ボーナス：</span>
+                        <span class="effect-value">+20</span>
+                    </div>
+                    <div class="effect-row">
+                        <span class="effect-label">価格倍率：</span>
+                        <span class="effect-value">2.0倍</span>
+                    </div>
+                    <div class="effect-row">
+                        <span class="effect-label">商人来訪率UP：</span>
+                        <span class="effect-value">+20%</span>
+                    </div>
+                </div>
+                -->
+                </div>
+                
+                <!-- 開発アクション（参照情報） -->
+                <div class="action-info">
+                    <div class="info-title">■ 開発アクション（参照情報）</div>
+                    <ul class="action-list">
+                        <li class="action-item">私事「産業開発」で進捗+10〜30pt</li>
+                        <li class="action-item">私事「名産開発」で名産進捗+10〜30pt</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ボタン -->
+        <div class="button-container">
+            <button class="button">閉じる</button>
+        </div>
+    </div>
+</body>
+</html>

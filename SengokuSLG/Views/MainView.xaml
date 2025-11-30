@@ -28,7 +28,7 @@
                        TextDecorations="Underline"/>
 
             <!-- Action Buttons -->
-            <UniformGrid Grid.Row="1" Columns="2" Rows="2" Margin="0,0,0,30">
+            <UniformGrid Grid.Row="1" Columns="2" Rows="3" Margin="0,0,0,30">
                 <Button Command="{Binding NavigatePublicDutyCommand}" Style="{StaticResource StyleActionButton}" Margin="0,0,10,10" Height="100"
                         IsEnabled="{Binding IsPublicDutyDone, Converter={StaticResource InverseBooleanConverter}}">
                     <StackPanel>
@@ -44,17 +44,24 @@
                     </StackPanel>
                 </Button>
 
-                <Button Command="{Binding NavigateVassalListCommand}" Style="{StaticResource StyleActionButton}" Margin="0,10,10,0" Height="100">
+                <Button Command="{Binding NavigateVassalListCommand}" Style="{StaticResource StyleActionButton}" Margin="0,10,10,10" Height="100">
                     <StackPanel>
                         <TextBlock Text="家臣一覧" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                         <TextBlock Text="家臣の管理・昇格を行う" FontSize="12" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <Button Command="{Binding NavigateAdvisorSettingCommand}" Style="{StaticResource StyleActionButton}" Margin="10,10,0,0" Height="100">
+                <Button Command="{Binding NavigateAdvisorSettingCommand}" Style="{StaticResource StyleActionButton}" Margin="10,10,0,10" Height="100">
                     <StackPanel>
                         <TextBlock Text="補佐官設定" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                         <TextBlock Text="補佐官の任命・変更を行う" FontSize="12" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding ExecuteBattleCommand}" Style="{StaticResource StyleActionButton}" Margin="0,10,10,0" Height="100" Background="#8B0000">
+                    <StackPanel>
+                        <TextBlock Text="【テスト】戦闘実行" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5" Foreground="White"/>
+                        <TextBlock Text="v0.6 戦闘AIのテスト" FontSize="12" HorizontalAlignment="Center" Foreground="White"/>
                     </StackPanel>
                 </Button>
             </UniformGrid>

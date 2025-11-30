@@ -62,7 +62,6 @@
                             <ColumnDefinition Width="60"/>  <!-- Intrigue -->
                             <ColumnDefinition Width="60"/>  <!-- Loyalty -->
                             <ColumnDefinition Width="80"/>  <!-- Achievement -->
-                            <ColumnDefinition Width="*"/>   <!-- Action -->
                         </Grid.ColumnDefinitions>
                         
                         <TextBlock Grid.Column="0" Text="氏名" FontWeight="Bold"/>
@@ -74,14 +73,16 @@
                         <TextBlock Grid.Column="6" Text="知略" FontWeight="Bold" Foreground="{StaticResource BrushBorder}"/>
                         <TextBlock Grid.Column="7" Text="忠誠" FontWeight="Bold"/>
                         <TextBlock Grid.Column="8" Text="功績" FontWeight="Bold"/>
-                        <TextBlock Grid.Column="9" Text="操作" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </Grid>
                     
                     <ScrollViewer Grid.Row="1">
                         <ItemsControl ItemsSource="{Binding VassalView}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="5" Margin="0,0,0,5" Padding="10,5">
+                                    <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="5" Margin="0,0,0,5" Padding="10,5" Cursor="Hand">
+                                        <Border.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" Command="{Binding DataContext.DetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Id}"/>
+                                        </Border.InputBindings>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="120"/>
@@ -93,7 +94,6 @@
                                                 <ColumnDefinition Width="60"/>
                                                 <ColumnDefinition Width="60"/>
                                                 <ColumnDefinition Width="80"/>
-                                                <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center" FontWeight="Bold"/>
@@ -139,9 +139,6 @@
 
                                             <TextBlock Grid.Column="7" Text="{Binding Loyalty}" VerticalAlignment="Center"/>
                                             <TextBlock Grid.Column="8" Text="{Binding Achievement}" VerticalAlignment="Center"/>
-
-                                            <Button Grid.Column="9" Content="詳細" Command="{Binding DataContext.DetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                    CommandParameter="{Binding Id}" Padding="10,2" HorizontalAlignment="Center"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

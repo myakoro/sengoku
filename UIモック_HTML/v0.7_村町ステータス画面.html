@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>村/町ステータス画面 - 戦国立身出世SLG v0.7</title>
+    <link rel="stylesheet" href="v0.7_styles.css">
+    <style>
+        .main-content {
+            padding: 15px;
+        }
+        
+        .top-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .stat-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #5d4037;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #d4c4a8;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d5a8c;
+            text-align: center;
+            margin: 8px 0;
+        }
+        
+        .middle-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .industry-panel {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .industry-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .industry-card {
+            background: #fff;
+            border: 2px solid #8b6f47;
+            border-radius: 6px;
+            padding: 10px;
+            min-height: 110px;
+        }
+        
+        .industry-card.empty {
+            background: #f0e9d8;
+            border-style: dashed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 13px;
+        }
+        
+        .industry-type {
+            font-size: 13px;
+            font-weight: bold;
+            color: #5d4037;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        .industry-level {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d5a8c;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .info-panel {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #d4c4a8;
+            font-size: 13px;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #5d4037;
+            font-size: 12px;
+        }
+        
+        .info-value {
+            color: #2b2b2b;
+        }
+        
+        .merchant-list {
+            list-style: none;
+            margin-top: 8px;
+        }
+        
+        .merchant-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #d4c4a8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .merchant-item:last-child {
+            border-bottom: none;
+        }
+        
+        .promotion-conditions {
+            background: #faf6ed;
+            border: 2px solid #d4a017;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 15px;
+        }
+        
+        .condition-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .condition-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .condition-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #c73940;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #8b6f47;
+        }
+        
+        .progress-container {
+            height: 20px;
+        }
+        
+        .progress-text {
+            font-size: 11px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-small {
+            font-size: 11px;
+        }
+        
+        .mt-10 {
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .industry-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .industry-slots {
+                grid-template-columns: 1fr;
+            }
+            
+            .condition-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>【村/町ステータス】</h1>
+            <div class="subtitle">村名：中野村 <span class="badge badge-village">村</span></div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="main-content">
+            <!-- 上部：基本情報（4カラム） -->
+            <div class="top-section">
+                <!-- 人口 -->
+                <div class="stat-card">
+                    <div class="stat-title">人口</div>
+                    <div class="stat-value">500人</div>
+                </div>
+                
+                <!-- 治安 -->
+                <div class="stat-card">
+                    <div class="stat-title">治安</div>
+                    <div class="progress-container" style="margin: 8px 0;">
+                        <div class="progress-bar high" style="width: 75%;"></div>
+                        <div class="progress-text">75</div>
+                    </div>
+                </div>
+                
+                <!-- 税収 -->
+                <div class="stat-card">
+                    <div class="stat-title">税収（月次）</div>
+                    <div class="stat-value">100貫</div>
+                </div>
+                
+                <!-- 蓄積金 -->
+                <div class="stat-card">
+                    <div class="stat-title">蓄積金</div>
+                    <div class="stat-value text-gold">500貫</div>
+                </div>
+            </div>
+            
+            <!-- 中部：産業と名産・道路・商人（2カラム） -->
+            <div class="middle-section">
+                <!-- 左：産業スロット -->
+                <div class="industry-panel">
+                    <div class="section-title">■ 産業スロット</div>
+                    <div class="industry-slots">
+                        <!-- スロット1 -->
+                        <div class="industry-card">
+                            <div class="industry-type">農業</div>
+                            <div class="industry-level">Lv.3</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 50%;"></div>
+                                <div class="progress-text">50 / 100</div>
+                            </div>
+                            <div class="text-center text-small mt-10">次レベルまで: 50pt</div>
+                        </div>
+                        
+                        <!-- スロット2 -->
+                        <div class="industry-card">
+                            <div class="industry-type">鍛冶</div>
+                            <div class="industry-level">Lv.2</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 30%;"></div>
+                                <div class="progress-text">30 / 100</div>
+                            </div>
+                            <div class="text-center text-small mt-10">次レベルまで: 70pt</div>
+                        </div>
+                        
+                        <!-- スロット3 -->
+                        <div class="industry-card empty">
+                            <div>未開発</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右：名産・道路・商人 -->
+                <div class="right-panel">
+                    <!-- 名産情報 -->
+                    <div class="info-panel">
+                        <div class="section-title">■ 名産</div>
+                        <div class="progress-container" style="margin-bottom: 8px;">
+                            <div class="progress-bar high" style="width: 80%;"></div>
+                            <div class="progress-text">80 / 100</div>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">現在：</span>
+                            <span class="info-value">なし</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 道路 -->
+                    <div class="info-panel">
+                        <div class="section-title">■ 道路</div>
+                        <div class="info-row">
+                            <span class="info-label">レベル：</span>
+                            <span class="info-value text-bold">道</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 商人 -->
+                    <div class="info-panel">
+                        <div class="section-title">■ 商人（行商3名）</div>
+                        <ul class="merchant-list">
+                            <li class="merchant-item">
+                                <span>田中商店</span>
+                                <span class="badge badge-regular">常連</span>
+                            </li>
+                            <li class="merchant-item">
+                                <span>山田屋</span>
+                                <span class="badge badge-acquaintance">面識</span>
+                            </li>
+                            <li class="merchant-item">
+                                <span>佐藤商会</span>
+                                <span class="badge badge-acquaintance">面識</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 町昇格条件（村のみ表示） -->
+        <div class="promotion-conditions">
+            <div class="section-title">■ 町昇格条件</div>
+            <div class="condition-grid">
+                <div class="condition-item">
+                    <span class="condition-label">人口：500 / 1000</span>
+                    <div class="progress-container">
+                        <div class="progress-bar medium" style="width: 50%;"></div>
+                        <div class="progress-text">50%</div>
+                    </div>
+                </div>
+                <div class="condition-item">
+                    <span class="condition-label">産業：2 / 3</span>
+                    <div class="progress-container">
+                        <div class="progress-bar medium" style="width: 67%;"></div>
+                        <div class="progress-text">67%</div>
+                    </div>
+                </div>
+                <div class="condition-item">
+                    <span class="condition-label">取引：15 / 30</span>
+                    <div class="progress-container">
+                        <div class="progress-bar medium" style="width: 50%;"></div>
+                        <div class="progress-text">50%</div>
+                    </div>
+                </div>
+                <div class="condition-item">
+                    <span class="condition-label">治安：75 / 80</span>
+                    <div class="progress-container">
+                        <div class="progress-bar high" style="width: 94%;"></div>
+                        <div class="progress-text">94%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

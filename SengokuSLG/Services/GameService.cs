@@ -353,44 +353,242 @@ namespace SengokuSLG.Services
             AddLog("私事", "名産開発の準備", village.Name, "成功");
         }
 
-        // ===== COMBAT LOGIC =====
-        public void ExecuteBattle()
+        // ===== COMBAT LOGIC (v0.6 Depth 1 AI) =====
+        public BattleContext ExecuteBattle()
         {
-            // Guard Squad Power Calculation
-            int guardPower = Player.AbilityCombat;
-            if (Player.JubokuIds.Count > 0)
+            // Add clear start message
+            AddLog("戦闘", "戦闘開始", "", "v0.6 深度1 AI");
+            
+            // 1. Initialize Battle Context
+            var battleContext = new BattleContext();
+            battleContext.TurnCount = 1;
+
+            // 2. Setup Squads
+            // Player Squad
+            var playerSquad = CreatePlayerSquad();
+            battleContext.Squads.Add(playerSquad);
+
+            // Ally Squads (Led by Colleagues/Mobs)
+            for (int i = 0; i < 2; i++)
             {
-                var lead = Vassals.FirstOrDefault(v => v.Id == Player.JubokuIds[0]);
-                if (lead != null) guardPower += (int)(lead.AbilityCombat * 0.2);
+                battleContext.Squads.Add(CreateMobSquad($"味方小隊{i + 1}", false));
             }
-            if (Player.JubokuIds.Count > 1)
+
+            // Enemy Squads
+            for (int i = 0; i < 3; i++)
             {
-                for (int i = 1; i < Player.JubokuIds.Count; i++)
+                battleContext.Squads.Add(CreateMobSquad($"敵小隊{i + 1}", true));
+            }
+
+            // 3. Calculate Leadership Hierarchy (The Core of v0.6)
+            CalculateLeadershipHierarchy(battleContext);
+
+            // 4. Battle Loop (Depth 1)
+            for (int turn = 1; turn <= 5; turn++)
+            {
+                battleContext.TurnCount = turn;
+                ProcessBattleTurn(battleContext);
+                
+                // Check End Conditions
+                if (battleContext.Squads.Where(s => !s.IsEnemy).Sum(s => s.CurrentSoldiers) <= 0)
                 {
-                    var v = Vassals.FirstOrDefault(val => val.Id == Player.JubokuIds[i]);
-                    if (v != null) guardPower += (int)(v.AbilityCombat * 0.1);
+                    battleContext.AddLog("味方軍は全滅した...");
+                    break;
+                }
+                if (battleContext.Squads.Where(s => s.IsEnemy).Sum(s => s.CurrentSoldiers) <= 0)
+                {
+                    battleContext.AddLog("敵軍を撃退した！");
+                    break;
                 }
             }
 
-            // Simple battle simulation
-            int enemyPower = _random.Next(50, 100);
-            bool win = guardPower > enemyPower;
+            // 5. Apply Results
+            ApplyBattleResults(battleContext);
             
-            if (win)
+            return battleContext;
+        }
+
+        private BattleSquad CreatePlayerSquad()
+        {
+            return new BattleSquad
             {
-                Player.AchievementMilitary += 20; // Small victory
-                Player.Achievement += 20;
-                AddLog("戦闘", "小競り合い", "", "勝利");
+                Name = "主人公隊",
+                IsPlayer = true,
+                IsEnemy = false,
+                CommanderId = Player.Id,
+                CaptainId = Player.Id,
+                BaseLeadership = Player.AbilityLeadership,
+                InitialSoldiers = 100,
+                CurrentSoldiers = 100
+            };
+        }
+
+        private BattleSquad CreateMobSquad(string name, bool isEnemy)
+        {
+            return new BattleSquad
+            {
+                Name = name,
+                IsPlayer = false,
+                IsEnemy = isEnemy,
+                BaseLeadership = _random.Next(30, 80),
+                InitialSoldiers = 100,
+                CurrentSoldiers = 100
+            };
+        }
+
+        private void CalculateLeadershipHierarchy(BattleContext context)
+        {
+            foreach (var squad in context.Squads)
+            {
+                if (squad.IsPlayer)
+                {
+                    // 1. Commander (Player)
+                    double staffBonus = 0;
+                    if (!string.IsNullOrEmpty(Player.AdvisorId))
+                    {
+                        var advisor = Vassals.FirstOrDefault(v => v.Id == Player.AdvisorId);
+                        if (advisor != null)
+                        {
+                            staffBonus = (advisor.AbilityIntrigue + advisor.AbilityPolitics) / 400.0; 
+                        }
+                    }
+                    int effectiveCommanderLeadership = (int)(squad.BaseLeadership * (1.0 + staffBonus));
+
+                    // 2. Captain (Player)
+                    int commanderDiff = effectiveCommanderLeadership - squad.BaseLeadership;
+                    int correction = commanderDiff > 0 ? (int)(commanderDiff * 0.5) : 0;
+                    
+                    int effectiveCaptainLeadership = squad.BaseLeadership + correction;
+
+                    // 3. Squad
+                    squad.EffectiveLeadership = effectiveCaptainLeadership;
+                }
+                else
+                {
+                    squad.EffectiveLeadership = squad.BaseLeadership;
+                }
+            }
+        }
+
+        private void ProcessBattleTurn(BattleContext context)
+        {
+            // 1. Player Order (Simulated as Forward for v0.6 auto-implementation)
+            context.PlayerOrder = SquadState.Forward; 
+            context.AddLog($"部将命令: 全軍{context.PlayerOrder}！");
+
+            // 2. Squad Actions
+            foreach (var squad in context.Squads)
+            {
+                if (squad.CurrentSoldiers <= 0) continue;
+
+                // Compliance Check
+                double roll = _random.NextDouble();
+                squad.CalculateCompliance(roll);
                 
-                // Loyalty increase
-                foreach (var v in Vassals) v.Loyalty += 3;
+                // Servant AI: Head Servant Bonus
+                if (squad.IsPlayer && Player.JubokuIds.Count > 0)
+                {
+                    // Head Servant Bonus: +10% Compliance
+                    squad.ComplianceScore = Math.Min(1.0, squad.ComplianceScore + 0.10);
+                }
+                
+                bool isObedient = roll < squad.ComplianceScore;
+
+                // Determine State
+                if (squad.IsConfused)
+                {
+                    squad.CurrentState = _random.NextDouble() > 0.5 ? SquadState.Retreat : SquadState.Hold;
+                    context.AddLog($"{squad.Name}は混乱している！ ({squad.CurrentState})");
+                    
+                    if (squad.CurrentState == SquadState.Retreat && _random.NextDouble() < 0.3)
+                    {
+                        squad.IsConfused = false;
+                        context.AddLog($"{squad.Name}は混乱から立ち直った。");
+                    }
+                }
+                else if (isObedient)
+                {
+                    if (squad.IsPlayer || !squad.IsEnemy)
+                    {
+                        squad.CurrentState = context.PlayerOrder;
+                    }
+                    else
+                    {
+                        squad.CurrentState = SquadState.Forward;
+                    }
+                }
+                else
+                {
+                    // Disobedience
+                    if (context.PlayerOrder == SquadState.Forward)
+                    {
+                        squad.CurrentState = _random.NextDouble() > 0.5 ? SquadState.Hold : SquadState.Retreat;
+                    }
+                    else
+                    {
+                        squad.CurrentState = SquadState.Forward;
+                    }
+                    context.AddLog($"{squad.Name}は命令通りに動けない... ({squad.CurrentState})");
+                }
+
+                // 3. Damage Calculation
+                CalculateSquadDamage(squad, context);
+            }
+        }
+
+        private void CalculateSquadDamage(BattleSquad squad, BattleContext context)
+        {
+            int baseDamage = 0;
+            switch (squad.CurrentState)
+            {
+                case SquadState.Forward: baseDamage = _random.Next(5, 15); break;
+                case SquadState.Hold: baseDamage = _random.Next(2, 8); break;
+                case SquadState.Retreat: baseDamage = _random.Next(0, 5); break;
+                case SquadState.Support: baseDamage = _random.Next(2, 6); break;
+            }
+
+            double reduction = squad.EffectiveLeadership / 200.0;
+            int finalDamage = (int)(baseDamage * (1.0 - reduction));
+
+            if (squad.IsConfused) finalDamage = (int)(finalDamage * 1.5);
+
+            squad.CurrentSoldiers = Math.Max(0, squad.CurrentSoldiers - finalDamage);
+            
+            if (finalDamage > 0)
+            {
+                context.AddLog($"{squad.Name}の被害: {finalDamage}名 (残: {squad.CurrentSoldiers})");
+            }
+
+            if (!squad.IsConfused && squad.CurrentSoldiers > 0)
+            {
+                double confusionChance = Math.Max(0, 0.2 - (squad.EffectiveLeadership * 0.002));
+                if (_random.NextDouble() < confusionChance)
+                {
+                    squad.IsConfused = true;
+                    context.AddLog($"{squad.Name}は混乱に陥った！");
+                }
+            }
+        }
+
+        private void ApplyBattleResults(BattleContext context)
+        {
+            foreach (var log in context.BattleLogs)
+            {
+                AddLog("戦場", "報告", "", log);
+            }
+
+            if (context.Squads.Where(s => s.IsEnemy).Sum(s => s.CurrentSoldiers) <= 0)
+            {
+                Player.Achievement += 100;
+                Player.AchievementMilitary += 50;
+                AddLog("戦果", "勝利", "", "功績+100, 武功+50");
             }
             else
             {
-                AddLog("戦闘", "小競り合い", "", "敗北");
-                foreach (var v in Vassals) v.Loyalty -= 5;
+                Player.Achievement += 10;
+                AddLog("戦果", "引き分け/敗北", "", "功績+10");
             }
-
+            
             // Participation & Disclosure
             foreach (var v in Vassals.Where(v => Player.JubokuIds.Contains(v.Id) || v.Rank >= Rank.Toshi))
             {

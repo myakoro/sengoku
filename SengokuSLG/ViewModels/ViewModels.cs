@@ -65,9 +65,9 @@ namespace SengokuSLG.ViewModels
             _gameService.OnMonthlyProcessed += OnMonthlyProcessed;
 
             // Initial View
-            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting);
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog);
             
-            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting));
+            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
             NavigateVillageCommand = new RelayCommand(() => CurrentView = new VillageViewModel(_gameService));
             NavigateVassalListCommand = new RelayCommand(NavigateToVassalList);
         }
@@ -75,21 +75,21 @@ namespace SengokuSLG.ViewModels
         private void NavigateToPublicDuty()
         {
             CurrentView = new PublicDutySelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
                 OnActionExecuted);
         }
 
         private void NavigateToPrivateTask()
         {
             CurrentView = new PrivateTaskSelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
                 OnActionExecuted);
         }
 
         private void NavigateToVassalList()
         {
             CurrentView = new VassalListViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
                 NavigateToVassalDetail);
         }
 
@@ -97,14 +97,20 @@ namespace SengokuSLG.ViewModels
         {
             CurrentView = new VassalDetailViewModel(_gameService, vassalId,
                 () => CurrentView = new VassalListViewModel(_gameService, 
-                    () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting),
+                    () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
                     NavigateToVassalDetail));
         }
 
         private void NavigateToAdvisorSetting()
         {
             CurrentView = new AdvisorSettingViewModel(_gameService,
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting));
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
+        }
+
+        private void NavigateToBattleLog(BattleContext context)
+        {
+            CurrentView = new BattleLogViewModel(context,
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
         }
 
         private void OnActionExecuted(string taskName, string target)
@@ -114,7 +120,7 @@ namespace SengokuSLG.ViewModels
                 DialogViewModel = null;
                 _gameService.AdvanceDay();
             });
-            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting);
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog);
         }
 
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -132,7 +138,7 @@ namespace SengokuSLG.ViewModels
 
         private void OnMonthlyProcessed(object sender, MonthlySummary summary)
         {
-            CurrentView = new MonthlySummaryViewModel(_gameService, summary, () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting));
+            CurrentView = new MonthlySummaryViewModel(_gameService, summary, () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
         }
 
         public Player Player => _gameService.Player;
@@ -166,7 +172,7 @@ namespace SengokuSLG.ViewModels
         public ICommand NavigateAdvisorSettingCommand { get; }
         public ICommand ExecuteBattleCommand { get; }
 
-        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask, Action onVassalList, Action onAdvisorSetting)
+        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask, Action onVassalList, Action onAdvisorSetting, Action<BattleContext> onBattleLog)
         {
             _gameService = service;
             _gameService.PropertyChanged += OnServicePropertyChanged;
@@ -193,7 +199,15 @@ namespace SengokuSLG.ViewModels
             
             // Debug/Simulate Battle Command
             ExecuteBattleCommand = new RelayCommand(() => {
-                _gameService.ExecuteBattle();
+                try
+                {
+                    var battleContext = _gameService.ExecuteBattle();
+                    onBattleLog(battleContext);
+                }
+                catch (Exception ex)
+                {
+                    _gameService.Logs.Insert(0, $"★★★ エラー発生: {ex.Message}");
+                }
             });
         }
 
@@ -405,7 +419,7 @@ namespace SengokuSLG.ViewModels
         private readonly GameService _gameService;
         public Vassal Vassal { get; }
         public ICommand BackCommand { get; }
-        public ICommand AppointAdvisorCommand { get; }
+        public ICommand ToggleAdvisorCommand { get; }
 
         public VassalDetailViewModel(GameService service, string vassalId, Action onBack)
         {
@@ -413,8 +427,15 @@ namespace SengokuSLG.ViewModels
             Vassal = _gameService.Vassals.FirstOrDefault(v => v.Id == vassalId);
             BackCommand = new RelayCommand(onBack);
             
-            AppointAdvisorCommand = new RelayCommand(() => {
-                _gameService.AppointAdvisor(vassalId);
+            ToggleAdvisorCommand = new RelayCommand(() => {
+                if (Vassal.IsAdvisor)
+                {
+                    _gameService.DismissAdvisor();
+                }
+                else
+                {
+                    _gameService.AppointAdvisor(vassalId);
+                }
             });
         }
     }
@@ -498,6 +519,20 @@ namespace SengokuSLG.ViewModels
             Service = service;
             Summary = summary;
             NextMonthCommand = new RelayCommand(onNext);
+        }
+    }
+
+    public class BattleLogViewModel : ViewModelBase
+    {
+        public BattleContext Context { get; }
+        public ObservableCollection<string> Logs { get; }
+        public ICommand CloseCommand { get; }
+
+        public BattleLogViewModel(BattleContext context, Action onClose)
+        {
+            Context = context;
+            Logs = new ObservableCollection<string>(context.BattleLogs);
+            CloseCommand = new RelayCommand(onClose);
         }
     }
 }

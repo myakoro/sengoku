@@ -114,6 +114,7 @@ namespace SengokuSLG.Models
         private int _jubokuSlots = 3;
         private int _achievement; // Cumulative achievement for promotion
         
+        public string Id { get; set; } = "PLAYER";
         public string Name { get; set; } = "田中太郎";
         public string Affiliation { get; set; } = "織田家（羽柴家）";
         
@@ -328,5 +329,60 @@ namespace SengokuSLG.Models
         public Rank? PlayerNewRank { get; set; }
         public List<string> VassalsPromoted { get; set; } = new List<string>();
         public Dictionary<string, int> LoyaltyChanges { get; set; } = new Dictionary<string, int>();
+    }
+
+    // --- v0.6 Data Models ---
+
+    public enum SquadState
+    {
+        Forward,    // 前進
+        Hold,       // 維持
+        Retreat,    // 後退
+        Support,    // 側面支援
+        Disengage,  // 離脱
+        Confused    // 混乱
+    }
+
+    public class BattleSquad
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Name { get; set; } = "";
+        public bool IsPlayer { get; set; }
+        public bool IsEnemy { get; set; }
+        
+        // Hierarchy References
+        public string CommanderId { get; set; } // 部将ID
+        public string CaptainId { get; set; }   // 組頭ID
+
+        // Leadership Data
+        public int BaseLeadership { get; set; }
+        public int EffectiveLeadership { get; set; } // 補正後統率（小隊AIが使用）
+
+        // Status
+        public int InitialSoldiers { get; set; }
+        public int CurrentSoldiers { get; set; }
+        public SquadState CurrentState { get; set; } = SquadState.Hold;
+        public bool IsConfused { get; set; }
+        public double ComplianceScore { get; set; } // 命令遵守率
+
+        // AI Logic Helpers
+        public void CalculateCompliance(double randomValue)
+        {
+            // 統率100で100%遵守
+            ComplianceScore = Math.Clamp(EffectiveLeadership / 100.0, 0.1, 1.0);
+        }
+    }
+
+    public class BattleContext
+    {
+        public int TurnCount { get; set; }
+        public List<BattleSquad> Squads { get; set; } = new List<BattleSquad>();
+        public List<string> BattleLogs { get; set; } = new List<string>();
+        public SquadState PlayerOrder { get; set; } = SquadState.Hold; // プレイヤーの全体命令
+
+        public void AddLog(string message)
+        {
+            BattleLogs.Add($"[Turn {TurnCount}] {message}");
+        }
     }
 }

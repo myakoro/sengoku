@@ -49,7 +49,7 @@
                         
                         <TextBlock Text="{Binding Vassal.Name}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
                         
-                        <Border Background="{StaticResource BrushAccentBlue}" CornerRadius="10" Padding="15,5" HorizontalAlignment="Center" Margin="0,0,0,15">
+                        <Border Background="{Binding Vassal.Rank, Converter={StaticResource RankToColorConverter}}" CornerRadius="10" Padding="15,5" HorizontalAlignment="Center" Margin="0,0,0,15">
                             <TextBlock Text="{Binding Vassal.Rank, Converter={StaticResource RankToTextConverter}}" Foreground="White" FontSize="14" FontWeight="Bold"/>
                         </Border>
 
@@ -81,8 +81,6 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Vassal.AbilityDisclosure.CombatDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='開示済|未開示'}" 
-                                                   FontSize="10" Foreground="#888" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                     </StackPanel>
                                 </Border>
                                 <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="15" Margin="10,0,0,10">
@@ -96,8 +94,6 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Vassal.AbilityDisclosure.LeadershipDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='開示済|未開示'}" 
-                                                   FontSize="10" Foreground="#888" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                     </StackPanel>
                                 </Border>
                                 <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="15" Margin="0,10,10,0">
@@ -111,8 +107,6 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Vassal.AbilityDisclosure.PoliticsDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='開示済|未開示'}" 
-                                                   FontSize="10" Foreground="#888" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                     </StackPanel>
                                 </Border>
                                 <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6" Padding="15" Margin="10,10,0,0">
@@ -126,8 +120,6 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Vassal.AbilityDisclosure.IntrigueDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='開示済|未開示'}" 
-                                                   FontSize="10" Foreground="#888" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                     </StackPanel>
                                 </Border>
                             </UniformGrid>
@@ -163,8 +155,19 @@
             <!-- Action Buttons -->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="昇進させる" Width="150" Height="50" Margin="10" Style="{StaticResource StyleActionButton}" IsEnabled="False"/>
-                <Button Command="{Binding AppointAdvisorCommand}" Content="補佐官に任命" Width="150" Height="50" Margin="10" Style="{StaticResource StyleActionButton}"
-                        IsEnabled="{Binding Vassal.IsAdvisor, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Command="{Binding ToggleAdvisorCommand}" Width="150" Height="50" Margin="10">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource StyleActionButton}">
+                            <Setter Property="Content" Value="補佐官に任命"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Vassal.IsAdvisor}" Value="True">
+                                    <Setter Property="Content" Value="補佐官を解任"/>
+                                    <Setter Property="Background" Value="#888"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <Button Content="追放する" Width="150" Height="50" Margin="10" Style="{StaticResource StyleActionButton}" Background="#888" Foreground="White" IsEnabled="False"/>
             </StackPanel>
         </Grid>
@@ -190,7 +193,6 @@
                         <TextBlock Text="■ 補佐官任命済み" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentBlue}" Margin="0,0,0,12"/>
                         <TextBlock Text="現在、この家臣は補佐官として任命されています。" TextWrapping="Wrap" Margin="0,0,0,10"/>
                         <TextBlock Text="ボーナス効果:" FontWeight="Bold"/>
-                        <TextBlock Text="・全能力開示中" Margin="10,0,0,0"/>
                         <TextBlock Text="・忠誠維持ボーナス" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Border>
@@ -201,19 +203,19 @@
                         <TextBlock Text="■ 能力開示状況" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
                         <Grid Margin="0,0,0,5">
                             <TextBlock Text="武芸"/>
-                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.CombatDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='済|未'}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.CombatDisclosed, Converter={StaticResource BooleanToTextConverter}}" FontWeight="Bold" HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid Margin="0,0,0,5">
                             <TextBlock Text="統率"/>
-                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.LeadershipDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='済|未'}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.LeadershipDisclosed, Converter={StaticResource BooleanToTextConverter}}" FontWeight="Bold" HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid Margin="0,0,0,5">
                             <TextBlock Text="政務"/>
-                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.PoliticsDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='済|未'}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.PoliticsDisclosed, Converter={StaticResource BooleanToTextConverter}}" FontWeight="Bold" HorizontalAlignment="Right"/>
                         </Grid>
                         <Grid>
                             <TextBlock Text="知略"/>
-                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.IntrigueDisclosed, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='済|未'}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding Vassal.AbilityDisclosure.IntrigueDisclosed, Converter={StaticResource BooleanToTextConverter}}" FontWeight="Bold" HorizontalAlignment="Right"/>
                         </Grid>
                     </StackPanel>
                 </Border>

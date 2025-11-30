@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商人取引画面 - 戦国立身出世SLG v0.7</title>
+    <link rel="stylesheet" href="v0.7_styles.css">
+    <style>
+        .merchant-info {
+            background: #faf6ed;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 15px;
+        }
+        
+        .merchant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .merchant-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .merchant-tier {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .trust-section {
+            margin-bottom: 12px;
+        }
+        
+        .trust-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .trust-label {
+            font-weight: bold;
+            color: #5d4037;
+            min-width: 70px;
+            font-size: 13px;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2d5a8c;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 15px;
+            padding: 15px;
+        }
+        
+        .goods-section {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 12px;
+        }
+        
+        .side-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .progress-container {
+            height: 20px;
+        }
+        
+        .progress-text {
+            font-size: 11px;
+        }
+        
+        .goods-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .goods-table th {
+            background: #8b6f47;
+            color: #f8f3e7;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #5d4037;
+            font-size: 13px;
+        }
+        
+        .goods-table td {
+            padding: 6px 10px;
+            border: 1px solid #d4c4a8;
+            font-size: 13px;
+        }
+        
+        .goods-table tr:nth-child(even) {
+            background: #faf6ed;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .category-food {
+            background: #4caf50;
+            color: #fff;
+        }
+        
+        .category-material {
+            background: #8b6f47;
+            color: #fff;
+        }
+        
+        .category-weapon {
+            background: #c73940;
+            color: #fff;
+        }
+        
+        .category-luxury {
+            background: #d4a017;
+            color: #fff;
+        }
+        
+        .effects-panel {
+            background: #fdfbf7;
+            border: 2px solid #d4c4a8;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        
+        .effect-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #d4c4a8;
+            font-size: 12px;
+        }
+        
+        .effect-item:last-child {
+            border-bottom: none;
+        }
+        
+        .effect-label {
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .effect-value {
+            color: #2d7a3e;
+            font-weight: bold;
+        }
+        
+        .history-list {
+            list-style: none;
+            margin-top: 8px;
+        }
+        
+        .history-item {
+            padding: 5px 8px;
+            border-bottom: 1px solid #d4c4a8;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-date {
+            color: #666;
+            font-size: 11px;
+        }
+        
+        .history-amount {
+            font-weight: bold;
+            color: #2d5a8c;
+        }
+        
+        .button-container {
+            text-align: center;
+            padding: 12px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>【商人取引】</h1>
+            <div class="subtitle">商人名：田中商店 <span class="badge badge-village">行商</span></div>
+        </div>
+        
+        <!-- 商人情報 -->
+        <div class="merchant-info">
+            <div class="trust-section">
+                <div class="trust-row">
+                    <span class="trust-label">信用値：</span>
+                    <div class="progress-container" style="flex: 1;">
+                        <div class="progress-bar high" style="width: 75%;"></div>
+                        <div class="progress-text">75 / 100</div>
+                    </div>
+                    <span class="badge badge-regular">常連</span>
+                </div>
+            </div>
+            
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-label">累計取引額</div>
+                    <div class="stat-value">5,000貫</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">累計取引回数</div>
+                    <div class="stat-value">25回</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">次回来訪日</div>
+                    <div class="stat-value" style="font-size: 16px;">1560年5月15日</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="main-content">
+            <!-- 商品リスト -->
+            <div class="goods-section">
+                <div class="section-title">■ 商品リスト</div>
+                <table class="goods-table">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>カテゴリ</th>
+                            <th>基礎価格</th>
+                            <th>在庫数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>米</td>
+                            <td><span class="category-badge category-food">食料</span></td>
+                            <td>10貫</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>鉄</td>
+                            <td><span class="category-badge category-material">資材</span></td>
+                            <td>50貫</td>
+                            <td>50</td>
+                        </tr>
+                        <tr>
+                            <td>刀</td>
+                            <td><span class="category-badge category-weapon">武具</span></td>
+                            <td>200貫</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>絹</td>
+                            <td><span class="category-badge category-luxury">贅沢品</span></td>
+                            <td>300貫</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>茶</td>
+                            <td><span class="category-badge category-luxury">贅沢品</span></td>
+                            <td>150貫</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>木材</td>
+                            <td><span class="category-badge category-material">資材</span></td>
+                            <td>30貫</td>
+                            <td>80</td>
+                        </tr>
+                        <tr>
+                            <td>塩</td>
+                            <td><span class="category-badge category-food">食料</span></td>
+                            <td>20貫</td>
+                            <td>60</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- サイドセクション -->
+            <div class="side-section">
+                <!-- 信用ランク効果 -->
+                <div class="effects-panel">
+                    <div class="section-title">■ 信用ランク効果</div>
+                    <div class="effect-item">
+                        <span class="effect-label">手数料率：</span>
+                        <span class="effect-value">5%</span>
+                    </div>
+                    <div class="effect-item">
+                        <span class="effect-label">卸売：</span>
+                        <span class="effect-value">可能</span>
+                    </div>
+                    <div class="effect-item">
+                        <span class="effect-label">高級商品：</span>
+                        <span class="effect-value">可能</span>
+                    </div>
+                    <div class="effect-item">
+                        <span class="effect-label">支払猶予：</span>
+                        <span class="effect-value">可能</span>
+                    </div>
+                </div>
+                
+                <!-- 取引履歴 -->
+                <div class="effects-panel">
+                    <div class="section-title">■ 取引履歴</div>
+                    <ul class="history-list">
+                        <li class="history-item">
+                            <span class="history-date">1560/4/10</span>
+                            <span class="history-amount">500貫</span>
+                        </li>
+                        <li class="history-item">
+                            <span class="history-date">1560/3/25</span>
+                            <span class="history-amount">300貫</span>
+                        </li>
+                        <li class="history-item">
+                            <span class="history-date">1560/3/10</span>
+                            <span class="history-amount">200貫</span>
+                        </li>
+                        <li class="history-item">
+                            <span class="history-date">1560/2/28</span>
+                            <span class="history-amount">450貫</span>
+                        </li>
+                        <li class="history-item">
+                            <span class="history-date">1560/2/15</span>
+                            <span class="history-amount">350貫</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ボタン -->
+        <div class="button-container">
+            <button class="button">閉じる</button>
+        </div>
+    </div>
+</body>
+</html>
