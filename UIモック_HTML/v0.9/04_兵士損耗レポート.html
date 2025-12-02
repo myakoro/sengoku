@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04. 兵士損耗レポート - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>📋 兵士損耗レポート</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='index.html'">戻る</button>
+      <button class="btn btn-secondary">CSV</button>
+    </div>
+  </header>
+
+  <!-- 損耗サマリー -->
+  <div class="card">
+    <div class="card-header">損耗サマリー: 300人 → 270人（損耗率10.0%）</div>
+    <div class="grid grid-4">
+      <div class="status-item">
+        <div class="text-xs" style="color: #666;">死亡</div>
+        <div style="font-size: 20px; font-weight: bold; color: var(--fatigue-high);">12人</div>
+        <div class="text-xs">4.0%</div>
+        <span class="badge badge-danger">人口−12</span>
+      </div>
+      <div class="status-item">
+        <div class="text-xs" style="color: #666;">廃兵</div>
+        <div style="font-size: 20px; font-weight: bold; color: var(--fatigue-mid);">8人</div>
+        <div class="text-xs">2.7%</div>
+        <span class="badge badge-danger">人口−8</span>
+      </div>
+      <div class="status-item">
+        <div class="text-xs" style="color: #666;">負傷</div>
+        <div style="font-size: 20px; font-weight: bold; color: var(--training-mid);">25人</div>
+        <div class="text-xs">8.3%</div>
+        <span class="badge badge-success">影響なし</span>
+      </div>
+      <div class="status-item">
+        <div class="text-xs" style="color: #666;">逃散</div>
+        <div style="font-size: 20px; font-weight: bold; color: var(--accent-kincha);">5人</div>
+        <div class="text-xs">1.7%</div>
+        <span class="badge badge-danger">人口−5</span>
+      </div>
+    </div>
+    <div class="alert alert-danger mt-1">
+      <strong>人口減少合計: 25人</strong>（死亡12 + 廃兵8 + 逃散5）
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active">死亡</button>
+    <button class="tab">廃兵</button>
+    <button class="tab">負傷</button>
+    <button class="tab">逃散</button>
+  </div>
+
+  <!-- 死亡者一覧 -->
+  <div class="card">
+    <div class="card-header">死亡者一覧（12人） - 自家兵8人 / 借り兵4人</div>
+    <table>
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>兵種</th>
+          <th>出身知行地</th>
+          <th>自/借</th>
+          <th>小隊</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>木村五郎</td>
+          <td>徒士</td>
+          <td>村A (001)</td>
+          <td><span class="badge badge-primary">自家兵</span></td>
+          <td>小隊1</td>
+        </tr>
+        <tr>
+          <td>林六郎</td>
+          <td>徒士</td>
+          <td>村B (002)</td>
+          <td><span class="badge badge-primary">自家兵</span></td>
+          <td>小隊1</td>
+        </tr>
+        <tr>
+          <td>斎藤七郎</td>
+          <td>馬上衆</td>
+          <td>村C (003)</td>
+          <td><span class="badge badge-primary">自家兵</span></td>
+          <td>小隊2</td>
+        </tr>
+        <tr>
+          <td>加藤八郎</td>
+          <td>徒士</td>
+          <td>村D (004)</td>
+          <td><span class="badge badge-warning">借り兵</span></td>
+          <td>小隊3</td>
+        </tr>
+        <tr>
+          <td>小林九郎</td>
+          <td>徒士</td>
+          <td>村E (005)</td>
+          <td><span class="badge badge-warning">借り兵</span></td>
+          <td>小隊3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 知行地別人口減少 -->
+  <div class="card">
+    <div class="card-header">知行地別人口減少</div>
+    <table>
+      <thead>
+        <tr>
+          <th>知行地</th>
+          <th>死亡</th>
+          <th>廃兵</th>
+          <th>逃散</th>
+          <th>合計</th>
+          <th>人口減少</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: #FFEBEE;">
+          <td>村A (001)</td>
+          <td>3</td>
+          <td>2</td>
+          <td>1</td>
+          <td><strong>6</strong></td>
+          <td><strong style="color: #E53935;">→ −6</strong></td>
+        </tr>
+        <tr>
+          <td>村B (002)</td>
+          <td>2</td>
+          <td>1</td>
+          <td>0</td>
+          <td><strong>3</strong></td>
+          <td><strong style="color: #FF9800;">→ −3</strong></td>
+        </tr>
+        <tr>
+          <td>村C (003)</td>
+          <td>1</td>
+          <td>1</td>
+          <td>1</td>
+          <td><strong>3</strong></td>
+          <td><strong style="color: #FF9800;">→ −3</strong></td>
+        </tr>
+        <tr>
+          <td>他村借兵</td>
+          <td>3</td>
+          <td>2</td>
+          <td>2</td>
+          <td><strong>7</strong></td>
+          <td><strong style="color: #E53935;">→ −7</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="alert alert-warning mt-1">
+      <span class="icon">⚠</span>
+      <div>村Aの人口が6人減少 / 他村借兵の損耗が7人発生</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="alert alert-info">
+      <div>
+        <p>✓ 死亡・廃兵・逃散の人口減少を自動反映</p>
+        <p>✓ 負傷兵は治療後に復帰（人口影響なし）</p>
+        <p>✓ 借り兵の損耗は戦功ペナルティに反映済み</p>
+      </div>
+    </div>
+    <div class="flex gap-1">
+      <button class="btn btn-secondary">人口データ確認</button>
+      <button class="btn btn-primary">戦功レポートへ</button>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-004 | 兵士損耗レポート | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

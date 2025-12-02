@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05. 家臣戦功レポート - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>🏆 家臣戦功レポート</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='index.html'">戻る</button>
+      <button class="btn btn-secondary">CSV</button>
+    </div>
+  </header>
+
+  <!-- 戦功サマリー -->
+  <div class="card">
+    <div class="flex flex-between" style="align-items: center;">
+      <div>
+        <span class="text-bold">戦功サマリー:</span>
+        <span class="text-xs" style="color: #666; margin-left: 10px;">士気+450 / 崩壊+320 / 追撃+280 / 効率+200 = 1,250点 × 1.3（大勝）= 1,625点 − 35（借兵ペナ）= 1,590点</span>
+      </div>
+      <div style="background: var(--alert-success); padding: 8px 20px; border-radius: 6px;">
+        <span style="font-size: 20px; font-weight: bold;">確定: 1,590点</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 家臣別戦功一覧 -->
+  <div class="card">
+    <div class="card-header">家臣別戦功一覧</div>
+    <table>
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>役職</th>
+          <th>士気ダメージ</th>
+          <th>崩壊</th>
+          <th>追撃</th>
+          <th>効率</th>
+          <th>補正</th>
+          <th>合計</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: #FFF9C4;">
+          <td><strong>山田太郎</strong></td>
+          <td>足軽大将</td>
+          <td>180</td>
+          <td>80</td>
+          <td>100</td>
+          <td>10</td>
+          <td>×1.3</td>
+          <td><strong style="font-size: 15px; color: var(--accent-shu);">481</strong></td>
+        </tr>
+        <tr>
+          <td>佐藤次郎</td>
+          <td>組頭</td>
+          <td>90</td>
+          <td>40</td>
+          <td>50</td>
+          <td>5</td>
+          <td>×1.3</td>
+          <td><strong>241</strong></td>
+        </tr>
+        <tr>
+          <td>鈴木三郎</td>
+          <td>組頭</td>
+          <td>85</td>
+          <td>35</td>
+          <td>45</td>
+          <td>5</td>
+          <td>×1.3</td>
+          <td><strong>221</strong></td>
+        </tr>
+        <tr>
+          <td>田中四郎</td>
+          <td>組頭</td>
+          <td>95</td>
+          <td>45</td>
+          <td>55</td>
+          <td>5</td>
+          <td>×1.3</td>
+          <td><strong>260</strong></td>
+        </tr>
+        <tr>
+          <td>伊藤一郎</td>
+          <td>小頭</td>
+          <td>45</td>
+          <td>20</td>
+          <td>25</td>
+          <td>2</td>
+          <td>×1.3</td>
+          <td><strong>120</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-1 flex gap-1">
+      <button class="btn btn-secondary">詳細</button>
+      <button class="btn btn-secondary">ソート</button>
+      <button class="btn btn-secondary">フィルター</button>
+    </div>
+  </div>
+
+  <!-- 4軸戦功の詳細 -->
+  <div class="card">
+    <div class="card-header">4軸戦功の詳細</div>
+    <table>
+      <thead>
+        <tr>
+          <th>軸</th>
+          <th>小隊</th>
+          <th>中隊</th>
+          <th>大隊</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>士気ダメージ</strong></td>
+          <td>敵士気/5</td>
+          <td>敵士気/10</td>
+          <td>敵士気/20</td>
+        </tr>
+        <tr>
+          <td><strong>崩壊ボーナス</strong></td>
+          <td>+15〜20</td>
+          <td>+30〜40</td>
+          <td>+60〜80</td>
+        </tr>
+        <tr>
+          <td><strong>追撃ダメージ</strong></td>
+          <td>人数×2</td>
+          <td>人数×1.5</td>
+          <td>人数×1</td>
+        </tr>
+        <tr>
+          <td><strong>損耗効率</strong></td>
+          <td colspan="3">3倍以上: +10 / 2〜3倍: +5 / 1〜2倍: +2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 個人戦功 → 主人公集約 -->
+  <div class="card">
+    <div class="flex flex-between" style="align-items: center;">
+      <div>
+        <span class="text-bold">個人戦功 → 主人公集約:</span>
+        <span class="text-xs" style="color: #666; margin-left: 10px;">山田481 + 佐藤241 + 鈴木221 + 田中260 + 伊藤120 = 1,323点 → 主人公へ集約</span>
+      </div>
+      <div style="background: linear-gradient(135deg, var(--accent-shu) 0%, #A02F17 100%); color: white; padding: 8px 20px; border-radius: 6px;">
+        <span style="font-size: 20px; font-weight: bold;">主人公: 1,590点</span>
+      </div>
+    </div>
+    <div class="mt-1 flex gap-1">
+      <button class="btn btn-primary">戦功を確定</button>
+      <button class="btn btn-secondary">主人公ステータスへ</button>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-005 | 家臣戦功レポート | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

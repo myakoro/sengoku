@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11. 追撃判定画面 - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>🏹 追撃判定</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='index.html'">戻る</button>
+      <button class="btn btn-primary">実行</button>
+    </div>
+  </header>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-header">追撃条件チェック</div>
+      <div class="text-xs" style="background: #F5F5F5; padding: 10px; border-radius: 4px;">
+        <p>☑ 自軍疲労 < 60 (現在: 35)</p>
+        <p>☑ 自軍士気 ≥ 50 (現在: 75)</p>
+        <p>☑ 敵が完全崩壊（士気0）</p>
+        <p>☑ 地形が追撃可能</p>
+      </div>
+      <div class="alert alert-success mt-1">
+        <strong>判定: 追撃可能 ✓</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">追撃強度</div>
+      <table>
+        <tbody>
+          <tr>
+            <td>自軍疲労: 35</td>
+            <td>→ 低疲労 (+1)</td>
+          </tr>
+          <tr>
+            <td>自軍士気: 75</td>
+            <td>→ 高士気 (+1)</td>
+          </tr>
+          <tr>
+            <td>敵壊乱度: 高</td>
+            <td>→ 高壊乱 (+1)</td>
+          </tr>
+          <tr>
+            <td>地形: 平地</td>
+            <td>→ 追撃容易 (+0)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); color: white; padding: 15px; border-radius: 6px; margin-top: 10px; text-align: center;">
+        <p style="font-size: 22px; font-weight: bold;">追撃強度: P2（中追撃） 🗡</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">損耗予測</div>
+    <div class="grid grid-2">
+      <div>
+        <p class="text-xs"><strong>敵軍残存兵力:</strong> 250人</p>
+        <p class="text-xs"><strong>予測損耗率:</strong> 10〜20% (P2)</p>
+        <p class="text-xs"><strong>予測損耗人数:</strong> 25〜50人</p>
+      </div>
+      <div class="text-xs" style="background: #F5F5F5; padding: 10px; border-radius: 4px;">
+        <p><strong>内訳予測:</strong></p>
+        <p>・死亡: 8〜12人</p>
+        <p>・廃兵: 5〜8人</p>
+        <p>・負傷: 10〜20人</p>
+        <p>・逃散: 2〜10人</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="flex gap-2">
+      <button class="btn btn-primary" style="flex: 1;">追撃を実行する</button>
+      <button class="btn btn-secondary" style="flex: 1;">追撃を見送る</button>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-011 | 追撃判定画面 | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10. 小隊詳細画面 - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>🗡 伊藤衆 - 小隊詳細</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='index.html'">戻る</button>
+      <button class="btn btn-primary">編集</button>
+    </div>
+  </header>
+
+  <div class="card">
+    <div class="flex flex-between" style="align-items: center;">
+      <div>
+        <strong>小頭: 伊藤一郎</strong> / 総兵力: 25人 (徒士15 + 馬上衆８ + 小頭2) / 所属: <span style="color: var(--accent-ai); font-weight: bold;">佐藤組</span>
+      </div>
+      <div style="background: var(--alert-success); padding: 8px 20px; border-radius: 6px;">
+        <span style="font-size: 18px; font-weight: bold;">有効戦闘力: 454</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">戦力内訳</div>
+    <div class="text-xs">
+      基礎250 + 徒士165(15×11) + 馬上136(8×17) = 551 × 訓練0.890 × 実戦0.925 = <strong>454</strong>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <!-- 徒士リスト -->
+    <div class="card">
+      <div class="card-header">⚔ 徒士（15人）</div>
+      <table>
+        <thead>
+          <tr>
+            <th>名前</th>
+            <th>戦闘力</th>
+            <th>加算</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>木村五郎</td>
+            <td>12</td>
+            <td>+12</td>
+          </tr>
+          <tr>
+            <td>林六郎</td>
+            <td>10</td>
+            <td>+10</td>
+          </tr>
+          <tr>
+            <td>斎藤七郎</td>
+            <td>11</td>
+            <td>+11</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-xs" style="text-align: center; color: #666;">...その他徒士12名（省略）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 馬上衆リスト -->
+    <div class="card">
+      <div class="card-header">🐴 馬上衆（8人）</div>
+      <table>
+        <thead>
+          <tr>
+            <th>名前</th>
+            <th>戦闘力</th>
+            <th>加算</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>加藤八郎</td>
+            <td>18</td>
+            <td>+18</td>
+          </tr>
+          <tr>
+            <td>小林九郎</td>
+            <td>16</td>
+            <td>+16</td>
+          </tr>
+          <tr>
+            <td>山口十郎</td>
+            <td>15</td>
+            <td>+15</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-xs" style="text-align: center; color: #666;">...その他馬上衆5名（省略）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 主人公の従僕（25人外） -->
+  <div class="card">
+    <div class="card-header">👥 主人公の従僕（25人外）</div>
+    <table>
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>年齢</th>
+          <th>戦闘力</th>
+          <th>状態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>権助</td>
+          <td>22歳</td>
+          <td>3</td>
+          <td><span class="badge badge-secondary">待機</span></td>
+        </tr>
+        <tr>
+          <td>与助</td>
+          <td>20歳</td>
+          <td>2</td>
+          <td><span class="badge badge-secondary">待機</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-010 | 小隊詳細画面 | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

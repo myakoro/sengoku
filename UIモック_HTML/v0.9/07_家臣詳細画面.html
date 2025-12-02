@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07. 家臣詳細画面 - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>🐴 家臣詳細</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='06_役職一覧画面.html'">戻る</button>
+      <button class="btn btn-primary">編集</button>
+    </div>
+  </header>
+
+  <div class="grid grid-2">
+    <!-- 左カラム -->
+    <div>
+      <!-- 基本情報 -->
+      <div class="card">
+        <div class="card-header">基本情報</div>
+        <h2 style="font-size: 18px; margin-bottom: 8px;">🐴 加藤八郎（馬上衆）</h2>
+        <div class="grid grid-2 text-xs">
+          <div>年齢: 28歳</div>
+          <div>出身: 村A (001)</div>
+          <div>役職: 馬上衆</div>
+          <div>所属: 小隊1</div>
+        </div>
+        <div class="mt-1">
+          <span class="badge badge-success">騎乗✓</span>
+          <span class="badge badge-primary">馬保有✓</span>
+        </div>
+      </div>
+
+      <!-- 4能力 -->
+      <div class="card">
+        <div class="card-header">4能力</div>
+        <div class="mb-1">
+          <div class="flex flex-between text-xs">
+            <span>戦闘力</span>
+            <span>18/25</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: #66BB6A; width: 72%;">18</div>
+          </div>
+        </div>
+        <div class="mb-1">
+          <div class="flex flex-between text-xs">
+            <span>統率</span>
+            <span>12/25</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: #1976D2; width: 48%;">12</div>
+          </div>
+        </div>
+        <div class="mb-1">
+          <div class="flex flex-between text-xs">
+            <span>政務</span>
+            <span>5/25</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: #FF9800; width: 20%;">5</div>
+          </div>
+        </div>
+        <div class="mb-1">
+          <div class="flex flex-between text-xs">
+            <span>知略</span>
+            <span>8/25</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: #9C27B0; width: 32%;">8</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 実戦度・訓練度 -->
+      <div class="card">
+        <div class="card-header">実戦度・訓練度</div>
+        <div class="mb-1">
+          <div class="text-xs">実戦度 65/100 <span style="color: #666;">補正: 0.925</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: #1565C0; width: 65%;">65</div>
+          </div>
+        </div>
+        <div class="mb-1">
+          <div class="text-xs">訓練度 78/100 <span style="color: #666;">補正: 0.890</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-training-mid" style="width: 78%;">78</div>
+          </div>
+        </div>
+        <p class="text-xs mt-1">隊平均訓練度: 75/100</p>
+      </div>
+    </div>
+
+    <!-- 右カラム -->
+    <div>
+      <!-- 一家構造 -->
+      <div class="card">
+        <div class="card-header">一家構造（家内従僕）</div>
+        <p class="text-xs">主人: 加藤八郎</p>
+        <table class="mt-1">
+          <thead>
+            <tr>
+              <th>名前</th>
+              <th>年齢</th>
+              <th>戦闘力</th>
+              <th>状態</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>権助</td>
+              <td>22歳</td>
+              <td>3</td>
+              <td><span class="badge badge-secondary">待機</span></td>
+            </tr>
+            <tr>
+              <td>与助</td>
+              <td>20歳</td>
+              <td>2</td>
+              <td><span class="badge badge-secondary">待機</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="text-xs mt-1">従僕数: 2人</p>
+      </div>
+
+      <!-- 戦歴 -->
+      <div class="card">
+        <div class="card-header">戦歴</div>
+        <div class="grid grid-3 mb-1">
+          <div class="status-item">
+            <div class="text-xs">総戦功</div>
+            <div style="font-size: 18px; font-weight: bold; color: var(--accent-shu);">450点</div>
+          </div>
+          <div class="status-item">
+            <div class="text-xs">参戦回数</div>
+            <div style="font-size: 18px; font-weight: bold;">12回</div>
+          </div>
+          <div class="status-item">
+            <div class="text-xs">勝敗</div>
+            <div class="text-xs">勝8 / 敗4</div>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>日付</th>
+              <th>戦場</th>
+              <th>戦功</th>
+              <th>結果</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1560/3/15</td>
+              <td>関ヶ原</td>
+              <td><strong>120点</strong></td>
+              <td><span class="badge badge-success">大勝</span></td>
+            </tr>
+            <tr>
+              <td>1560/2/10</td>
+              <td>桶狭間</td>
+              <td><strong>85点</strong></td>
+              <td><span class="badge badge-success">勝ち</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-007 | 家臣詳細画面 | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

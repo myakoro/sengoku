@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02. 隊状態パネル - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>📊 隊状態パネル</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='index.html'">戻る</button>
+      <button class="btn btn-primary">更新</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active">大隊</button>
+    <button class="tab">中隊</button>
+    <button class="tab">小隊</button>
+  </div>
+
+  <!-- 大隊一覧 - 2カラム -->
+  <div class="grid grid-2">
+    <!-- 大隊A -->
+    <div class="card">
+      <div class="card-header">大隊A（足軽大将：山田太郎）</div>
+      <div class="grid grid-2 mb-1">
+        <div>
+          <div class="text-xs" style="color: #666;">訓練度 75/100</div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-training-mid" style="width: 75%;">75</div>
+          </div>
+          <div class="text-xs" style="color: #666;">補正: 0.875</div>
+        </div>
+        <div>
+          <div class="text-xs" style="color: #666;">実戦度 60/100</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: #1565C0; width: 60%;">60</div>
+          </div>
+          <div class="text-xs" style="color: #666;">補正: 0.900</div>
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <div>
+          <div class="text-xs" style="color: #666;">疲労 25/100 <span class="badge badge-success">✓</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-fatigue-low" style="width: 25%;">25</div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs" style="color: #666;">士気 80/100 <span class="badge badge-success">✓</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-morale-high" style="width: 80%;">80</div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-1 flex gap-1">
+        <button class="btn btn-secondary">詳細</button>
+        <button class="btn btn-secondary">訓練</button>
+        <button class="btn btn-secondary">休息</button>
+      </div>
+    </div>
+
+    <!-- 大隊B -->
+    <div class="card">
+      <div class="card-header">大隊B（足軽大将：佐藤次郎）</div>
+      <div class="grid grid-2 mb-1">
+        <div>
+          <div class="text-xs" style="color: #666;">訓練度 55/100</div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-training-mid" style="width: 55%;">55</div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs" style="color: #666;">実戦度 40/100</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: #42A5F5; width: 40%;">40</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <div>
+          <div class="text-xs" style="color: #666;">疲労 55/100 <span class="badge badge-warning">⚠</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-fatigue-mid" style="width: 55%;">55</div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs" style="color: #666;">士気 30/100 <span class="badge badge-warning">⚠</span></div>
+          <div class="progress-bar">
+            <div class="progress-fill progress-morale-mid" style="width: 30%;">30</div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-1 flex gap-1">
+        <button class="btn btn-secondary">詳細</button>
+        <button class="btn btn-secondary">訓練</button>
+        <button class="btn btn-secondary">休息</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状態推移グラフ -->
+  <div class="card">
+    <div class="card-header">状態推移グラフ（簡易版）</div>
+    <div style="background: #F5F5F5; padding: 30px; border-radius: 6px; text-align: center;">
+      <div style="color: #666; font-size: 12px;">
+        <p>📈 訓練度・実戦度・疲労・士気の推移グラフ</p>
+        <p class="mt-1 text-xs">横軸: 1日前 → 12h前 → 6h前 → 3h前 → 現在 / 縦軸: 0〜100</p>
+      </div>
+    </div>
+    <div class="mt-1 flex gap-2" style="justify-content: center; font-size: 11px;">
+      <span style="color: #2E7D32;">━ 訓練度</span>
+      <span style="color: #1565C0;">━ 実戦度</span>
+      <span style="color: #FF9800;">━ 疲労</span>
+      <span style="color: #1976D2;">━ 士気</span>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-002 | 隊状態パネル | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06. 役職一覧画面 - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>🏯 役職一覧</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='index.html'">戻る</button>
+      <button class="btn btn-primary">編成管理</button>
+    </div>
+  </header>
+
+  <!-- 組織図（ピラミッド構造） -->
+  <div class="card">
+    <div class="card-header">🏯 組織図（ピラミッド構造）</div>
+    
+    <!-- 足軽大将 -->
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="display: inline-block; background: linear-gradient(135deg, var(--accent-shu) 0%, #A02F17 100%); color: white; padding: 15px 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">🏯 足軽大将（指揮上限: 300）</div>
+        <div style="font-size: 18px; font-weight: bold;">山田太郎</div>
+        <div style="font-size: 11px; margin-top: 4px;">統率85 / 政務60 / 知略70</div>
+      </div>
+      <div style="width: 2px; height: 20px; background: #999; margin: 0 auto;"></div>
+    </div>
+
+    <!-- 組頭 -->
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="font-size: 12px; color: #666; margin-bottom: 8px;">⚔ 組頭（指揮上限: 100）</div>
+      <div class="grid grid-3" style="max-width: 900px; margin: 0 auto;">
+        <div style="background: #E3F2FD; padding: 12px; border-radius: 6px; border-left: 4px solid var(--accent-ai);">
+          <div style="font-size: 14px; font-weight: bold; margin-bottom: 2px; color: var(--accent-ai);">佐藤組</div>
+          <div style="font-weight: bold; margin-bottom: 4px;">佐藤次郎 <span class="badge badge-secondary">標準</span></div>
+          <div class="text-xs">統率70 / 政務50 / 知略55</div>
+          <div class="text-xs" style="color: #666;">配下: 小隊4つ</div>
+        </div>
+        <div style="background: #E8F5E9; padding: 12px; border-radius: 6px; border-left: 4px solid var(--training-high);">
+          <div style="font-size: 14px; font-weight: bold; margin-bottom: 2px; color: var(--training-high);">鈴木組</div>
+          <div style="font-weight: bold; margin-bottom: 4px;">鈴木三郎 <span class="badge badge-success">慎重</span></div>
+          <div class="text-xs">統率68 / 政務55 / 知略60</div>
+          <div class="text-xs" style="color: #666;">配下: 小隊4つ</div>
+        </div>
+        <div style="background: #FFEBEE; padding: 12px; border-radius: 6px; border-left: 4px solid var(--fatigue-high);">
+          <div style="font-size: 14px; font-weight: bold; margin-bottom: 2px; color: var(--fatigue-high);">田中組</div>
+          <div style="font-weight: bold; margin-bottom: 4px;">田中四郎 <span class="badge badge-danger">猪突</span></div>
+          <div class="text-xs">統率75 / 政務45 / 知略50</div>
+          <div class="text-xs" style="color: #666;">配下: 小隊4つ</div>
+        </div>
+      </div>
+      <div style="width: 2px; height: 20px; background: #999; margin: 0 auto;"></div>
+    </div>
+
+    <!-- 小頭 -->
+    <div style="text-align: center;">
+      <div style="font-size: 12px; color: #666; margin-bottom: 8px;">🗡 小頭（指揮上限: 25）- 最大12衆</div>
+      
+      <!-- 第1段：各組2衆ずつ -->
+      <div style="display: flex; gap: 10px; max-width: 1200px; margin: 0 auto 10px auto;">
+        <!-- 佐藤組 1-2 -->
+        <div style="flex: 1;">
+          <div style="font-size: 12px; font-weight: bold; color: var(--accent-ai); margin-bottom: 5px; text-align: center;">佐藤組</div>
+          <div style="background: #E3F2FD; padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-ai); margin-bottom: 5px;">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--accent-ai);">伊藤衆</div>
+            <div style="font-weight: bold; font-size: 13px;">伊藤一郎</div>
+            <div class="text-xs">統率55 / 戦闘12 / 徒15馬8僕2</div>
+          </div>
+          <div style="background: #E3F2FD; padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-ai);">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--accent-ai);">渡辺衆</div>
+            <div style="font-weight: bold; font-size: 13px;">渡辺二郎</div>
+            <div class="text-xs">統率52 / 戦闘11 / 徒18馬5僕2</div>
+          </div>
+        </div>
+        
+        <!-- 鈴木組 1-2 -->
+        <div style="flex: 1;">
+          <div style="font-size: 12px; font-weight: bold; color: var(--training-high); margin-bottom: 5px; text-align: center;">鈴木組</div>
+          <div style="background: #E8F5E9; padding: 10px; border-radius: 4px; border-left: 3px solid var(--training-high); margin-bottom: 5px;">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--training-high);">高橋衆</div>
+            <div style="font-weight: bold; font-size: 13px;">高橋三郎</div>
+            <div class="text-xs">統率58 / 戦闘13 / 徒16馬7僕2</div>
+          </div>
+          <div style="background: #E8F5E9; padding: 10px; border-radius: 4px; border-left: 3px solid var(--training-high);">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--training-high);">山本衆</div>
+            <div style="font-weight: bold; font-size: 13px;">山本七郎</div>
+            <div class="text-xs">統率53 / 戦闘12 / 徒15馬8僕2</div>
+          </div>
+        </div>
+        
+        <!-- 田中組 1-2 -->
+        <div style="flex: 1;">
+          <div style="font-size: 12px; font-weight: bold; color: var(--fatigue-high); margin-bottom: 5px; text-align: center;">田中組</div>
+          <div style="background: #FFEBEE; padding: 10px; border-radius: 4px; border-left: 3px solid var(--fatigue-high); margin-bottom: 5px;">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--fatigue-high);">中村衆</div>
+            <div style="font-weight: bold; font-size: 13px;">中村四郎</div>
+            <div class="text-xs">統率60 / 戦闘14 / 徒17馬6僕2</div>
+          </div>
+          <div style="background: #FFEBEE; padding: 10px; border-radius: 4px; border-left: 3px solid var(--fatigue-high);">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--fatigue-high);">木村衆</div>
+            <div style="font-weight: bold; font-size: 13px;">木村十郎</div>
+            <div class="text-xs">統率59 / 戦闘13 / 徒15馬8僕2</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第2段：各組2衆ずつ -->
+      <div style="display: flex; gap: 10px; max-width: 1200px; margin: 0 auto;">
+        <!-- 佐藤組 3-4 -->
+        <div style="flex: 1;">
+          <div style="background: #E3F2FD; padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-ai); margin-bottom: 5px;">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--accent-ai);">小林衆</div>
+            <div style="font-weight: bold; font-size: 13px;">小林五郎</div>
+            <div class="text-xs">統率54 / 戦闘11 / 徒16馬7僕2</div>
+          </div>
+          <div style="background: #E3F2FD; padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-ai);">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--accent-ai);">加藤衆</div>
+            <div style="font-weight: bold; font-size: 13px;">加藤六郎</div>
+            <div class="text-xs">統率56 / 戦闘13 / 徒17馬6僕2</div>
+          </div>
+        </div>
+        
+        <!-- 鈴木組 3-4 -->
+        <div style="flex: 1;">
+          <div style="background: #E8F5E9; padding: 10px; border-radius: 4px; border-left: 3px solid var(--training-high); margin-bottom: 5px;">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--training-high);">松田衆</div>
+            <div style="font-weight: bold; font-size: 13px;">松田八郎</div>
+            <div class="text-xs">統率57 / 戦闘14 / 徒18馬5僕2</div>
+          </div>
+          <div style="background: #E8F5E9; padding: 10px; border-radius: 4px; border-left: 3px solid var(--training-high);">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--training-high);">井上衆</div>
+            <div style="font-weight: bold; font-size: 13px;">井上九郎</div>
+            <div class="text-xs">統率51 / 戦闘10 / 徒16馬7僕2</div>
+          </div>
+        </div>
+        
+        <!-- 田中組 3-4 -->
+        <div style="flex: 1;">
+          <div style="background: #FFEBEE; padding: 10px; border-radius: 4px; border-left: 3px solid var(--fatigue-high); margin-bottom: 5px;">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--fatigue-high);">斎藤衆</div>
+            <div style="font-weight: bold; font-size: 13px;">斎藤十一郎</div>
+            <div class="text-xs">統率55 / 戦闘12 / 徒18馬5僕2</div>
+          </div>
+          <div style="background: #FFEBEE; padding: 10px; border-radius: 4px; border-left: 3px solid var(--fatigue-high);">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 2px; color: var(--fatigue-high);">林衆</div>
+            <div style="font-weight: bold; font-size: 13px;">林十二郎</div>
+            <div class="text-xs">統率56 / 戦闘11 / 徒16馬7僕2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 馬上衆 -->
+  <div class="card">
+    <div class="card-header" style="color: var(--accent-kincha);">🐴 馬上衆（騎乗可能）</div>
+    <table>
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>戦闘力</th>
+          <th>騎乗</th>
+          <th>馬保有</th>
+          <th>所属組</th>
+          <th>所属衆</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>加藤八郎</strong></td>
+          <td>18</td>
+          <td><span class="badge badge-success">✓</span></td>
+          <td><span class="badge badge-primary">✓</span></td>
+          <td><span style="color: var(--accent-ai); font-weight: bold;">佐藤組</span></td>
+          <td><span style="color: var(--accent-ai); font-weight: bold;">伊藤衆</span></td>
+        </tr>
+        <tr>
+          <td><strong>小林九郎</strong></td>
+          <td>16</td>
+          <td><span class="badge badge-success">✓</span></td>
+          <td><span class="badge badge-primary">✓</span></td>
+          <td><span style="color: var(--training-high); font-weight: bold;">鈴木組</span></td>
+          <td><span style="color: var(--training-high); font-weight: bold;">高橋衆</span></td>
+        </tr>
+        <tr>
+          <td><strong>山口十郎</strong></td>
+          <td>15</td>
+          <td><span class="badge badge-success">✓</span></td>
+          <td><span class="badge badge-primary">✓</span></td>
+          <td><span style="color: var(--fatigue-high); font-weight: bold;">田中組</span></td>
+          <td><span style="color: var(--fatigue-high); font-weight: bold;">中村衆</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 徒士 -->
+  <div class="card">
+    <div class="card-header">⚔ 徒士（歩兵） - 一部抜粋</div>
+    <table>
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>戦闘力</th>
+          <th>所属組</th>
+          <th>所属衆</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>木村五郎</td>
+          <td>12</td>
+          <td><span style="color: var(--accent-ai); font-weight: bold;">佐藤組</span></td>
+          <td><span style="color: var(--accent-ai); font-weight: bold;">伊藤衆</span></td>
+        </tr>
+        <tr>
+          <td>林六郎</td>
+          <td>10</td>
+          <td><span style="color: var(--training-high); font-weight: bold;">鈴木組</span></td>
+          <td><span style="color: var(--training-high); font-weight: bold;">高橋衆</span></td>
+        </tr>
+        <tr>
+          <td>斎藤七郎</td>
+          <td>11</td>
+          <td><span style="color: var(--fatigue-high); font-weight: bold;">田中組</span></td>
+          <td><span style="color: var(--fatigue-high); font-weight: bold;">中村衆</span></td>
+        </tr>
+        <tr>
+          <td colspan="4" class="text-xs" style="text-align: center; color: #666;">...その他の徒士（省略）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-006 | 役職一覧画面 | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09. 中隊管理画面 - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>⚔ 佐藤組 - 中隊管理</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="window.location.href='index.html'">戻る</button>
+      <button class="btn btn-primary">詳細</button>
+    </div>
+  </header>
+
+  <div class="card">
+    <div class="flex flex-between">
+      <div>
+        <strong>組頭: 佐藤次郎</strong> <span class="badge badge-secondary">性格: 標準</span> / 総兵力: 100人 / ローテ基準: 疲労80
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">小隊一覧（4衆）</div>
+    <div class="grid grid-2">
+      <div class="compact-card" style="border-left-color: #1976D2;">
+        <h4>伊藤衆（前線）</h4>
+        <p class="text-xs">小頭: 伊藤一郎 / 兵力: 25</p>
+        <div class="progress-bar">
+          <div class="progress-fill progress-morale-high" style="width: 82%;">士82</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill progress-fatigue-low" style="width: 18%;">疲18</div>
+        </div>
+      </div>
+
+      <div class="compact-card" style="border-left-color: #1976D2;">
+        <h4>渡辺衆（前線）</h4>
+        <p class="text-xs">小頭: 渡辺二郎 / 兵力: 25</p>
+        <div class="progress-bar">
+          <div class="progress-fill progress-morale-high" style="width: 75%;">士75</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill progress-fatigue-low" style="width: 25%;">疲25</div>
+        </div>
+      </div>
+
+      <div class="compact-card" style="border-left-color: #546E7A;">
+        <h4>小林衆（後衛）</h4>
+        <p class="text-xs">小頭: 小林五郎 / 兵力: 25</p>
+        <div class="progress-bar">
+          <div class="progress-fill progress-morale-mid" style="width: 70%;">士70</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill progress-fatigue-low" style="width: 20%;">疲20</div>
+        </div>
+      </div>
+
+      <div class="compact-card" style="border-left-color: #546E7A;">
+        <h4>加藤衆（後衛）</h4>
+        <p class="text-xs">小頭: 加藤六郎 / 兵力: 25</p>
+        <div class="progress-bar">
+          <div class="progress-fill progress-morale-high" style="width: 78%;">士78</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill progress-fatigue-low" style="width: 10%;">疲10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">性格別ローテ基準</div>
+    <div class="text-xs" style="background: #F5F5F5; padding: 10px; border-radius: 4px;">
+      <p><strong>現在の性格:</strong> 標準 → ローテ基準: 疲労80</p>
+      <p class="mt-1"><strong>参考:</strong></p>
+      <p>・慎重: 疲労70 / ・標準: 疲労80 / ・猪突: 疲労90</p>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-009 | 中隊管理画面 | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03. 戦場UI - v0.9 UIモック</title>
+  <link rel="stylesheet" href="css/compact.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>⚔️ 戦場</h1>
+    <div class="header-actions">
+      <button class="btn btn-outline">一時停止</button>
+      <button class="btn btn-primary">終了</button>
+    </div>
+  </header>
+
+  <div class="grid grid-2">
+    <!-- ミニマップ -->
+    <div class="card">
+      <div class="card-header">ミニマップ（簡易版）</div>
+      <div style="background: #F5F5F5; border: 2px solid #999; border-radius: 6px; padding: 20px; text-align: center;">
+        <div style="background: #FFCDD2; padding: 12px; border-radius: 4px; margin-bottom: 12px;">
+          <div class="text-xs" style="margin-bottom: 6px;">【敵軍】</div>
+          <div style="display: flex; gap: 4px; justify-content: center;">
+            <span style="background: #E53935; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">大隊A</span>
+            <span style="background: #E53935; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">大隊B</span>
+            <span style="background: #E53935; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">大隊C</span>
+          </div>
+        </div>
+        <div style="border-top: 3px double #333; border-bottom: 3px double #333; padding: 8px; margin: 12px 0; font-weight: bold; font-size: 14px;">
+          ⚔ 押し合い中 ⚔
+        </div>
+        <div style="background: #E3F2FD; padding: 12px; border-radius: 4px;">
+          <div style="display: flex; gap: 4px; justify-content: center; margin-bottom: 6px;">
+            <span style="background: #1976D2; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">中隊A</span>
+            <span style="background: #1976D2; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">中隊B</span>
+            <span style="background: #1976D2; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">中隊C</span>
+          </div>
+          <div style="display: flex; gap: 4px; justify-content: center; margin-top: 8px;">
+            <span style="background: #546E7A; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">中隊D</span>
+            <span style="background: #546E7A; color: white; padding: 6px 12px; border-radius: 3px; font-size: 11px;">中隊E</span>
+          </div>
+          <div class="text-xs" style="margin-top: 6px;">【自軍】</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 押し合い状況 -->
+    <div class="card">
+      <div class="card-header">押し合い状況 - 第12回</div>
+      <div class="grid grid-2 mb-1 text-xs">
+        <div>自軍戦力: <strong>1,250</strong></div>
+        <div>敵軍戦力: <strong>1,180</strong></div>
+      </div>
+      <div class="progress-bar" style="height: 24px;">
+        <div style="background: #1976D2; width: 51.5%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 11px;">自軍</div>
+      </div>
+      <div class="progress-bar" style="height: 24px;">
+        <div style="background: #E53935; width: 48.5%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 11px;">敵軍</div>
+      </div>
+      <div class="alert alert-success mt-1">
+        <strong>判定: 【自軍勝ち】</strong> 戦力差: +70
+      </div>
+      <div class="mt-1" style="background: #F5F5F5; padding: 10px; border-radius: 4px; font-size: 11px;">
+        <p>自軍中隊A: 士気 80→82 (+2) / 疲労 25→28 (+3)</p>
+        <p>敵軍大隊A: 士気 65→60 (−5) / 疲労 40→45 (+5)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ローテーション -->
+  <div class="card">
+    <div class="card-header">中隊ローテーション</div>
+    <div class="alert alert-warning">
+      <span class="icon">⚠</span>
+      <div><strong>中隊Bの疲労が80に達しました</strong> → 中隊Dと交代</div>
+    </div>
+    <div class="grid grid-2 text-xs">
+      <div><strong>[前線]</strong> 中隊A 中隊D 中隊C</div>
+      <div><strong>[後衛]</strong> 中隊E 中隊B（休息中）</div>
+    </div>
+  </div>
+
+  <!-- 結果ログ -->
+  <div class="card">
+    <div class="card-header">結果ログ</div>
+    <div style="background: #F5F5F5; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 11px; max-height: 150px; overflow-y: auto;">
+      <p style="color: #2E7D32;">12:34 自軍中隊A vs 敵軍大隊A → 自軍勝ち</p>
+      <p>12:35 敵軍士気−5、疲労+5</p>
+      <p style="color: #FF9800;">12:36 中隊Bの疲労が80に達し、ローテ実施</p>
+      <p style="color: #C62828;">12:37 敵軍大隊Cが崩壊！追撃判定開始</p>
+      <p>12:38 追撃強度P2で追撃実施</p>
+      <p>12:39 敵軍損耗: 死亡12 廃兵8 負傷25 逃散5</p>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>SCR-003 | 戦場UI | v0.9 UIモック</p>
+  </footer>
+</body>
+</html>
