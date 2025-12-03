@@ -1,0 +1,121 @@
+<UserControl x:Class="SengokuSLG.Views.IndustryDevelopmentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Background="{StaticResource BrushBgBase}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource BrushBgHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,1" Padding="20">
+            <StackPanel>
+                <TextBlock Text="【産業・名産開発】" FontSize="24" FontWeight="Bold" Foreground="{StaticResource BrushTextPrimary}"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="村名：" FontSize="14" Foreground="{StaticResource BrushTextPrimary}"/>
+                    <TextBlock Text="{Binding CurrentVillage.Name}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource BrushTextPrimary}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Industry Slots -->
+            <Border Grid.Column="0" Margin="0,0,20,0">
+                <StackPanel>
+                    <TextBlock Text="■ 産業スロット" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,10"/>
+                    <ItemsControl ItemsSource="{Binding CurrentVillage.IndustrySlots}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="2"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#fdfbf7" BorderBrush="#8b6f47" BorderThickness="2" CornerRadius="6" Padding="15" Margin="5">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Type, Converter={StaticResource IndustryTypeToTextConverter}}" FontSize="16" FontWeight="Bold" Foreground="#5d4037" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Level, StringFormat='Lv.{0}'}" FontSize="22" FontWeight="Bold" Foreground="#2d5a8c" VerticalAlignment="Center"/>
+                                        </Grid>
+                                        
+                                        <TextBlock Text="進捗" FontSize="11" Foreground="#666" Margin="0,0,0,3"/>
+                                        <Grid Height="20" Margin="0,0,0,5">
+                                            <ProgressBar Value="{Binding Progress}" Maximum="100" Foreground="#2196f3" Background="#e0e0e0"/>
+                                            <TextBlock Text="{Binding Progress, StringFormat='{}{0} / 100'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                        </Grid>
+                                        <TextBlock Text="次レベルまで: ??pt" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Right: Meisan Info -->
+            <StackPanel Grid.Column="1">
+                <Border Background="#faf6ed" BorderBrush="#d4a017" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="■ 名産情報" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,10"/>
+                        
+                        <!-- Progress -->
+                        <TextBlock Text="名産進捗" FontSize="11" Foreground="#666" Margin="0,0,0,3"/>
+                        <Grid Height="20" Margin="0,0,0,15">
+                            <ProgressBar Value="{Binding CurrentVillage.MeisanProgress}" Maximum="100" Foreground="#4caf50" Background="#e0e0e0"/>
+                            <TextBlock Text="{Binding CurrentVillage.MeisanProgress, StringFormat='{}{0} / 100'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                        </Grid>
+
+                        <!-- Current Meisan -->
+                        <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="10" Margin="0,0,0,15">
+                            <DockPanel>
+                                <TextBlock Text="現在の名産：" FontWeight="Bold" Foreground="#5d4037"/>
+                                <TextBlock Text="{Binding CurrentVillage.CurrentMeisan.Name, TargetNullValue='なし'}" Foreground="#888" HorizontalAlignment="Right"/>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- Generation Condition -->
+                        <Border Background="#fff9e6" BorderBrush="#d4a017" BorderThickness="2" CornerRadius="6" Padding="10">
+                            <StackPanel>
+                                <TextBlock Text="■ 名産候補発生条件" FontSize="13" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,6"/>
+                                <TextBlock Text="・いずれかの産業がLv.5以上で名産候補が発生します" FontSize="12" TextWrapping="Wrap" Foreground="#2b2b2b"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Action Info -->
+                <Border Background="#e3f2fd" BorderBrush="#2d5a8c" BorderThickness="2" CornerRadius="6" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="■ 開発アクション（参照情報）" FontSize="13" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,6"/>
+                        <StackPanel>
+                            <TextBlock Text="● 私事「産業開発」で進捗+10〜30pt" FontSize="12" Margin="10,2"/>
+                            <TextBlock Text="● 私事「名産開発」で名産進捗+10〜30pt" FontSize="12" Margin="10,2"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Footer Buttons -->
+        <Border Grid.Row="2" Padding="20" Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="閉じる" Command="{Binding CloseCommand}" Style="{StaticResource ButtonSecondary}" Width="120"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

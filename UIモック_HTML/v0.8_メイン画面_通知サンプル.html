@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戦国立身出世SLG v0.8 - メイン画面（通知サンプル）</title>
+    <style>
+        body {
+            font-family: "Yu Mincho", "Hiragino Mincho ProN", "MS Mincho", serif;
+            background-color: #f8f3e7;
+            color: #2b2b2b;
+            margin: 0;
+            padding: 0;
+            min-width: 1280px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border-bottom: 2px solid #8b4513;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .kamon {
+            width: 40px;
+            height: 40px;
+            background-color: #c73940;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 20px;
+            border: 2px solid #8b4513;
+            font-size: 12px;
+        }
+
+        .date-info {
+            flex: 1;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* メインコンテンツ */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* 左ナビ */
+        .left-nav {
+            width: 200px;
+            background: linear-gradient(180deg, #e7d8b1 0%, #d4c5a0 100%);
+            border-right: 2px solid #8b4513;
+            padding: 20px 15px;
+        }
+
+        .nav-section {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #d4c5a0;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+
+        .nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-item:hover:not(.active):not(.disabled) {
+            background-color: #fff8dc;
+        }
+
+        .nav-item.disabled {
+            color: #888888;
+            cursor: not-allowed;
+        }
+
+        /* 中央エリア */
+        .center-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 10px;
+        }
+
+        /* 行動選択ボタン */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .action-button {
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #e7d8b1 0%, #f0e6d2 100%);
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .action-button:hover {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .action-button-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .action-button-desc {
+            font-size: 14px;
+        }
+
+        /* 知行概況パネル */
+        .territory-panel {
+            background-color: #f0e6d2;
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .territory-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 8px;
+        }
+
+        .village-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .village-card {
+            background-color: #fff8dc;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .village-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .village-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* 右サイドバー */
+        .right-sidebar {
+            width: 320px;
+            background-color: #f0e6d2;
+            border-left: 2px solid #8b4513;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-section.compact {
+            padding: 12px;
+        }
+
+        .sidebar-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #c73940;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 5px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .stat-label {
+            color: #2b2b2b;
+        }
+
+        .stat-value {
+            font-weight: bold;
+        }
+
+        /* 役職バッジ */
+        .rank-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: #1d3557;
+            color: white;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* 4能力グリッド（コンパクト版） */
+        .abilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .ability-box {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .ability-icon {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .ability-name {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .ability-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* 能力別アイコン色 */
+        .icon-combat { color: #c73940; }
+        .icon-leadership { color: #1d3557; }
+        .icon-politics { color: #2d7a3e; }
+        .icon-intrigue { color: #8b4513; }
+
+        /* 補正表示 */
+        .bonus-indicator {
+            color: #2d7a3e;
+            font-size: 11px;
+            margin-left: 3px;
+        }
+
+        /* 功績ゲージ（コンパクト版） */
+        .achievement-gauge {
+            margin-top: 8px;
+        }
+
+        .gauge-bar {
+            width: 100%;
+            height: 18px;
+            background-color: #f8f3e7;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c73940 0%, #e74c3c 100%);
+            transition: width 0.3s;
+        }
+
+        .gauge-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: #2b2b2b;
+        }
+
+        /* v0.8 通知バッジ・インジケータ */
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: #f44336;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .genpuku-indicator {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: #ffc107;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .succession-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #ff9800;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+
+        .succession-indicator-icon {
+            font-size: 12px;
+        }
+
+        /* v0.8 今月の出来事（コンパクト版） */
+        .event-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .event-item {
+            font-size: 12px;
+            padding: 6px 8px;
+            border-bottom: 1px solid #d4c5a0;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-icon {
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .event-icon.marriage { color: #c73940; }
+        .event-icon.genpuku { color: #ffc107; }
+        .event-icon.birth { color: #4caf50; }
+        .event-icon.info { color: #2196f3; }
+
+        /* 家臣団サマリー（コンパクト版） */
+        .vassal-summary {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .vassal-count {
+            text-align: center;
+            padding: 8px 6px;
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 6px;
+            flex: 1;
+        }
+
+        .count-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c73940;
+        }
+
+        .count-label {
+            font-size: 10px;
+            color: #2b2b2b;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <div class="kamon">家紋</div>
+            <div class="date-info">
+                天正15年（1587年） 3月 12日
+                <!-- v0.8: 当主が60歳以上の場合に表示 -->
+                <span class="succession-indicator">
+                    <span class="succession-indicator-icon">⚠</span>
+                    <span>継承準備</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- 左ナビゲーション -->
+            <div class="left-nav">
+                <div class="nav-section">
+                    <div class="nav-item active">日常</div>
+                    <div class="nav-item">村情報</div>
+                    <div class="nav-item">家臣団</div>
+                    <div class="nav-item disabled">軍事（未実装）</div>
+                    <div class="nav-item disabled">調略（未実装）</div>
+                    <!-- v0.8: 婚姻機能 -->
+                    <div class="nav-item">
+                        婚姻
+                        <!-- 縁談オファーがある場合に表示 -->
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <!-- v0.8: 家族機能 -->
+                    <div class="nav-item">
+                        家族
+                        <!-- 元服可能な子供がいる場合に表示 -->
+                        <span class="genpuku-indicator">!</span>
+                    </div>
+                    <div class="nav-item disabled">地方（未実装）</div>
+                </div>
+            </div>
+
+            <!-- 中央エリア -->
+            <div class="center-area">
+                <div class="section-title">今日の行動を選ぶ</div>
+
+                <!-- 行動選択ボタン -->
+                <div class="action-buttons">
+                    <div class="action-button">
+                        <div class="action-button-title">公務を行う</div>
+                        <div class="action-button-desc">主家のために働き、功績を積む</div>
+                    </div>
+                    <div class="action-button">
+                        <div class="action-button-title">私事を行う</div>
+                        <div class="action-button-desc">自家の発展のために行動する</div>
+                    </div>
+                    <div class="action-button">
+                        <div class="action-button-title">家臣一覧</div>
+                        <div class="action-button-desc">家臣の管理・昇格を行う</div>
+                    </div>
+                    <div class="action-button">
+                        <div class="action-button-title">補佐官設定</div>
+                        <div class="action-button-desc">補佐官の任命・変更を行う</div>
+                    </div>
+                </div>
+
+                <!-- 知行の概況 -->
+                <div class="territory-panel">
+                    <div class="territory-title">■ 知行の概況</div>
+                    <div class="village-info">
+                        <div class="village-card">
+                            <div class="village-name">村A</div>
+                            <div class="village-stat">
+                                <span>人口</span>
+                                <span>1000人</span>
+                            </div>
+                            <div class="village-stat">
+                                <span>治安</span>
+                                <span>50</span>
+                            </div>
+                            <div class="village-stat">
+                                <span>開発</span>
+                                <span>10</span>
+                            </div>
+                        </div>
+                        <div class="village-card">
+                            <div class="village-name">村B</div>
+                            <div class="village-stat">
+                                <span>人口</span>
+                                <span>500人</span>
+                            </div>
+                            <div class="village-stat">
+                                <span>治安</span>
+                                <span>30</span>
+                            </div>
+                            <div class="village-stat">
+                                <span>開発</span>
+                                <span>5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右サイドバー（コンパクト版） -->
+            <div class="right-sidebar">
+                <!-- プレイヤー情報 -->
+                <div class="sidebar-section compact">
+                    <div class="sidebar-title">■ 所属家 織田家（羽柴家）</div>
+                    <div class="stat-row">
+                        <span class="stat-label">氏名</span>
+                        <span class="stat-value">田中太郎</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">役職</span>
+                        <span class="stat-value">
+                            <span class="rank-badge">徒士</span>
+                        </span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">家格</span>
+                        <span class="stat-value">3</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">所持金</span>
+                        <span class="stat-value">100貫</span>
+                    </div>
+                </div>
+
+                <!-- 4能力 -->
+                <div class="sidebar-section compact">
+                    <div class="sidebar-title">■ 能力</div>
+                    <div class="abilities-grid">
+                        <div class="ability-box">
+                            <div class="ability-icon icon-combat">⚔</div>
+                            <div class="ability-name">戦闘</div>
+                            <div class="ability-value">60</div>
+                        </div>
+                        <div class="ability-box">
+                            <div class="ability-icon icon-leadership">🛡</div>
+                            <div class="ability-name">統率</div>
+                            <div class="ability-value">35</div>
+                        </div>
+                        <div class="ability-box">
+                            <div class="ability-icon icon-politics">📜</div>
+                            <div class="ability-name">政務</div>
+                            <div class="ability-value">
+                                65
+                                <span class="bonus-indicator">+4</span>
+                            </div>
+                        </div>
+                        <div class="ability-box">
+                            <div class="ability-icon icon-intrigue">🎯</div>
+                            <div class="ability-name">知略</div>
+                            <div class="ability-value">
+                                55
+                                <span class="bonus-indicator">+5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 功績 -->
+                <div class="sidebar-section compact">
+                    <div class="sidebar-title">■ 功績</div>
+                    <div class="stat-row">
+                        <span class="stat-label">累積功績</span>
+                        <span class="stat-value">120</span>
+                    </div>
+                    <div class="achievement-gauge">
+                        <div class="gauge-bar">
+                            <div class="gauge-fill" style="width: 60%;"></div>
+                            <div class="gauge-text">組頭まで あと80</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 家臣団 -->
+                <div class="sidebar-section compact">
+                    <div class="sidebar-title">■ 家臣団</div>
+                    <div class="stat-row">
+                        <span class="stat-label">総数</span>
+                        <span class="stat-value">8名</span>
+                    </div>
+                    <div class="vassal-summary">
+                        <div class="vassal-count">
+                            <div class="count-number">2</div>
+                            <div class="count-label">従僕</div>
+                        </div>
+                        <div class="vassal-count">
+                            <div class="count-number">5</div>
+                            <div class="count-label">徒士</div>
+                        </div>
+                        <div class="vassal-count">
+                            <div class="count-number">1</div>
+                            <div class="count-label">組頭</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- v0.8: 今月の出来事 -->
+                <div class="sidebar-section compact">
+                    <div class="sidebar-title">■ 今月の出来事</div>
+                    <ul class="event-list">
+                        <li class="event-item">
+                            <span class="event-icon marriage">●</span>
+                            <span>田中家から縁談の申し出</span>
+                        </li>
+                        <li class="event-item">
+                            <span class="event-icon genpuku">●</span>
+                            <span>山田 三郎が元服（従僕）</span>
+                        </li>
+                        <li class="event-item">
+                            <span class="event-icon birth">●</span>
+                            <span>子供誕生（山田 夏子）</span>
+                        </li>
+                        <li class="event-item">
+                            <span class="event-icon info">●</span>
+                            <span>税収を100貫得た</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

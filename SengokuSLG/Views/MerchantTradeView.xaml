@@ -1,0 +1,136 @@
+<UserControl x:Class="SengokuSLG.Views.MerchantTradeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Background="{StaticResource BrushBgBase}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource BrushBgHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,1" Padding="20">
+            <StackPanel>
+                <TextBlock Text="【商人取引】" FontSize="24" FontWeight="Bold" Foreground="{StaticResource BrushTextPrimary}"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="商人名：" FontSize="14" Foreground="{StaticResource BrushTextPrimary}"/>
+                    <TextBlock Text="{Binding CurrentMerchant.Name}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource BrushTextPrimary}" Margin="0,0,10,0"/>
+                    <Border Background="{StaticResource BrushAccentGold}" CornerRadius="4" Padding="8,2">
+                        <TextBlock Text="{Binding CurrentMerchant.Tier, Converter={StaticResource MerchantTierToTextConverter}}" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Merchant Info -->
+        <Border Grid.Row="1" Background="#faf6ed" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="15" Margin="20">
+            <StackPanel>
+                <!-- Trust -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                    <TextBlock Text="信用値：" FontWeight="Bold" Foreground="#5d4037" Width="70" VerticalAlignment="Center"/>
+                    <Grid Height="20" Width="200" Margin="0,0,10,0">
+                        <ProgressBar Value="{Binding CurrentMerchant.Credit}" Maximum="100" Foreground="#4caf50" Background="#e0e0e0"/>
+                        <TextBlock Text="{Binding CurrentMerchant.Credit, StringFormat='{}{0} / 100'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                    </Grid>
+                    <Border Background="#e0e0e0" CornerRadius="3" Padding="8,2">
+                        <TextBlock Text="{Binding CurrentMerchant.CreditRank, Converter={StaticResource CreditRankToTextConverter}}" FontSize="12" FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- Stats -->
+                <UniformGrid Columns="3">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="累計取引額" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentMerchant.TotalTradeAmount, StringFormat='{}{0:N0}貫'}" FontSize="16" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="累計取引回数" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentMerchant.TotalTradeCount, StringFormat='{}{0}回'}" FontSize="16" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="次回来訪日" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentMerchant.NextVisitDay, StringFormat='毎月 {0}日'}" FontSize="16" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="2" Margin="20,0,20,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="280"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Goods List -->
+            <Border Grid.Column="0" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,15,0">
+                <StackPanel>
+                    <TextBlock Text="■ 商品リスト" FontSize="14" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,10"/>
+                    <DataGrid ItemsSource="{Binding CurrentMerchant.ProductList}" AutoGenerateColumns="False" HeadersVisibility="Column" Background="Transparent" BorderThickness="0" GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="商品名" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="カテゴリ" Binding="{Binding Category, Converter={StaticResource ProductCategoryToTextConverter}}" Width="80"/>
+                            <DataGridTextColumn Header="基礎価格" Binding="{Binding BasePrice, StringFormat='{}{0}貫'}" Width="80"/>
+                            <DataGridTextColumn Header="在庫数" Binding="{Binding Stock, TargetNullValue='-'}" Width="60"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <!-- Side Section -->
+            <StackPanel Grid.Column="1">
+                <!-- Rank Effects -->
+                <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="10" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="■ 信用ランク効果" FontSize="14" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                        <DockPanel Margin="0,5" LastChildFill="False">
+                            <TextBlock Text="手数料率：" FontWeight="Bold" Foreground="#5d4037"/>
+                            <TextBlock Text="5%" FontWeight="Bold" Foreground="#2d7a3e" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <Separator Background="#d4c4a8"/>
+                        <DockPanel Margin="0,5" LastChildFill="False">
+                            <TextBlock Text="卸売：" FontWeight="Bold" Foreground="#5d4037"/>
+                            <TextBlock Text="可能" FontWeight="Bold" Foreground="#2d7a3e" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <Separator Background="#d4c4a8"/>
+                        <DockPanel Margin="0,5" LastChildFill="False">
+                            <TextBlock Text="高級商品：" FontWeight="Bold" Foreground="#5d4037"/>
+                            <TextBlock Text="可能" FontWeight="Bold" Foreground="#2d7a3e" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- History -->
+                <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="■ 取引履歴" FontSize="14" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                        <ItemsControl ItemsSource="{Binding TradeHistory}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#d4c4a8" BorderThickness="0,0,0,1" Padding="5">
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding Date}" FontSize="11" Foreground="#666"/>
+                                            <TextBlock Text="{Binding Amount, StringFormat='{}{0}貫'}" FontWeight="Bold" Foreground="#2d5a8c" DockPanel.Dock="Right"/>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Footer Buttons -->
+        <Border Grid.Row="3" Padding="20" Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="閉じる" Command="{Binding CloseCommand}" Style="{StaticResource ButtonSecondary}" Width="120"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

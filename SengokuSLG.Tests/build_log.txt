@@ -1,0 +1,29 @@
+  復元対象のプロジェクトを決定しています...
+  復元対象のすべてのプロジェクトは最新です。
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(91,50): warning CS8612: 'event PropertyChangedEventHandler Meisan.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(192,50): warning CS8612: 'event PropertyChangedEventHandler Merchant.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(193,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(285,50): warning CS8612: 'event PropertyChangedEventHandler Village.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(286,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\GameService.cs(26,24): error CS0102: 型 'GameService' は既に '_random' の定義を含んでいます [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\GameService.cs(39,45): error CS0102: 型 'GameService' は既に 'Vassals' の定義を含んでいます [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(92,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(137,50): warning CS8612: 'event PropertyChangedEventHandler IndustrySlot.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(138,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+
+ビルドに失敗しました。
+
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(91,50): warning CS8612: 'event PropertyChangedEventHandler Meisan.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(192,50): warning CS8612: 'event PropertyChangedEventHandler Merchant.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(193,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(285,50): warning CS8612: 'event PropertyChangedEventHandler Village.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(286,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(92,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(137,50): warning CS8612: 'event PropertyChangedEventHandler IndustrySlot.PropertyChanged' の型における参照型の Null 許容性が、暗黙的に実装されるメンバー 'event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged' と一致しません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\EconomicModels.cs(138,83): warning CS8625: null リテラルを null 非許容参照型に変換できません。 [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\GameService.cs(26,24): error CS0102: 型 'GameService' は既に '_random' の定義を含んでいます [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\GameService.cs(39,45): error CS0102: 型 'GameService' は既に 'Vassals' の定義を含んでいます [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\SengokuSLG.Tests.csproj]
+    8 個の警告
+    2 エラー
+
+経過時間 00:00:01.15

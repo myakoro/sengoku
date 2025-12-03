@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>婚姻候補一覧画面 - 戦国立身出世SLG v0.8</title>
+    <link rel="stylesheet" href="v0.7_styles.css">
+    <link rel="stylesheet" href="v0.8_styles.css">
+    <style>
+        /* コンパクト版スタイル */
+        .marriage-compact-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 13px;
+        }
+        
+        .marriage-compact-table thead {
+            background: linear-gradient(135deg, #8b6f47 0%, #a0826d 100%);
+            color: white;
+        }
+        
+        .marriage-compact-table th {
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: bold;
+            border-right: 1px solid #d4c5a0;
+            font-size: 12px;
+        }
+        
+        .marriage-compact-table th:last-child {
+            border-right: none;
+        }
+        
+        .marriage-compact-table td {
+            padding: 12px 8px;
+            text-align: center;
+            border-bottom: 1px solid #d4c5a0;
+            border-right: 1px solid #d4c5a0;
+        }
+        
+        .marriage-compact-table td:last-child {
+            border-right: none;
+        }
+        
+        .marriage-compact-table tbody tr:hover {
+            background-color: #f0e6d2;
+        }
+        
+        .marriage-compact-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .compact-type-legal {
+            background-color: #c73940;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .compact-type-concubine {
+            background-color: #ff9800;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .compact-gold {
+            color: #d4a017;
+            font-weight: bold;
+        }
+        
+        .compact-actions {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        
+        .compact-btn {
+            padding: 5px 12px;
+            font-size: 11px;
+            border-radius: 4px;
+            border: 1px solid #8b4513;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .compact-btn-primary {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+        }
+        
+        .compact-btn-primary:hover {
+            background: linear-gradient(135deg, #2a4a6b 0%, #1d3557 100%);
+        }
+        
+        .compact-btn-secondary {
+            background-color: #f0e6d2;
+            color: #2b2b2b;
+        }
+        
+        .compact-btn-secondary:hover {
+            background-color: #e7d8b1;
+        }
+        
+        .compact-note {
+            background-color: #fff8dc;
+            border: 1px solid #8b4513;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>【婚姻候補一覧】</h1>
+            <div class="subtitle">現在の縁談オファー: 3件</div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="marriage-list-container">
+            <!-- テーブル形式 -->
+            <table class="marriage-compact-table">
+                <thead>
+                    <tr>
+                        <th>区分</th>
+                        <th>相手家</th>
+                        <th>対象者</th>
+                        <th>家格</th>
+                        <th>役職</th>
+                        <th>持参金</th>
+                        <th>人脈紹介</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="compact-type-legal">正室</span></td>
+                        <td>田中家</td>
+                        <td>田中 花子</td>
+                        <td>50</td>
+                        <td>なし</td>
+                        <td><span class="compact-gold">500貫</span></td>
+                        <td>商人1名</td>
+                        <td>
+                            <div class="compact-actions">
+                                <button class="compact-btn compact-btn-secondary">詳細</button>
+                                <button class="compact-btn compact-btn-primary">交渉</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="compact-type-concubine">側室</span></td>
+                        <td>山田家</td>
+                        <td>山田 美咲</td>
+                        <td>45</td>
+                        <td>なし</td>
+                        <td>なし</td>
+                        <td>なし</td>
+                        <td>
+                            <div class="compact-actions">
+                                <button class="compact-btn compact-btn-secondary">詳細</button>
+                                <button class="compact-btn compact-btn-primary">交渉</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="compact-type-legal">正室</span></td>
+                        <td>佐藤家</td>
+                        <td>佐藤 春香</td>
+                        <td>55</td>
+                        <td>なし</td>
+                        <td><span class="compact-gold">800貫</span></td>
+                        <td>寺社1名</td>
+                        <td>
+                            <div class="compact-actions">
+                                <button class="compact-btn compact-btn-secondary">詳細</button>
+                                <button class="compact-btn compact-btn-primary">交渉</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- 注意事項 -->
+            <div class="compact-note">
+                <strong>【婚姻の効果】</strong>
+                格上・同格婚: 家格経験値↑ / 格下婚（正室）: 家格差大で経験値↓・家中不満 / 格下婚（側室）: 2差下まで影響なし、3差下以上で経験値わずか↓
+            </div>
+        </div>
+        
+        <!-- ボタン -->
+        <div class="button-group">
+            <button class="button-secondary">戻る</button>
+        </div>
+    </div>
+</body>
+</html>

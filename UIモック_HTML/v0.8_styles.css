@@ -1,0 +1,883 @@
+/* ===================================
+   戦国立身出世SLG v0.8 専用スタイル
+   婚姻・縁談・子供・元服・世代交代
+   =================================== */
+
+/* v0.7の共通スタイルを継承し、v0.8固有のコンポーネントを追加 */
+
+/* ===================================
+   婚姻候補一覧
+   =================================== */
+
+.marriage-list-container {
+    padding: 20px;
+}
+
+.marriage-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.marriage-list th {
+    background: #8b6f47;
+    color: #f8f3e7;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    border: 1px solid #5d4037;
+    font-size: 14px;
+}
+
+.marriage-list td {
+    padding: 12px;
+    border: 1px solid #d4c4a8;
+    font-size: 14px;
+}
+
+.marriage-list tr:nth-child(even) {
+    background: #faf6ed;
+}
+
+.marriage-list tr:hover {
+    background: #f0e9d8;
+}
+
+.marriage-card {
+    background: #fdfbf7;
+    border: 2px solid #d4c4a8;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.marriage-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d4c4a8;
+}
+
+.marriage-card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #5d4037;
+}
+
+.marriage-type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.marriage-type-legal {
+    background: #d4a017;
+    color: #fff;
+}
+
+.marriage-type-concubine {
+    background: #8b6f47;
+    color: #f8f3e7;
+}
+
+.marriage-card-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.marriage-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.marriage-info-label {
+    font-size: 11px;
+    color: #666;
+}
+
+.marriage-info-value {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2d5a8c;
+}
+
+.marriage-card-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ===================================
+   婚姻交渉画面
+   =================================== */
+
+.marriage-negotiation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.condition-panel {
+    background: #fdfbf7;
+    border: 2px solid #d4c4a8;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.condition-section {
+    margin-bottom: 25px;
+}
+
+.condition-section:last-child {
+    margin-bottom: 0;
+}
+
+.condition-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #c73940;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #8b6f47;
+}
+
+.dowry-slider-container {
+    padding: 15px 0;
+}
+
+.dowry-slider {
+    width: 100%;
+    height: 8px;
+    background: #d4c4a8;
+    border-radius: 4px;
+    position: relative;
+    margin: 20px 0;
+}
+
+.dowry-slider-track {
+    height: 100%;
+    background: linear-gradient(to right, #8b6f47, #d4a017);
+    border-radius: 4px;
+    width: 50%;
+}
+
+.dowry-slider-thumb {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: #d4a017;
+    border: 3px solid #f8f3e7;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.dowry-value {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2d5a8c;
+    margin-top: 10px;
+}
+
+.dowry-range {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.connection-checkbox-list {
+    list-style: none;
+}
+
+.connection-checkbox-item {
+    padding: 10px;
+    border: 1px solid #d4c4a8;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.connection-checkbox-item:hover {
+    background: #faf6ed;
+}
+
+.connection-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #8b6f47;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.connection-checkbox.checked {
+    background: #d4a017;
+    position: relative;
+}
+
+.connection-checkbox.checked::after {
+    content: "✓";
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.connection-name {
+    font-weight: bold;
+    color: #5d4037;
+}
+
+.connection-bonus {
+    font-size: 12px;
+    color: #2d7a3e;
+    margin-left: auto;
+}
+
+.success-rate-panel {
+    background: #fdfbf7;
+    border: 2px solid #d4c4a8;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.success-rate-display {
+    background: linear-gradient(to bottom, #faf6ed, #f0e9d8);
+    border: 3px solid #d4a017;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.success-rate-value {
+    font-size: 48px;
+    font-weight: bold;
+    color: #2d5a8c;
+    margin-bottom: 15px;
+}
+
+.success-rate-bar {
+    width: 100%;
+    height: 30px;
+    background: #d4c4a8;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.success-rate-fill {
+    height: 100%;
+    background: linear-gradient(to right, #4caf50, #8bc34a);
+    transition: width 0.3s;
+}
+
+.success-rate-fill.high {
+    background: linear-gradient(to right, #4caf50, #8bc34a);
+}
+
+.success-rate-fill.medium {
+    background: linear-gradient(to right, #ffc107, #ffeb3b);
+}
+
+.success-rate-fill.low {
+    background: linear-gradient(to right, #f44336, #ff5722);
+}
+
+.success-rate-breakdown {
+    text-align: left;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #d4c4a8;
+    font-size: 14px;
+}
+
+.breakdown-item:last-child {
+    border-bottom: none;
+}
+
+.breakdown-label {
+    color: #5d4037;
+}
+
+.breakdown-value {
+    font-weight: bold;
+    color: #2d5a8c;
+}
+
+.breakdown-value.positive {
+    color: #2d7a3e;
+}
+
+.negotiation-note {
+    background: #fff9e6;
+    border: 1px solid #d4a017;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #5d4037;
+}
+
+/* ===================================
+   子供・元服管理画面
+   =================================== */
+
+.children-management {
+    padding: 20px;
+}
+
+.children-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-button {
+    padding: 8px 20px;
+    border: 2px solid #8b6f47;
+    border-radius: 4px;
+    background: #fdfbf7;
+    color: #5d4037;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-button:hover {
+    background: #faf6ed;
+}
+
+.filter-button.active {
+    background: #8b6f47;
+    color: #f8f3e7;
+}
+
+.children-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.children-list th {
+    background: #8b6f47;
+    color: #f8f3e7;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #5d4037;
+    font-size: 14px;
+}
+
+.children-list td {
+    padding: 12px;
+    border: 1px solid #d4c4a8;
+    text-align: center;
+    font-size: 14px;
+}
+
+.children-list tr:nth-child(even) {
+    background: #faf6ed;
+}
+
+.children-list tr:hover {
+    background: #f0e9d8;
+}
+
+.heir-badge {
+    display: inline-block;
+    color: #d4a017;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.status-icon {
+    font-size: 16px;
+}
+
+.status-icon.yes {
+    color: #4caf50;
+}
+
+.status-icon.no {
+    color: #999;
+}
+
+.gender-male {
+    color: #2196f3;
+}
+
+.gender-female {
+    color: #e91e63;
+}
+
+.children-note {
+    background: #fff9e6;
+    border: 1px solid #d4a017;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #5d4037;
+}
+
+/* ===================================
+   元服通知ポップアップ
+   =================================== */
+
+.genpuku-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #f8f3e7;
+    border: 4px solid #d4a017;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    width: 500px;
+    max-width: 90%;
+    z-index: 1000;
+}
+
+.genpuku-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 999;
+}
+
+.genpuku-popup-header {
+    background: linear-gradient(to bottom, #8b6f47, #6d5638);
+    color: #f8f3e7;
+    padding: 20px;
+    text-align: center;
+    border-radius: 4px 4px 0 0;
+}
+
+.genpuku-popup-title {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.genpuku-popup-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.genpuku-person-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #5d4037;
+    margin-bottom: 20px;
+}
+
+.genpuku-rank-display {
+    background: linear-gradient(to bottom, #faf6ed, #f0e9d8);
+    border: 3px solid #d4a017;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.genpuku-rank-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.genpuku-rank-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #c73940;
+}
+
+.genpuku-reason {
+    background: #fff9e6;
+    border: 2px solid #d4a017;
+    border-radius: 6px;
+    padding: 15px;
+    text-align: left;
+}
+
+.genpuku-reason-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #5d4037;
+    margin-bottom: 10px;
+}
+
+.genpuku-reason-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 13px;
+}
+
+.genpuku-reason-check {
+    color: #4caf50;
+    font-size: 16px;
+}
+
+.genpuku-reason-selected {
+    font-weight: bold;
+    color: #c73940;
+}
+
+.genpuku-popup-footer {
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* ===================================
+   世代交代イベント画面
+   =================================== */
+
+.succession-screen {
+    padding: 20px;
+}
+
+.succession-header {
+    background: linear-gradient(to bottom, #8b6f47, #6d5638);
+    color: #f8f3e7;
+    padding: 30px;
+    text-align: center;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.succession-title {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.succession-transition {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.succession-arrow {
+    font-size: 24px;
+    color: #d4a017;
+}
+
+.succession-generation {
+    font-size: 16px;
+    margin-top: 10px;
+    opacity: 0.9;
+}
+
+.inheritance-panel {
+    background: #fdfbf7;
+    border: 2px solid #d4c4a8;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.inheritance-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.inheritance-item {
+    background: #faf6ed;
+    border: 1px solid #d4c4a8;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.inheritance-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.inheritance-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.inheritance-before {
+    color: #999;
+}
+
+.inheritance-arrow {
+    color: #d4a017;
+    font-size: 18px;
+}
+
+.inheritance-after {
+    color: #2d5a8c;
+}
+
+.inheritance-rate {
+    font-size: 12px;
+    color: #666;
+    margin-left: auto;
+}
+
+.new-lord-rank-panel {
+    background: linear-gradient(to bottom, #faf6ed, #f0e9d8);
+    border: 3px solid #d4a017;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.new-lord-rank-title {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.new-lord-rank-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #c73940;
+    margin-bottom: 10px;
+}
+
+.new-lord-rank-reason {
+    font-size: 13px;
+    color: #5d4037;
+}
+
+.loyalty-change-panel {
+    background: #fdfbf7;
+    border: 2px solid #d4c4a8;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.loyalty-change-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.loyalty-change-table th {
+    background: #8b6f47;
+    color: #f8f3e7;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #5d4037;
+    font-size: 14px;
+}
+
+.loyalty-change-table td {
+    padding: 12px;
+    border: 1px solid #d4c4a8;
+    text-align: center;
+    font-size: 14px;
+}
+
+.loyalty-change-table tr:nth-child(even) {
+    background: #faf6ed;
+}
+
+.loyalty-decrease-minor {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.loyalty-decrease-major {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.loyalty-note {
+    background: #fff9e6;
+    border: 1px solid #d4a017;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #5d4037;
+}
+
+/* ===================================
+   通知・インジケータ
+   =================================== */
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #f44336;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.genpuku-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ffc107;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.succession-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #ff9800;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.succession-indicator-icon {
+    font-size: 14px;
+}
+
+/* ===================================
+   ボタン拡張
+   =================================== */
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.button-primary {
+    background: linear-gradient(to bottom, #d4a017, #b8860b);
+    color: #fff;
+    border: 2px solid #8b6f47;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.button-primary:hover {
+    background: linear-gradient(to bottom, #b8860b, #9a7209);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.button-secondary {
+    background: #fdfbf7;
+    color: #5d4037;
+    border: 2px solid #8b6f47;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button-secondary:hover {
+    background: #faf6ed;
+}
+
+.button-small {
+    padding: 6px 15px;
+    font-size: 13px;
+}
+
+/* ===================================
+   レスポンシブ対応
+   =================================== */
+
+@media (max-width: 1024px) {
+    .marriage-negotiation {
+        grid-template-columns: 1fr;
+    }
+    
+    .inheritance-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .marriage-card-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .children-list th,
+    .children-list td {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .loyalty-change-table th,
+    .loyalty-change-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .genpuku-popup {
+        width: 95%;
+    }
+    
+    .succession-transition {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

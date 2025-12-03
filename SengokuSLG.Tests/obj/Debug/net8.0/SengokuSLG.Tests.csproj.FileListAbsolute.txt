@@ -1,0 +1,15 @@
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.AssemblyInfoInputs.cache
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.AssemblyInfo.cs
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.csproj.CoreCompileInputs.cache
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.sourcelink.json
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\bin\Debug\net8.0\SengokuSLG.Tests.exe
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\bin\Debug\net8.0\SengokuSLG.Tests.deps.json
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\bin\Debug\net8.0\SengokuSLG.Tests.runtimeconfig.json
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\bin\Debug\net8.0\SengokuSLG.Tests.dll
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\bin\Debug\net8.0\SengokuSLG.Tests.pdb
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.dll
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\refint\SengokuSLG.Tests.dll
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.pdb
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\SengokuSLG.Tests.genruntimeconfig.cache
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG.Tests\obj\Debug\net8.0\ref\SengokuSLG.Tests.dll

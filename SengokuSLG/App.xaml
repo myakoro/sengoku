@@ -17,14 +17,17 @@
 
         <!-- Brushes -->
         <SolidColorBrush x:Key="BrushBgMain" Color="{StaticResource ColorBgMain}"/>
+        <SolidColorBrush x:Key="BrushBgBase" Color="{StaticResource ColorBgMain}"/>
         <SolidColorBrush x:Key="BrushBgHeader" Color="{StaticResource ColorBgHeader}"/>
         <SolidColorBrush x:Key="BrushBgPanel" Color="{StaticResource ColorBgPanel}"/>
         <SolidColorBrush x:Key="BrushBgCard" Color="{StaticResource ColorBgCard}"/>
         <SolidColorBrush x:Key="BrushBorder" Color="{StaticResource ColorBorder}"/>
         <SolidColorBrush x:Key="BrushTextMain" Color="{StaticResource ColorTextMain}"/>
+        <SolidColorBrush x:Key="BrushTextPrimary" Color="{StaticResource ColorTextMain}"/>
         <SolidColorBrush x:Key="BrushAccentRed" Color="{StaticResource ColorAccentRed}"/>
         <SolidColorBrush x:Key="BrushAccentBlue" Color="{StaticResource ColorAccentBlue}"/>
         <SolidColorBrush x:Key="BrushAccentGreen" Color="{StaticResource ColorAccentGreen}"/>
+        <SolidColorBrush x:Key="BrushAccentGold" Color="#d4a017"/>
 
         <!-- Fonts -->
         <FontFamily x:Key="FontMain">Yu Mincho, Hiragino Mincho ProN, MS Mincho, serif</FontFamily>
@@ -83,6 +86,34 @@
             </Setter>
         </Style>
 
+        <Style x:Key="ButtonSecondary" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BrushBgPanel}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrushBorder}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushTextMain}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource BrushBgHeader}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Converters -->
         <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <conv:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
@@ -96,6 +127,12 @@
         <conv:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
         <conv:AdvisorBonusConverter x:Key="AdvisorBonusConverter"/>
         <conv:BooleanToTextConverter x:Key="BooleanToTextConverter"/>
+        <conv:IndustryTypeToTextConverter x:Key="IndustryTypeToTextConverter"/>
+        <conv:ProductCategoryToTextConverter x:Key="ProductCategoryToTextConverter"/>
+        <conv:CreditRankToTextConverter x:Key="CreditRankToTextConverter"/>
+        <conv:MerchantTierToTextConverter x:Key="MerchantTierToTextConverter"/>
+        <conv:RoadLevelToTextConverter x:Key="RoadLevelToTextConverter"/>
+        <conv:VillageTypeToTextConverter x:Key="VillageTypeToTextConverter"/>
 
     </Application.Resources>
 </Application>

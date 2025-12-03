@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>婚姻交渉画面 - 戦国立身出世SLG v0.8</title>
+    <link rel="stylesheet" href="v0.7_styles.css">
+    <link rel="stylesheet" href="v0.8_styles.css">
+    <style>
+        /* コンパクト版スタイル */
+        .negotiation-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .compact-panel {
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .compact-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #c73940;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 5px;
+        }
+        
+        .compact-slider {
+            margin: 10px 0;
+        }
+        
+        .compact-slider-track {
+            width: 100%;
+            height: 6px;
+            background-color: #d4c5a0;
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .compact-slider-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c73940 0%, #e74c3c 100%);
+            border-radius: 3px;
+            width: 50%;
+        }
+        
+        .compact-value {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #d4a017;
+            margin: 8px 0;
+        }
+        
+        .compact-range {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #666;
+        }
+        
+        .compact-checkbox-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        
+        .compact-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            margin-bottom: 5px;
+            background-color: #f0e6d2;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .compact-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #8b4513;
+            border-radius: 3px;
+            margin-right: 8px;
+            background-color: white;
+            flex-shrink: 0;
+        }
+        
+        .compact-checkbox.checked {
+            background-color: #1d3557;
+            position: relative;
+        }
+        
+        .compact-checkbox.checked::after {
+            content: "✓";
+            color: white;
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            font-size: 12px;
+        }
+        
+        .compact-connection-name {
+            flex: 1;
+        }
+        
+        .compact-bonus {
+            color: #2d7a3e;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        
+        .compact-rate-display {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .compact-rate-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #c73940;
+            line-height: 1;
+        }
+        
+        .compact-rate-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #d4c5a0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .compact-rate-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+            transition: width 0.3s;
+        }
+        
+        .compact-rate-fill.medium {
+            background: linear-gradient(90deg, #ffc107 0%, #ffeb3b 100%);
+        }
+        
+        .compact-breakdown {
+            font-size: 11px;
+            margin-top: 10px;
+        }
+        
+        .compact-breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid #d4c5a0;
+        }
+        
+        .compact-breakdown-item:last-child {
+            border-bottom: none;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 2px solid #8b4513;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        
+        .compact-breakdown-value.positive {
+            color: #2d7a3e;
+        }
+        
+        .compact-note {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>【婚姻交渉】</h1>
+            <div class="subtitle">相手: 田中家 田中花子（家格: 50）</div>
+        </div>
+        
+        <!-- メインコンテンツ（3カラム） -->
+        <div class="negotiation-compact">
+            <!-- 左: 持参金 -->
+            <div class="compact-panel">
+                <div class="compact-title">■ 持参金</div>
+                <div class="compact-slider">
+                    <div class="compact-slider-track">
+                        <div class="compact-slider-fill"></div>
+                    </div>
+                </div>
+                <div class="compact-value">500貫</div>
+                <div class="compact-range">
+                    <span>0貫</span>
+                    <span>1000貫</span>
+                </div>
+                <div class="compact-note">
+                    持参金を増やすと成功率↑
+                </div>
+            </div>
+            
+            <!-- 中央: 人脈紹介 -->
+            <div class="compact-panel">
+                <div class="compact-title">■ 人脈紹介</div>
+                <ul class="compact-checkbox-list">
+                    <li class="compact-checkbox-item">
+                        <span class="compact-checkbox"></span>
+                        <span class="compact-connection-name">商人 山本屋</span>
+                        <span class="compact-bonus">+5%</span>
+                    </li>
+                    <li class="compact-checkbox-item">
+                        <span class="compact-checkbox checked"></span>
+                        <span class="compact-connection-name">寺社 善光寺</span>
+                        <span class="compact-bonus">+3%</span>
+                    </li>
+                    <li class="compact-checkbox-item">
+                        <span class="compact-checkbox"></span>
+                        <span class="compact-connection-name">武将 鈴木一郎</span>
+                        <span class="compact-bonus">+10%</span>
+                    </li>
+                </ul>
+                <div class="compact-note">
+                    人脈紹介で相手家との関係↑
+                </div>
+            </div>
+            
+            <!-- 右: 成功率 -->
+            <div class="compact-panel">
+                <div class="compact-title">■ 成功率</div>
+                <div class="compact-rate-display">
+                    <div class="compact-rate-value">68%</div>
+                    <div class="compact-rate-bar">
+                        <div class="compact-rate-fill medium" style="width: 68%;"></div>
+                    </div>
+                </div>
+                <div class="compact-breakdown">
+                    <div class="compact-breakdown-item">
+                        <span>基本スコア</span>
+                        <span>50%</span>
+                    </div>
+                    <div class="compact-breakdown-item">
+                        <span>持参金補正</span>
+                        <span class="compact-breakdown-value positive">+10%</span>
+                    </div>
+                    <div class="compact-breakdown-item">
+                        <span>人脈補正</span>
+                        <span class="compact-breakdown-value positive">+8%</span>
+                    </div>
+                    <div class="compact-breakdown-item">
+                        <span>最終成功率</span>
+                        <span style="color: #c73940;">68%</span>
+                    </div>
+                </div>
+                <div class="compact-note">
+                    80%以上: 高確率 / 60-79%: 見込みあり / 40-59%: 五分五分 / 40%未満: 困難
+                </div>
+            </div>
+        </div>
+        
+        <!-- ボタン -->
+        <div class="button-group">
+            <button class="button-secondary">戻る</button>
+            <button class="button-primary">交渉する</button>
+        </div>
+    </div>
+</body>
+</html>

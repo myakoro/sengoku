@@ -236,4 +236,126 @@ namespace SengokuSLG.Converters
             throw new NotImplementedException();
         }
     }
+
+    public class IndustryTypeToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Models.IndustryType type)
+            {
+                return type switch
+                {
+                    Models.IndustryType.Agriculture => "農業",
+                    Models.IndustryType.Smithing => "鍛冶",
+                    Models.IndustryType.Weaving => "織物",
+                    Models.IndustryType.Brewing => "醸造",
+                    Models.IndustryType.Mining => "鉱山",
+                    _ => type.ToString()
+                };
+            }
+            return value?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+
+    public class ProductCategoryToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Models.ProductCategory category)
+            {
+                return category switch
+                {
+                    Models.ProductCategory.Food => "食料",
+                    Models.ProductCategory.Material => "資材",
+                    Models.ProductCategory.Weapon => "武具",
+                    Models.ProductCategory.Luxury => "贅沢品",
+                    _ => category.ToString()
+                };
+            }
+            return value?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+
+    public class CreditRankToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Models.CreditRank rank)
+            {
+                return rank switch
+                {
+                    Models.CreditRank.Acquaintance => "面識",
+                    Models.CreditRank.Regular => "常連",
+                    Models.CreditRank.VIP => "上客",
+                    _ => rank.ToString()
+                };
+            }
+            return value?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+
+    public class MerchantTierToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Models.MerchantTier tier)
+            {
+                return tier switch
+                {
+                    Models.MerchantTier.Traveling => "行商",
+                    Models.MerchantTier.Town => "街商人",
+                    Models.MerchantTier.Regional => "地方商人",
+                    Models.MerchantTier.City => "都市商人",
+                    _ => tier.ToString()
+                };
+            }
+            return value?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+
+    public class RoadLevelToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Models.RoadLevel level)
+            {
+                return level switch
+                {
+                    Models.RoadLevel.Road => "街道",
+                    Models.RoadLevel.Highway => "本街道",
+                    _ => level.ToString()
+                };
+            }
+            return value?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+
+    public class VillageTypeToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Models.VillageType type)
+            {
+                return type switch
+                {
+                    Models.VillageType.Village => "村",
+                    Models.VillageType.Town => "町",
+                    _ => type.ToString()
+                };
+            }
+            return value?.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
 }

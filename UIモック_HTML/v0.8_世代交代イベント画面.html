@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世代交代イベント画面 - 戦国立身出世SLG v0.8</title>
+    <link rel="stylesheet" href="v0.7_styles.css">
+    <link rel="stylesheet" href="v0.8_styles.css">
+    <style>
+        /* コンパクト版スタイル */
+        .succession-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .succession-compact-panel {
+            background-color: #fff8dc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .succession-compact-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #c73940;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #8b4513;
+            padding-bottom: 5px;
+        }
+        
+        .inheritance-compact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .inheritance-compact-item {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 11px;
+        }
+        
+        .inheritance-compact-label {
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #2b2b2b;
+        }
+        
+        .inheritance-compact-value {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+        
+        .inheritance-compact-before {
+            color: #666;
+        }
+        
+        .inheritance-compact-arrow {
+            color: #c73940;
+        }
+        
+        .inheritance-compact-after {
+            font-weight: bold;
+            color: #1d3557;
+        }
+        
+        .inheritance-compact-rate {
+            font-size: 9px;
+            color: #666;
+        }
+        
+        .rank-compact-box {
+            background: linear-gradient(135deg, #1d3557 0%, #2a4a6b 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .rank-compact-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .rank-compact-reason {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        .loyalty-compact-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        
+        .loyalty-compact-table thead {
+            background-color: #8b6f47;
+            color: white;
+        }
+        
+        .loyalty-compact-table th {
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 10px;
+        }
+        
+        .loyalty-compact-table td {
+            padding: 6px 4px;
+            text-align: center;
+            border-bottom: 1px solid #d4c5a0;
+        }
+        
+        .loyalty-compact-table tbody tr:hover {
+            background-color: #f0e6d2;
+        }
+        
+        .loyalty-compact-decrease {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        .compact-note {
+            background-color: #f0e6d2;
+            border: 1px solid #8b4513;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="succession-header">
+            <div class="succession-title">【世代交代】</div>
+            <div class="succession-transition">
+                <span style="font-size: 24px;">山田 太郎</span>
+                <span class="succession-arrow">→</span>
+                <span style="font-size: 24px;">山田 次郎</span>
+            </div>
+            <div class="succession-generation">第3代当主</div>
+        </div>
+        
+        <!-- メインコンテンツ（2カラム） -->
+        <div class="succession-compact">
+            <!-- 左カラム: パラメータ継承 + 新当主役職 -->
+            <div class="succession-compact-panel">
+                <div class="succession-compact-title">■ パラメータ継承</div>
+                <div class="inheritance-compact-grid">
+                    <div class="inheritance-compact-item">
+                        <div class="inheritance-compact-label">家格</div>
+                        <div class="inheritance-compact-value">
+                            <span class="inheritance-compact-before">80</span>
+                            <span class="inheritance-compact-arrow">→</span>
+                            <span class="inheritance-compact-after">80</span>
+                            <span class="inheritance-compact-rate">(100%)</span>
+                        </div>
+                    </div>
+                    <div class="inheritance-compact-item">
+                        <div class="inheritance-compact-label">貸し借り</div>
+                        <div class="inheritance-compact-value">
+                            <span class="inheritance-compact-before">50</span>
+                            <span class="inheritance-compact-arrow">→</span>
+                            <span class="inheritance-compact-after">30</span>
+                            <span class="inheritance-compact-rate">(60%)</span>
+                        </div>
+                    </div>
+                    <div class="inheritance-compact-item">
+                        <div class="inheritance-compact-label">商人信用</div>
+                        <div class="inheritance-compact-value">
+                            <span class="inheritance-compact-before">70</span>
+                            <span class="inheritance-compact-arrow">→</span>
+                            <span class="inheritance-compact-after">63</span>
+                            <span class="inheritance-compact-rate">(90%)</span>
+                        </div>
+                    </div>
+                    <div class="inheritance-compact-item">
+                        <div class="inheritance-compact-label">寺社信用</div>
+                        <div class="inheritance-compact-value">
+                            <span class="inheritance-compact-before">60</span>
+                            <span class="inheritance-compact-arrow">→</span>
+                            <span class="inheritance-compact-after">54</span>
+                            <span class="inheritance-compact-rate">(90%)</span>
+                        </div>
+                    </div>
+                    <div class="inheritance-compact-item">
+                        <div class="inheritance-compact-label">人脈</div>
+                        <div class="inheritance-compact-value">
+                            <span class="inheritance-compact-before">15名</span>
+                            <span class="inheritance-compact-arrow">→</span>
+                            <span class="inheritance-compact-after">15名</span>
+                            <span class="inheritance-compact-rate">(100%)</span>
+                        </div>
+                    </div>
+                    <div class="inheritance-compact-item">
+                        <div class="inheritance-compact-label">世代数</div>
+                        <div class="inheritance-compact-value">
+                            <span class="inheritance-compact-before">2代</span>
+                            <span class="inheritance-compact-arrow">→</span>
+                            <span class="inheritance-compact-after">3代</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="succession-compact-title" style="margin-top: 15px;">■ 新当主役職</div>
+                <div class="rank-compact-box">
+                    <div style="font-size: 12px; opacity: 0.9;">付与された役職</div>
+                    <div class="rank-compact-value">徒士</div>
+                    <div class="rank-compact-reason">決定要因: 親の威光（部将 - 2段階）</div>
+                </div>
+                <div class="compact-note">
+                    継承率: 家格・人脈100% / 信用90% / 貸借60%
+                </div>
+            </div>
+            
+            <!-- 右カラム: 家中忠誠変化 -->
+            <div class="succession-compact-panel">
+                <div class="succession-compact-title">■ 家中忠誠変化</div>
+                <table class="loyalty-compact-table">
+                    <thead>
+                        <tr>
+                            <th>家臣名</th>
+                            <th>変動前</th>
+                            <th>変動値</th>
+                            <th>変動後</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>鈴木 一郎</td>
+                            <td>80</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">70</td>
+                        </tr>
+                        <tr>
+                            <td>田中 二郎</td>
+                            <td>75</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">65</td>
+                        </tr>
+                        <tr>
+                            <td>佐藤 三郎</td>
+                            <td>60</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">50</td>
+                        </tr>
+                        <tr>
+                            <td>高橋 四郎</td>
+                            <td>85</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">75</td>
+                        </tr>
+                        <tr>
+                            <td>伊藤 五郎</td>
+                            <td>70</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">60</td>
+                        </tr>
+                        <tr>
+                            <td>渡辺 六郎</td>
+                            <td>65</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">55</td>
+                        </tr>
+                        <tr>
+                            <td>中村 七郎</td>
+                            <td>90</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">80</td>
+                        </tr>
+                        <tr>
+                            <td>小林 八郎</td>
+                            <td>55</td>
+                            <td class="loyalty-compact-decrease">-10</td>
+                            <td style="font-weight: bold;">45</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="compact-note">
+                    成人後継者: 全家臣-10 / 未成年後継者: 全家臣-20 / 忠誠低下で離反リスク↑
+                </div>
+            </div>
+        </div>
+        
+        <!-- ボタン -->
+        <div class="button-group">
+            <button class="button-primary">次へ</button>
+        </div>
+    </div>
+</body>
+</html>

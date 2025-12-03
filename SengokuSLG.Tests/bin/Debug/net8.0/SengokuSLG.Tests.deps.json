@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "SengokuSLG.Tests/1.0.0": {
+        "runtime": {
+          "SengokuSLG.Tests.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SengokuSLG.Tests/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

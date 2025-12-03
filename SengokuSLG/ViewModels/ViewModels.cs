@@ -65,31 +65,72 @@ namespace SengokuSLG.ViewModels
             _gameService.OnMonthlyProcessed += OnMonthlyProcessed;
 
             // Initial View
-            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog);
+            // Initial View
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily);
             
-            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
-            NavigateVillageCommand = new RelayCommand(() => CurrentView = new VillageViewModel(_gameService));
+            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+            NavigateVillageCommand = new RelayCommand(() => CurrentView = new VillageViewModel(_gameService, NavigateToIndustryDevelopment, NavigateToMerchantTrade));
             NavigateVassalListCommand = new RelayCommand(NavigateToVassalList);
+            NavigateMarriageCommand = new RelayCommand(NavigateToMarriage);
+            NavigateFamilyCommand = new RelayCommand(NavigateToFamily);
+        }
+
+        private void NavigateToMarriage()
+        {
+            CurrentView = new MarriageViewModel(_gameService, 
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
+                NavigateToMarriageNegotiation);
+        }
+
+        private void NavigateToMarriageNegotiation(MarriageOffer offer)
+        {
+            CurrentView = new MarriageNegotiationViewModel(_gameService, offer,
+                NavigateToMarriage,
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+        }
+
+        private void NavigateToFamily()
+        {
+            CurrentView = new FamilyViewModel(_gameService,
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+        }
+
+        private void NavigateToIndustryDevelopment(Village village)
+        {
+            CurrentView = new IndustryDevelopmentViewModel(village, 
+                () => CurrentView = new VillageViewModel(_gameService, NavigateToIndustryDevelopment, NavigateToMerchantTrade));
+        }
+
+        private void NavigateToMerchantTrade(Merchant merchant)
+        {
+            CurrentView = new MerchantTradeViewModel(merchant, 
+                () => CurrentView = new VillageViewModel(_gameService, NavigateToIndustryDevelopment, NavigateToMerchantTrade));
         }
 
         private void NavigateToPublicDuty()
         {
             CurrentView = new PublicDutySelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
+            CurrentView = new PublicDutySelectionViewModel(_gameService, 
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
+                OnActionExecuted);
                 OnActionExecuted);
         }
 
         private void NavigateToPrivateTask()
         {
             CurrentView = new PrivateTaskSelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
+            CurrentView = new PrivateTaskSelectionViewModel(_gameService, 
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
+                OnActionExecuted);
                 OnActionExecuted);
         }
 
         private void NavigateToVassalList()
         {
             CurrentView = new VassalListViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
+            CurrentView = new VassalListViewModel(_gameService, 
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
+                NavigateToVassalDetail);
                 NavigateToVassalDetail);
         }
 
@@ -97,20 +138,24 @@ namespace SengokuSLG.ViewModels
         {
             CurrentView = new VassalDetailViewModel(_gameService, vassalId,
                 () => CurrentView = new VassalListViewModel(_gameService, 
-                    () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog),
+                () => CurrentView = new VassalListViewModel(_gameService, 
+                    () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
+                    NavigateToVassalDetail));
                     NavigateToVassalDetail));
         }
 
         private void NavigateToAdvisorSetting()
         {
             CurrentView = new AdvisorSettingViewModel(_gameService,
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
+            CurrentView = new AdvisorSettingViewModel(_gameService,
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
         }
 
         private void NavigateToBattleLog(BattleContext context)
         {
             CurrentView = new BattleLogViewModel(context,
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
+            CurrentView = new BattleLogViewModel(context,
+                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
         }
 
         private void OnActionExecuted(string taskName, string target)
@@ -120,7 +165,7 @@ namespace SengokuSLG.ViewModels
                 DialogViewModel = null;
                 _gameService.AdvanceDay();
             });
-            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog);
+            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily);
         }
 
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -138,7 +183,7 @@ namespace SengokuSLG.ViewModels
 
         private void OnMonthlyProcessed(object sender, MonthlySummary summary)
         {
-            CurrentView = new MonthlySummaryViewModel(_gameService, summary, () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog));
+            CurrentView = new MonthlySummaryViewModel(_gameService, summary, () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
         }
 
         public Player Player => _gameService.Player;
@@ -161,6 +206,8 @@ namespace SengokuSLG.ViewModels
         public ICommand NavigateDailyCommand { get; }
         public ICommand NavigateVillageCommand { get; }
         public ICommand NavigateVassalListCommand { get; }
+        public ICommand NavigateMarriageCommand { get; }
+        public ICommand NavigateFamilyCommand { get; }
     }
 
     public class MainScreenViewModel : ViewModelBase
@@ -171,8 +218,10 @@ namespace SengokuSLG.ViewModels
         public ICommand NavigateVassalListCommand { get; }
         public ICommand NavigateAdvisorSettingCommand { get; }
         public ICommand ExecuteBattleCommand { get; }
+        public ICommand NavigateMarriageCommand { get; }
+        public ICommand NavigateFamilyCommand { get; }
 
-        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask, Action onVassalList, Action onAdvisorSetting, Action<BattleContext> onBattleLog)
+        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask, Action onVassalList, Action onAdvisorSetting, Action<BattleContext> onBattleLog, Action onMarriage, Action onFamily)
         {
             _gameService = service;
             _gameService.PropertyChanged += OnServicePropertyChanged;
@@ -196,6 +245,8 @@ namespace SengokuSLG.ViewModels
             NavigatePrivateTaskCommand = new RelayCommand(onPrivateTask);
             NavigateVassalListCommand = new RelayCommand(onVassalList);
             NavigateAdvisorSettingCommand = new RelayCommand(onAdvisorSetting);
+            NavigateMarriageCommand = new RelayCommand(onMarriage);
+            NavigateFamilyCommand = new RelayCommand(onFamily);
             
             // Debug/Simulate Battle Command
             ExecuteBattleCommand = new RelayCommand(() => {
@@ -505,7 +556,52 @@ namespace SengokuSLG.ViewModels
     public class VillageViewModel : ViewModelBase
     {
         public GameService Service { get; }
-        public VillageViewModel(GameService service) { Service = service; }
+        public ICommand OpenIndustryDevelopmentCommand { get; }
+        public ICommand OpenMerchantTradeCommand { get; }
+
+        public VillageViewModel(GameService service, Action<Village> onOpenIndustry, Action<Merchant> onOpenMerchant) 
+        { 
+            Service = service;
+            OpenIndustryDevelopmentCommand = new RelayCommandWithParam(p => onOpenIndustry(p as Village));
+            OpenMerchantTradeCommand = new RelayCommandWithParam(p => onOpenMerchant(p as Merchant));
+        }
+    }
+
+    public class IndustryDevelopmentViewModel : ViewModelBase
+    {
+        public Village CurrentVillage { get; }
+        public ICommand CloseCommand { get; }
+
+        public IndustryDevelopmentViewModel(Village village, Action onClose)
+        {
+            CurrentVillage = village;
+            CloseCommand = new RelayCommand(onClose);
+        }
+    }
+
+    public class MerchantTradeViewModel : ViewModelBase
+    {
+        public Merchant CurrentMerchant { get; }
+        public ObservableCollection<TradeTransaction> TradeHistory { get; }
+        public ICommand CloseCommand { get; }
+
+        public MerchantTradeViewModel(Merchant merchant, Action onClose)
+        {
+            CurrentMerchant = merchant;
+            CloseCommand = new RelayCommand(onClose);
+            TradeHistory = new ObservableCollection<TradeTransaction>
+            {
+                new TradeTransaction { Date = "1560/4/10", Amount = 500 },
+                new TradeTransaction { Date = "1560/3/25", Amount = 300 },
+                new TradeTransaction { Date = "1560/3/10", Amount = 200 }
+            };
+        }
+    }
+
+    public class TradeTransaction
+    {
+        public string Date { get; set; }
+        public int Amount { get; set; }
     }
 
     public class MonthlySummaryViewModel : ViewModelBase
@@ -533,6 +629,77 @@ namespace SengokuSLG.ViewModels
             Context = context;
             Logs = new ObservableCollection<string>(context.BattleLogs);
             CloseCommand = new RelayCommand(onClose);
+        }
+    }
+
+    public class MarriageViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ObservableCollection<MarriageOffer> Offers => _gameService.PlayerHouse.MarriageCandidates;
+        public ICommand BackCommand { get; }
+        public ICommand NegotiateCommand { get; }
+
+        public MarriageViewModel(GameService service, Action onBack, Action<MarriageOffer> onNegotiate)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+            NegotiateCommand = new RelayCommandWithParam(p => onNegotiate(p as MarriageOffer));
+        }
+    }
+
+    public class MarriageNegotiationViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public MarriageOffer Offer { get; }
+        public float SuccessProbability { get; }
+        public ICommand BackCommand { get; }
+        public ICommand ExecuteCommand { get; }
+
+        public MarriageNegotiationViewModel(GameService service, MarriageOffer offer, Action onBack, Action onExecute)
+        {
+            _gameService = service;
+            Offer = offer;
+            SuccessProbability = _gameService.CalculateMarriageProbability(offer);
+            BackCommand = new RelayCommand(onBack);
+            ExecuteCommand = new RelayCommand(() => {
+                _gameService.ProcessMarriage(offer);
+                onExecute();
+            });
+        }
+    }
+
+    public class FamilyViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ObservableCollection<Vassal> Children { get; }
+        public ICommand BackCommand { get; }
+
+        public FamilyViewModel(GameService service, Action onBack)
+        {
+            _gameService = service;
+            // Filter children (IsAdult=false or Origin="一門")
+            var children = _gameService.Vassals.Where(v => v.FatherId == _gameService.Player.Id || v.Origin == "一門");
+            Children = new ObservableCollection<Vassal>(children);
+            
+            BackCommand = new RelayCommand(onBack);
+        }
+    }
+
+    public class SuccessionViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public SuccessionContext Context => _gameService.PendingSuccession;
+        public Vassal Heir { get; }
+        public ICommand ConfirmCommand { get; }
+
+        public SuccessionViewModel(GameService service, Action onConfirm)
+        {
+            _gameService = service;
+            Heir = _gameService.Vassals.FirstOrDefault(v => v.Id == Context.HeirId);
+            ConfirmCommand = new RelayCommand(() => {
+                _gameService.ConfirmSuccession();
+                onConfirm();
+            });
         }
     }
 }

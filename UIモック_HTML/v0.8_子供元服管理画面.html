@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子供・元服管理画面 - 戦国立身出世SLG v0.8</title>
+    <link rel="stylesheet" href="v0.7_styles.css">
+    <link rel="stylesheet" href="v0.8_styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>【子供・元服管理】</h1>
+            <div class="subtitle">子供の人数: 5名（うち元服済み: 2名）</div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="children-management">
+            <!-- フィルター -->
+            <div class="children-filter">
+                <button class="filter-button active">すべて</button>
+                <button class="filter-button">未成年のみ</button>
+                <button class="filter-button">元服済みのみ</button>
+            </div>
+            
+            <!-- 子供一覧テーブル -->
+            <table class="children-list">
+                <thead>
+                    <tr>
+                        <th>名前</th>
+                        <th>年齢</th>
+                        <th>性別</th>
+                        <th>父</th>
+                        <th>母</th>
+                        <th>成人</th>
+                        <th>元服</th>
+                        <th>後継</th>
+                        <th>役職</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 子供1: 太郎（後継者・元服済み） -->
+                    <tr>
+                        <td style="font-weight: bold;">山田 太郎</td>
+                        <td>18</td>
+                        <td><span class="gender-male">♂</span></td>
+                        <td>山田当主</td>
+                        <td>花子</td>
+                        <td><span class="status-icon yes">○</span></td>
+                        <td><span class="status-icon yes">○</span></td>
+                        <td><span class="heir-badge">★</span></td>
+                        <td style="font-weight: bold; color: #c73940;">徒士</td>
+                    </tr>
+                    
+                    <!-- 子供2: 次郎（元服済み） -->
+                    <tr>
+                        <td style="font-weight: bold;">山田 次郎</td>
+                        <td>16</td>
+                        <td><span class="gender-male">♂</span></td>
+                        <td>山田当主</td>
+                        <td>花子</td>
+                        <td><span class="status-icon yes">○</span></td>
+                        <td><span class="status-icon yes">○</span></td>
+                        <td><span class="status-icon no">-</span></td>
+                        <td style="font-weight: bold; color: #c73940;">従僕</td>
+                    </tr>
+                    
+                    <!-- 子供3: 三郎（未成年） -->
+                    <tr>
+                        <td>山田 三郎</td>
+                        <td>12</td>
+                        <td><span class="gender-male">♂</span></td>
+                        <td>山田当主</td>
+                        <td>花子</td>
+                        <td><span class="status-icon no">×</span></td>
+                        <td><span class="status-icon no">×</span></td>
+                        <td><span class="status-icon no">-</span></td>
+                        <td style="color: #999;">-</td>
+                    </tr>
+                    
+                    <!-- 子供4: 春子（未成年） -->
+                    <tr>
+                        <td>山田 春子</td>
+                        <td>10</td>
+                        <td><span class="gender-female">♀</span></td>
+                        <td>山田当主</td>
+                        <td>花子</td>
+                        <td><span class="status-icon no">×</span></td>
+                        <td><span class="status-icon no">×</span></td>
+                        <td><span class="status-icon no">-</span></td>
+                        <td style="color: #999;">-</td>
+                    </tr>
+                    
+                    <!-- 子供5: 夏子（未成年） -->
+                    <tr>
+                        <td>山田 夏子</td>
+                        <td>8</td>
+                        <td><span class="gender-female">♀</span></td>
+                        <td>山田当主</td>
+                        <td>花子</td>
+                        <td><span class="status-icon no">×</span></td>
+                        <td><span class="status-icon no">×</span></td>
+                        <td><span class="status-icon no">-</span></td>
+                        <td style="color: #999;">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- 注意事項 -->
+            <div class="children-note">
+                <strong>【元服について】</strong><br>
+                ・子供は15歳で成人し、元服します<br>
+                ・元服時に初期役職が付与されます（従僕〜組頭）<br>
+                ・役職は「親の威光（親の役職-2段階）」と「本人の実務（本人役割）」の高い方が採用されます<br>
+                ・★印は後継者候補を示します（長子優先）
+            </div>
+            
+            <!-- 統計情報 -->
+            <div class="panel" style="margin-top: 20px;">
+                <div class="section-title">■ 統計情報</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">総人数</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #2d5a8c;">5名</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">元服済み</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #4caf50;">2名</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">未成年</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #ff9800;">3名</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ボタン -->
+        <div class="button-group">
+            <button class="button-secondary">戻る</button>
+        </div>
+    </div>
+</body>
+</html>

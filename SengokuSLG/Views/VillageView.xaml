@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:SengokuSLG.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:RankToTextConverter x:Key="RankToTextConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
         <TabControl Background="Transparent" BorderThickness="0">
             <TabControl.Resources>
@@ -17,68 +22,335 @@
                     <Setter Property="BorderThickness" Value="1"/>
                 </Style>
             </TabControl.Resources>
+            
+            <!-- Village A -->
             <TabItem Header="村A">
-                <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="20" Margin="0,20,0,0">
-                    <StackPanel>
-                        <TextBlock Text="■村A 詳細データ" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,20"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                            </Grid.RowDefinitions>
-                            
-                            <TextBlock Grid.Row="0" Text="人口:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Service.VillageA.Population}" VerticalAlignment="Center" FontWeight="Bold"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="20" Margin="0,20,0,0">
+                        <StackPanel>
+                            <!-- Header -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                <TextBlock Text="■村A 詳細データ" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,10,0"/>
+                                <Border Background="{StaticResource BrushAccentGold}" CornerRadius="4" Padding="8,2">
+                                    <TextBlock Text="{Binding Service.VillageA.Type, Converter={StaticResource VillageTypeToTextConverter}}" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                                </Border>
+                            </StackPanel>
 
-                            <TextBlock Grid.Row="1" Text="治安:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Service.VillageA.Security}" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <!-- Top Section: Basic Stats -->
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Population -->
+                                <Border Grid.Column="0" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="人口" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding Service.VillageA.Population, StringFormat='{}{0}人'}" FontSize="18" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
 
-                            <TextBlock Grid.Row="2" Text="収入:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Service.VillageA.Income, StringFormat='{}{0}貫'}" VerticalAlignment="Center" FontWeight="Bold"/>
+                                <!-- Security -->
+                                <Border Grid.Column="1" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="6,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="治安" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <Grid Height="20">
+                                            <ProgressBar Value="{Binding Service.VillageA.Security}" Maximum="100" Foreground="#4caf50" Background="#e0e0e0"/>
+                                            <TextBlock Text="{Binding Service.VillageA.Security}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
 
-                            <TextBlock Grid.Row="3" Text="開発度:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Service.VillageA.Development}" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                                <!-- Tax -->
+                                <Border Grid.Column="2" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="6,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="税収（月次）" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding Service.VillageA.TaxIncome, StringFormat='{}{0}貫'}" FontSize="18" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Money -->
+                                <Border Grid.Column="3" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="6,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="蓄積金" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding Service.VillageA.Money, StringFormat='{}{0}貫'}" FontSize="18" FontWeight="Bold" Foreground="#d4a017" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Middle Section -->
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Left: Industry Slots -->
+                                <Border Grid.Column="0" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,10,0">
+                                    <StackPanel>
+                                        <DockPanel Margin="0,0,0,8">
+                                            <TextBlock Text="■ 産業スロット" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                                            <Button Content="詳細/開発" Command="{Binding OpenIndustryDevelopmentCommand}" CommandParameter="{Binding Service.VillageA}" Style="{StaticResource ButtonSecondary}" Padding="8,2" FontSize="11" HorizontalAlignment="Right"/>
+                                        </DockPanel>
+                                        <ItemsControl ItemsSource="{Binding Service.VillageA.IndustrySlots}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="3" Rows="1"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="White" BorderBrush="#8b6f47" BorderThickness="2" CornerRadius="6" Padding="10" Margin="5" MinHeight="110">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Type, Converter={StaticResource IndustryTypeToTextConverter}}" FontSize="13" FontWeight="Bold" Foreground="#5d4037" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                            <TextBlock Text="{Binding Level, StringFormat='Lv.{0}'}" FontSize="18" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                            <Grid Height="20">
+                                                                <ProgressBar Value="{Binding Progress}" Maximum="100" Foreground="#2196f3" Background="#e0e0e0"/>
+                                                                <TextBlock Text="{Binding Progress, StringFormat='{}{0} / 100'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                                            </Grid>
+                                                            <TextBlock Text="次レベルまで: ??pt" FontSize="11" Foreground="#888" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Right: Meisan, Road, Merchants -->
+                                <StackPanel Grid.Column="1">
+                                    <!-- Meisan -->
+                                    <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="■ 名産" FontSize="13" FontWeight="Bold" Foreground="#c73940" Margin="0,0,0,8"/>
+                                            <Grid Height="20" Margin="0,0,0,8">
+                                                <ProgressBar Value="{Binding Service.VillageA.MeisanProgress}" Maximum="100" Foreground="#4caf50" Background="#e0e0e0"/>
+                                                <TextBlock Text="{Binding Service.VillageA.MeisanProgress, StringFormat='{}{0} / 100'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="現在：" FontSize="12" FontWeight="Bold" Foreground="#5d4037"/>
+                                                <TextBlock Text="{Binding Service.VillageA.CurrentMeisan.Name, TargetNullValue='なし'}" Foreground="#2b2b2b" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Road -->
+                                    <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="■ 道路" FontSize="13" FontWeight="Bold" Foreground="#c73940" Margin="0,0,0,8"/>
+                                            <DockPanel>
+                                                <TextBlock Text="レベル：" FontSize="12" FontWeight="Bold" Foreground="#5d4037"/>
+                                                <TextBlock Text="{Binding Service.VillageA.RoadLevel, Converter={StaticResource RoadLevelToTextConverter}}" FontWeight="Bold" Foreground="#2b2b2b" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Merchants -->
+                                    <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12">
+                                        <StackPanel>
+                                            <TextBlock Text="■ 商人" FontSize="13" FontWeight="Bold" Foreground="#c73940" Margin="0,0,0,8"/>
+                                            <ItemsControl ItemsSource="{Binding Service.VillageA.MerchantsVisiting}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border BorderBrush="#d4c4a8" BorderThickness="0,0,0,1" Padding="0,5">
+                                                            <DockPanel>
+                                                                <TextBlock Text="{Binding Name}" FontSize="12" VerticalAlignment="Center"/>
+                                                                <Button Content="取引" Command="{Binding DataContext.OpenMerchantTradeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Style="{StaticResource ButtonSecondary}" Padding="5,1" FontSize="10" DockPanel.Dock="Right" Margin="5,0,0,0"/>
+                                                                <Border Background="#e0e0e0" CornerRadius="3" Padding="4,1" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                                                    <TextBlock Text="{Binding CreditRank, Converter={StaticResource CreditRankToTextConverter}}" FontSize="10"/>
+                                                                </Border>
+                                                            </DockPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Bottom Section: Promotion Conditions -->
+                            <Border Background="#faf6ed" BorderBrush="#d4a017" BorderThickness="2" CornerRadius="6" Padding="12">
+                                <StackPanel>
+                                    <TextBlock Text="■ 町昇格条件" FontSize="13" FontWeight="Bold" Foreground="#c73940" Margin="0,0,0,8"/>
+                                    <UniformGrid Columns="4" Rows="1">
+                                        <!-- Population Condition -->
+                                        <StackPanel Margin="5">
+                                            <TextBlock Text="人口: 500/1000" FontSize="11" FontWeight="Bold" Foreground="#5d4037"/>
+                                            <Grid Height="20">
+                                                <ProgressBar Value="{Binding Service.VillageA.Population}" Maximum="1000" Foreground="#ff9800" Background="#e0e0e0"/>
+                                                <TextBlock Text="{Binding Service.VillageA.Population, StringFormat='{}{0}'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                            </Grid>
+                                        </StackPanel>
+                                        <!-- Industry Condition -->
+                                        <StackPanel Margin="5">
+                                            <TextBlock Text="産業: ??/3" FontSize="11" FontWeight="Bold" Foreground="#5d4037"/>
+                                            <Grid Height="20">
+                                                <ProgressBar Value="0" Maximum="3" Foreground="#ff9800" Background="#e0e0e0"/>
+                                                <TextBlock Text="??" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                            </Grid>
+                                        </StackPanel>
+                                        <!-- Trade Condition -->
+                                        <StackPanel Margin="5">
+                                            <TextBlock Text="取引: ??/30" FontSize="11" FontWeight="Bold" Foreground="#5d4037"/>
+                                            <Grid Height="20">
+                                                <ProgressBar Value="{Binding Service.VillageA.TotalTradeCount}" Maximum="30" Foreground="#ff9800" Background="#e0e0e0"/>
+                                                <TextBlock Text="{Binding Service.VillageA.TotalTradeCount, StringFormat='{}{0}'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                            </Grid>
+                                        </StackPanel>
+                                        <!-- Security Condition -->
+                                        <StackPanel Margin="5">
+                                            <TextBlock Text="治安: 75/80" FontSize="11" FontWeight="Bold" Foreground="#5d4037"/>
+                                            <Grid Height="20">
+                                                <ProgressBar Value="{Binding Service.VillageA.Security}" Maximum="80" Foreground="#4caf50" Background="#e0e0e0"/>
+                                                <TextBlock Text="{Binding Service.VillageA.Security, StringFormat='{}{0}'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
             </TabItem>
+            
+            <!-- Village B (Duplicate structure for now, ideally use a template) -->
             <TabItem Header="村B">
-                <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="20" Margin="0,20,0,0">
-                    <StackPanel>
-                        <TextBlock Text="■村B 詳細データ" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,20"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-                            </Grid.RowDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="20" Margin="0,20,0,0">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                <TextBlock Text="■村B 詳細データ" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,10,0"/>
+                                <Border Background="{StaticResource BrushAccentGold}" CornerRadius="4" Padding="8,2">
+                                    <TextBlock Text="{Binding Service.VillageB.Type, Converter={StaticResource VillageTypeToTextConverter}}" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                                </Border>
+                            </StackPanel>
 
-                            <TextBlock Grid.Row="0" Text="人口:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Service.VillageB.Population}" VerticalAlignment="Center" FontWeight="Bold"/>
+                            <!-- Top Section -->
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="人口" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding Service.VillageB.Population, StringFormat='{}{0}人'}" FontSize="18" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="1" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="6,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="治安" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <Grid Height="20">
+                                            <ProgressBar Value="{Binding Service.VillageB.Security}" Maximum="100" Foreground="#4caf50" Background="#e0e0e0"/>
+                                            <TextBlock Text="{Binding Service.VillageB.Security}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="2" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="6,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="税収（月次）" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding Service.VillageB.TaxIncome, StringFormat='{}{0}貫'}" FontSize="18" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="3" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="6,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="蓄積金" FontSize="12" FontWeight="Bold" Foreground="#5d4037" Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding Service.VillageB.Money, StringFormat='{}{0}貫'}" FontSize="18" FontWeight="Bold" Foreground="#d4a017" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
 
-                            <TextBlock Grid.Row="1" Text="治安:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Service.VillageB.Security}" VerticalAlignment="Center" FontWeight="Bold"/>
-
-                            <TextBlock Grid.Row="2" Text="収入:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Service.VillageB.Income, StringFormat='{}{0}貫'}" VerticalAlignment="Center" FontWeight="Bold"/>
-
-                            <TextBlock Grid.Row="3" Text="開発度:" FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Service.VillageB.Development}" VerticalAlignment="Center" FontWeight="Bold"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                            <!-- Middle Section -->
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,10,0">
+                                    <StackPanel>
+                                        <DockPanel Margin="0,0,0,8">
+                                            <TextBlock Text="■ 産業スロット" FontSize="13" FontWeight="Bold" Foreground="#c73940"/>
+                                            <Button Content="詳細/開発" Command="{Binding OpenIndustryDevelopmentCommand}" CommandParameter="{Binding Service.VillageB}" Style="{StaticResource ButtonSecondary}" Padding="8,2" FontSize="11" HorizontalAlignment="Right"/>
+                                        </DockPanel>
+                                        <ItemsControl ItemsSource="{Binding Service.VillageB.IndustrySlots}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="3" Rows="1"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="White" BorderBrush="#8b6f47" BorderThickness="2" CornerRadius="6" Padding="10" Margin="5" MinHeight="110">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Type, Converter={StaticResource IndustryTypeToTextConverter}}" FontSize="13" FontWeight="Bold" Foreground="#5d4037" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                                            <TextBlock Text="{Binding Level, StringFormat='Lv.{0}'}" FontSize="18" FontWeight="Bold" Foreground="#2d5a8c" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                            <Grid Height="20">
+                                                                <ProgressBar Value="{Binding Progress}" Maximum="100" Foreground="#2196f3" Background="#e0e0e0"/>
+                                                                <TextBlock Text="{Binding Progress, StringFormat='{}{0} / 100'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                                            </Grid>
+                                                            <TextBlock Text="次レベルまで: ??pt" FontSize="11" Foreground="#888" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                                <StackPanel Grid.Column="1">
+                                    <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="■ 名産" FontSize="13" FontWeight="Bold" Foreground="#c73940" Margin="0,0,0,8"/>
+                                            <Grid Height="20" Margin="0,0,0,8">
+                                                <ProgressBar Value="{Binding Service.VillageB.MeisanProgress}" Maximum="100" Foreground="#4caf50" Background="#e0e0e0"/>
+                                                <TextBlock Text="{Binding Service.VillageB.MeisanProgress, StringFormat='{}{0} / 100'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                                            </Grid>
+                                            <DockPanel>
+                                                <TextBlock Text="現在：" FontSize="12" FontWeight="Bold" Foreground="#5d4037"/>
+                                                <TextBlock Text="{Binding Service.VillageB.CurrentMeisan.Name, TargetNullValue='なし'}" Foreground="#2b2b2b" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="■ 道路" FontSize="13" FontWeight="Bold" Foreground="#c73940" Margin="0,0,0,8"/>
+                                            <DockPanel>
+                                                <TextBlock Text="レベル：" FontSize="12" FontWeight="Bold" Foreground="#5d4037"/>
+                                                <TextBlock Text="{Binding Service.VillageB.RoadLevel, Converter={StaticResource RoadLevelToTextConverter}}" FontWeight="Bold" Foreground="#2b2b2b" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#fdfbf7" BorderBrush="#d4c4a8" BorderThickness="2" CornerRadius="6" Padding="12">
+                                        <StackPanel>
+                                            <TextBlock Text="■ 商人" FontSize="13" FontWeight="Bold" Foreground="#c73940" Margin="0,0,0,8"/>
+                                            <ItemsControl ItemsSource="{Binding Service.VillageB.MerchantsVisiting}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border BorderBrush="#d4c4a8" BorderThickness="0,0,0,1" Padding="0,5">
+                                                            <DockPanel>
+                                                                <TextBlock Text="{Binding Name}" FontSize="12" VerticalAlignment="Center"/>
+                                                                <Button Content="取引" Command="{Binding DataContext.OpenMerchantTradeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Style="{StaticResource ButtonSecondary}" Padding="5,1" FontSize="10" DockPanel.Dock="Right" Margin="5,0,0,0"/>
+                                                                <Border Background="#e0e0e0" CornerRadius="3" Padding="4,1" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                                                    <TextBlock Text="{Binding CreditRank, Converter={StaticResource CreditRankToTextConverter}}" FontSize="10"/>
+                                                                </Border>
+                                                            </DockPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
             </TabItem>
-            </TabControl>
+        </TabControl>
     </Grid>
 </UserControl>

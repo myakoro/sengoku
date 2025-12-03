@@ -43,6 +43,24 @@
         <DataTemplate DataType="{x:Type vm:BattleLogViewModel}">
             <v:BattleLogView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:IndustryDevelopmentViewModel}">
+            <v:IndustryDevelopmentView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MerchantTradeViewModel}">
+            <v:MerchantTradeView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MarriageViewModel}">
+            <v:MarriageView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MarriageNegotiationViewModel}">
+            <v:MarriageNegotiationView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:FamilyViewModel}">
+            <v:FamilyView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SuccessionViewModel}">
+            <v:SuccessionView/>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -78,9 +96,10 @@
                     <Button Command="{Binding NavigateVassalListCommand}" Content="家臣団" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                     
                     <!-- Disabled/Future Features -->
+                    <Button Command="{Binding NavigateMarriageCommand}" Content="婚姻" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    <Button Command="{Binding NavigateFamilyCommand}" Content="家族" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                     <Button Content="軍事（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                     <Button Content="調略（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
-                    <Button Content="家族（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                     <Button Content="地方（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                 </StackPanel>
             </Border>
