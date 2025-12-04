@@ -28,6 +28,8 @@
         <SolidColorBrush x:Key="BrushAccentBlue" Color="{StaticResource ColorAccentBlue}"/>
         <SolidColorBrush x:Key="BrushAccentGreen" Color="{StaticResource ColorAccentGreen}"/>
         <SolidColorBrush x:Key="BrushAccentGold" Color="#d4a017"/>
+        <SolidColorBrush x:Key="BrushSurface" Color="{StaticResource ColorBgCard}"/>
+        <SolidColorBrush x:Key="BrushTextSecondary" Color="#6b6b6b"/>
 
         <!-- Fonts -->
         <FontFamily x:Key="FontMain">Yu Mincho, Hiragino Mincho ProN, MS Mincho, serif</FontFamily>
@@ -104,6 +106,40 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="{StaticResource BrushBgHeader}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TextHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushTextPrimary}"/>
+        </Style>
+
+        <Style x:Key="ButtonPrimary" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BrushAccentBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrushBorder}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource BrushAccentRed}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.6"/>

@@ -64,6 +64,7 @@ namespace SengokuSLG.Models
         public SoldierType Type { get; set; }
         public string OriginVillageId { get; set; } = "";
         public int CombatPower { get; set; }
+        public int MaxCombatPower { get; set; }
         public bool IsOwn { get; set; } // 自家兵 or 借り兵
         public string SquadId { get; set; } = "";
     }
@@ -73,6 +74,7 @@ namespace SengokuSLG.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; } = "";
         public string CommanderId { get; set; } = ""; // 小頭
+        public string CommanderName { get; set; } = "";
         public List<BattleSoldier> Soldiers { get; set; } = new List<BattleSoldier>();
         
         // Stats (0-100)
@@ -88,12 +90,18 @@ namespace SengokuSLG.Models
 
         // Calculated Properties
         public int CurrentSoldierCount => Soldiers.Count;
+        public int CombatantCount => Soldiers.Count(s => s.Type != SoldierType.Servant); // 従僕を除く戦闘員数
         public int BasePower => Soldiers.Where(s => s.Type != SoldierType.Servant).Sum(s => s.CombatPower); // 従僕は戦力外
 
         // Helper for UI
         public int AshigaruCount => Soldiers.Count(s => s.Type == SoldierType.Ashigaru);
         public int MountedCount => Soldiers.Count(s => s.Type == SoldierType.Mounted);
         public int ServantCount => Soldiers.Count(s => s.Type == SoldierType.Servant);
+
+        // Helper Lists for UI
+        public IEnumerable<BattleSoldier> AshigaruList => Soldiers.Where(s => s.Type == SoldierType.Ashigaru);
+        public IEnumerable<BattleSoldier> MountedList => Soldiers.Where(s => s.Type == SoldierType.Mounted);
+        public IEnumerable<BattleSoldier> ServantList => Soldiers.Where(s => s.Type == SoldierType.Servant);
     }
 
     public class BattleCompany
@@ -101,6 +109,7 @@ namespace SengokuSLG.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; } = "";
         public string CommanderId { get; set; } = ""; // 組頭
+        public string CommanderName { get; set; } = "";
         public CommanderPersonality Personality { get; set; } = CommanderPersonality.Standard;
         public List<BattleSquad> Squads { get; set; } = new List<BattleSquad>();
         public SquadPosition Position { get; set; } = SquadPosition.Forward;
@@ -111,7 +120,8 @@ namespace SengokuSLG.Models
         public double AverageExperience => Squads.Any() ? Squads.Average(s => s.Experience) : 0;
         public double AverageFatigue => Squads.Any() ? Squads.Average(s => s.Fatigue) : 0;
         public double AverageMorale => Squads.Any() ? Squads.Average(s => s.Morale) : 0;
-        public int TotalSoldiers => Squads.Sum(s => s.CurrentSoldierCount);
+        public int TotalSoldiers => Squads.Sum(s => s.Soldiers.Count(sol => sol.Type != SoldierType.Servant));
+        public int CombatantCount => Squads.Sum(s => s.CombatantCount); // 従僕を除く戦闘員数
     }
 
     public class BattleBattalion
@@ -119,6 +129,7 @@ namespace SengokuSLG.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; } = "";
         public string CommanderId { get; set; } = ""; // 足軽大将
+        public string CommanderName { get; set; } = "";
         public List<BattleCompany> Companies { get; set; } = new List<BattleCompany>();
         public bool IsPlayer { get; set; }
         public bool IsEnemy { get; set; }
@@ -129,6 +140,9 @@ namespace SengokuSLG.Models
         public double AverageFatigue => Companies.Any() ? Companies.Average(c => c.AverageFatigue) : 0;
         public double AverageMorale => Companies.Any() ? Companies.Average(c => c.AverageMorale) : 0;
         public int TotalSoldiers => Companies.Sum(c => c.TotalSoldiers);
+
+        // Helper for UI
+        public IEnumerable<BattleSquad> AllSquads => Companies.SelectMany(c => c.Squads);
     }
 
     public class BattleCasualty

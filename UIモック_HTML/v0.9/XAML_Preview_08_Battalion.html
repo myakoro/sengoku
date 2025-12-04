@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XAMLプレビュー: 08_大隊管理画面</title>
+  <link rel="stylesheet" href="css/compact.css">
+  <style>
+    body { margin: 0; padding: 20px; background: #f5f5f5; }
+    .xaml-preview { max-width: 1080px; margin: 0 auto; background: #f9f7f3; }
+  </style>
+</head>
+<body>
+  <div class="xaml-preview">
+    <!-- Header -->
+    <header class="page-header">
+      <h1>🏯 大隊管理 - 山田大隊</h1>
+      <div class="header-actions">
+        <button class="btn btn-outline">戻る</button>
+        <button class="btn btn-primary">出陣</button>
+      </div>
+    </header>
+
+    <div style="padding: 20px;">
+      <!-- Battalion Summary -->
+      <div class="card">
+        <div class="flex flex-between">
+          <div style="font-size: 16px; font-weight: bold;">
+            足軽大将: 山田太郎 / 総兵力: 300人 / 平均士気: 75 / 平均疲労: 40
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div style="background: #d4edda; border-radius: 4px; padding: 10px;">
+              <span style="font-size: 14px; font-weight: bold; color: #155724;">✓ 戦線維持可能</span>
+            </div>
+            <button class="btn btn-secondary" style="padding: 8px 15px;">前線⇔後衛入替</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Company List -->
+      <div class="card">
+        <div class="card-header">中隊配置</div>
+        <table>
+          <thead>
+            <tr>
+              <th>配置</th>
+              <th>中隊</th>
+              <th>組頭</th>
+              <th>兵力</th>
+              <th>士気</th>
+              <th>疲労</th>
+              <th>状態</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>前線</td>
+              <td>佐藤組</td>
+              <td>佐藤次郎</td>
+              <td>100</td>
+              <td>80</td>
+              <td>35</td>
+              <td><span class="badge badge-success">良好</span></td>
+              <td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">詳細</button></td>
+            </tr>
+            <tr style="background: #f9f9f9;">
+              <td>前線</td>
+              <td>鈴木組</td>
+              <td>鈴木三郎</td>
+              <td>100</td>
+              <td>75</td>
+              <td>40</td>
+              <td><span class="badge badge-success">良好</span></td>
+              <td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">詳細</button></td>
+            </tr>
+            <tr>
+              <td>後衛</td>
+              <td>田中組</td>
+              <td>田中四郎</td>
+              <td>100</td>
+              <td>70</td>
+              <td>45</td>
+              <td><span class="badge badge-success">良好</span></td>
+              <td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">詳細</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Judgment Status -->
+      <div class="card">
+        <div class="grid grid-2">
+          <div>
+            <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">判定状況</div>
+            <div style="font-size: 12px;">
+              ローテ判定: 前線疲労80未満 / 士気30以上 / 後衛あり → <strong style="color: #155724;">不要</strong>
+            </div>
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;"></div>
+            <div style="font-size: 12px;">
+              退却判定: 平均士気30以上 / 総兵力50%以上 → <strong style="color: #155724;">不要</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>XAMLプレビュー: BattalionManagementView.xaml</p>
+  </footer>
+</body>
+</html>

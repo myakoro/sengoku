@@ -43,8 +43,8 @@
 
             <TextBlock Text="成功確率" Foreground="{StaticResource BrushTextSecondary}" Margin="0,0,0,5"/>
             <Grid Height="24">
-                <ProgressBar Value="{Binding SuccessProbability}" Maximum="100" Background="{StaticResource BrushSurface}" Foreground="{StaticResource BrushAccentGold}" BorderThickness="0"/>
-                <TextBlock Text="{Binding SuccessProbability, StringFormat={}{0:F0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource BrushTextPrimary}" FontWeight="Bold"/>
+                <ProgressBar Value="{Binding SuccessProbability, Mode=OneWay}" Maximum="100" Background="{StaticResource BrushSurface}" Foreground="{StaticResource BrushAccentGold}" BorderThickness="0"/>
+                <TextBlock Text="{Binding SuccessProbability, StringFormat={}{0:F0}%, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource BrushTextPrimary}" FontWeight="Bold"/>
             </Grid>
             <TextBlock Text="※家格差、役職、親密度により変動します" FontSize="12" Foreground="{StaticResource BrushTextSecondary}" Margin="0,5,0,0"/>
 
@@ -52,7 +52,7 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
             <Button Content="戻る" Command="{Binding BackCommand}" Style="{StaticResource ButtonSecondary}" Width="120" Margin="0,0,20,0"/>
-            <Button Content="縁談成立" Command="{Binding ExecuteCommand}" Style="{StaticResource ButtonPrimary}" Width="160"/>
+            <Button Content="交渉開始" Command="{Binding ExecuteCommand}" Style="{StaticResource ButtonPrimary}" Width="160"/>
         </StackPanel>
     </Grid>
 </UserControl>

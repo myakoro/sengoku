@@ -1,0 +1,17 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\BattlefieldUIView.xaml(174,45): error MC3072: The property 'FontFamily' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 174 Position 45. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\BattleResultSummaryView.xaml(55,31): error MC3072: The property 'FontSize' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 55 Position 31. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\PursuitDecisionView.xaml(40,45): error MC3072: The property 'FontSize' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 40 Position 45. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\VassalDetailView_New.xaml(45,61): error MC3072: The property 'FontSize' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 45 Position 61. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+
+Build FAILED.
+
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\BattlefieldUIView.xaml(174,45): error MC3072: The property 'FontFamily' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 174 Position 45. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\BattleResultSummaryView.xaml(55,31): error MC3072: The property 'FontSize' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 55 Position 31. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\PursuitDecisionView.xaml(40,45): error MC3072: The property 'FontSize' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 40 Position 45. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\Views\VassalDetailView_New.xaml(45,61): error MC3072: The property 'FontSize' does not exist in XML namespace 'http://schemas.microsoft.com/winfx/2006/xaml/presentation'. Line 45 Position 61. [C:\Users\takuy\Desktop\謌ｦ蝗ｽ蜃ｺ荳悶ご繝ｼ繝\SengokuSLG\SengokuSLG.csproj]
+    0 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:00:02.01

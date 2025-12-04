@@ -149,9 +149,12 @@ namespace SengokuSLG.Converters
                 {
                     Models.Rank.Juboku => "従僕",
                     Models.Rank.Toshi => "徒士",
+                    Models.Rank.Bajoshu => "馬上衆",
+                    Models.Rank.Kogashira => "小頭",
                     Models.Rank.Kumigashira => "組頭",
-                    Models.Rank.Busho => "部将",
+                    Models.Rank.AshigaruDaisho => "足軽大将",
                     Models.Rank.Jidaisho => "侍大将",
+                    Models.Rank.Busho => "部将",
                     _ => "不明"
                 };
             }
@@ -187,9 +190,12 @@ namespace SengokuSLG.Converters
                 {
                     Models.Rank.Juboku => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888")),      // 従僕: グレー
                     Models.Rank.Toshi => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1d3557")),       // 徒士: 紺藍
+                    Models.Rank.Bajoshu => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4a5899")),     // 馬上衆: 青紫
+                    Models.Rank.Kogashira => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1976d2")),   // 小頭: 青
                     Models.Rank.Kumigashira => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2d7a3e")), // 組頭: 緑
-                    Models.Rank.Busho => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#c73940")),       // 部将: 赤
-                    Models.Rank.Jidaisho => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8b4513")),    // 侍大将: 茶
+                    Models.Rank.AshigaruDaisho => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#d97706")), // 足軽大将: 橙
+                    Models.Rank.Jidaisho => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#c73940")),       // 侍大将: 赤
+                    Models.Rank.Busho => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8b4513")),    // 部将: 茶
                     _ => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888"))
                 };
             }

@@ -61,6 +61,36 @@
         <DataTemplate DataType="{x:Type vm:SuccessionViewModel}">
             <v:SuccessionView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MilitaryFormationViewModel}">
+            <v:MilitaryFormationView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BattalionManagementViewModel}">
+            <v:BattalionManagementView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CompanyManagementViewModel}">
+            <v:CompanyManagementView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SquadDetailViewModel}">
+            <v:SquadDetailView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SquadStatusPanelViewModel}">
+            <v:SquadStatusPanelView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BattlefieldUIViewModel}">
+            <v:BattlefieldUIView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CasualtyReportViewModel}">
+            <v:CasualtyReportView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PursuitDecisionViewModel}">
+            <v:PursuitDecisionView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MeritReportViewModel}">
+            <v:MeritReportView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BattleResultSummaryViewModel}">
+            <v:BattleResultSummaryView/>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -98,7 +128,7 @@
                     <!-- Disabled/Future Features -->
                     <Button Command="{Binding NavigateMarriageCommand}" Content="婚姻" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                     <Button Command="{Binding NavigateFamilyCommand}" Content="家族" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
-                    <Button Content="軍事（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
+                    <Button Command="{Binding NavigateMilitaryCommand}" Content="軍事" Style="{StaticResource StyleNavButton}" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                     <Button Content="調略（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                     <Button Content="地方（未実装）" Style="{StaticResource StyleNavButton}" IsEnabled="False" HorizontalAlignment="Stretch" Margin="0,0,0,5"/>
                 </StackPanel>

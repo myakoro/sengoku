@@ -1,0 +1,121 @@
+<UserControl x:Class="SengokuSLG.Views.BattalionManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1080">
+    <Grid Background="{StaticResource BrushBgBase}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource BrushBgHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,2" Padding="20,15">
+            <Grid>
+                <TextBlock FontSize="24" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" VerticalAlignment="Center">
+                    <Run Text="🏯 大隊管理 - "/>
+                    <Run Text="{Binding Battalion.Name}"/>
+                </TextBlock>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="戻る" Command="{Binding BackCommand}" Style="{StaticResource ButtonSecondary}" Width="100" Margin="0,0,10,0"/>
+                    <Button Content="出陣" Style="{StaticResource ButtonPrimary}" Width="100"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel>
+                <!-- Battalion Summary -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,15">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}">
+                                <Run Text="足軽大将: "/>
+                                <Run Text="{Binding Battalion.CommanderName, Mode=OneWay}"/>
+                                <Run Text=" / 総兵力: "/>
+                                <Run Text="{Binding Battalion.TotalSoldiers, Mode=OneWay}"/>
+                                <Run Text="人 / 平均士気: "/>
+                                <Run Text="{Binding Battalion.AverageMorale, StringFormat=N0, Mode=OneWay}"/>
+                                <Run Text=" / 平均疲労: "/>
+                                <Run Text="{Binding Battalion.AverageFatigue, StringFormat=N0, Mode=OneWay}"/>
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Border Background="#d4edda" CornerRadius="4" Padding="10,5" Margin="0,0,10,0">
+                                <TextBlock Text="✓ 戦線維持可能" FontSize="14" FontWeight="Bold" Foreground="#155724"/>
+                            </Border>
+                            <Button Content="前線⇔後衛入替" Style="{StaticResource ButtonSecondary}" Padding="15,8"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Company List -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="中隊配置" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" Margin="0,0,0,10"/>
+                        
+                        <DataGrid ItemsSource="{Binding Battalion.Companies, Mode=OneWay}" AutoGenerateColumns="False" 
+                                  Background="White" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1"
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal" 
+                                  RowBackground="White" AlternatingRowBackground="#f9f9f9"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="配置" Binding="{Binding Position, Mode=OneWay}" Width="80"/>
+                                <DataGridTextColumn Header="中隊" Binding="{Binding Name, Mode=OneWay}" Width="150"/>
+                                <DataGridTextColumn Header="組頭" Binding="{Binding CommanderName, Mode=OneWay}" Width="120"/>
+                                <DataGridTextColumn Header="兵力" Binding="{Binding CombatantCount, Mode=OneWay}" Width="80"/>
+                                <DataGridTextColumn Header="士気" Binding="{Binding AverageMorale, StringFormat=N0, Mode=OneWay}" Width="80"/>
+                                <DataGridTextColumn Header="疲労" Binding="{Binding AverageFatigue, StringFormat=N0, Mode=OneWay}" Width="80"/>
+                                <DataGridTemplateColumn Header="状態" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#d4edda" CornerRadius="3" Padding="5,2">
+                                                <TextBlock Text="良好" FontSize="11" Foreground="#155724" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="操作" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="詳細" Command="{Binding DataContext.NavigateToCompanyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Style="{StaticResource ButtonSecondary}" Padding="8,4" FontSize="12"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Judgment Status -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="判定状況" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" Margin="0,0,0,10"/>
+                            <TextBlock FontSize="12" Foreground="{StaticResource BrushTextMain}">
+                                <Run Text="ローテ判定: 前線疲労80未満 / 士気30以上 / 後衛あり → "/>
+                                <Run Text="不要" FontWeight="Bold" Foreground="#155724"/>
+                            </TextBlock>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" Margin="0,0,0,10"/>
+                            <TextBlock FontSize="12" Foreground="{StaticResource BrushTextMain}">
+                                <Run Text="退却判定: 平均士気30以上 / 総兵力50%以上 → "/>
+                                <Run Text="不要" FontWeight="Bold" Foreground="#155724"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

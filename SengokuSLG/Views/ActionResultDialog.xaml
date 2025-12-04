@@ -26,8 +26,7 @@
                 <Border Background="#e7d8b1" BorderBrush="#8b4513" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,20">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <TextBlock Text="タスク名: " FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Log.TaskName}"/>
+                            <TextBlock Text="{Binding Log.TaskName}" FontWeight="Bold"/>
                             <TextBlock Text="{Binding Log.Target, StringFormat=' ({0})'}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">

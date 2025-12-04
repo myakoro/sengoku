@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XAMLプレビュー: 10_小隊詳細画面</title>
+  <link rel="stylesheet" href="css/compact.css">
+  <style>
+    body { margin: 0; padding: 20px; background: #f5f5f5; }
+    .xaml-preview { max-width: 1080px; margin: 0 auto; background: #f9f7f3; }
+  </style>
+</head>
+<body>
+  <div class="xaml-preview">
+    <!-- Header -->
+    <header class="page-header">
+      <h1>🗡 伊藤衆 - 小隊詳細</h1>
+      <div class="header-actions">
+        <button class="btn btn-outline">戻る</button>
+        <button class="btn btn-primary">編集</button>
+      </div>
+    </header>
+
+    <div style="padding: 20px;">
+      <!-- Squad Summary -->
+      <div class="card">
+        <div class="flex flex-between">
+          <div style="font-size: 16px; font-weight: bold;">
+            小頭: 伊藤一郎 / <span style="color: #666;">総兵力: 25人 (徒士15 + 馬上衆8) / 所属: <span style="color: var(--accent-ai); font-weight: bold;">不明</span></span>
+          </div>
+          <div style="background: #d4edda; border-radius: 6px; padding: 10px 8px;">
+            <span style="font-size: 18px; font-weight: bold; color: #155724;">有効戦闘力: 320</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Combat Power Breakdown -->
+      <div class="card">
+        <div class="card-header">戦力内訳</div>
+        <div style="font-size: 12px; color: #666;">
+          基礎戦力: 320 / 訓練度: 75 / 士気: 80
+        </div>
+      </div>
+
+      <!-- Unit Lists -->
+      <div class="grid grid-2">
+        <!-- Infantry List -->
+        <div class="card">
+          <div class="card-header">⚔ 徒士</div>
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>戦闘力</th>
+                <th>出身</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>権助</td>
+                <td>12</td>
+                <td>村A-001</td>
+              </tr>
+              <tr style="background: #f9f9f9;">
+                <td>与助</td>
+                <td>11</td>
+                <td>村A-002</td>
+              </tr>
+              <tr>
+                <td>清吉</td>
+                <td>13</td>
+                <td>村B-003</td>
+              </tr>
+              <tr style="background: #f9f9f9;">
+                <td>太吉</td>
+                <td>10</td>
+                <td>村B-004</td>
+              </tr>
+              <tr>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Cavalry List -->
+        <div class="card">
+          <div class="card-header">🐴 馬上衆</div>
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>戦闘力</th>
+                <th>出身</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>加藤八郎</td>
+                <td>18</td>
+                <td>村A-001</td>
+              </tr>
+              <tr style="background: #f9f9f9;">
+                <td>山本次郎</td>
+                <td>16</td>
+                <td>村C-005</td>
+              </tr>
+              <tr>
+                <td>田村三郎</td>
+                <td>17</td>
+                <td>村D-006</td>
+              </tr>
+              <tr style="background: #f9f9f9;">
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Servants -->
+      <div class="card">
+        <div class="card-header">👥 従僕</div>
+        <table>
+          <thead>
+            <tr>
+              <th>名前</th>
+              <th>出身</th>
+              <th>戦闘力</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>権助の従僕A</td>
+              <td>村A-001</td>
+              <td>3</td>
+            </tr>
+            <tr style="background: #f9f9f9;">
+              <td>与助の従僕B</td>
+              <td>村A-002</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>XAMLプレビュー: SquadDetailView.xaml</p>
+  </footer>
+</body>
+</html>

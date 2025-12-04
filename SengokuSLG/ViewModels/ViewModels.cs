@@ -65,14 +65,19 @@ namespace SengokuSLG.ViewModels
             _gameService.OnMonthlyProcessed += OnMonthlyProcessed;
 
             // Initial View
-            // Initial View
-            CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily);
+            CurrentView = CreateMainScreenViewModel();
             
-            NavigateDailyCommand = new RelayCommand(() => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+            NavigateDailyCommand = new RelayCommand(() => CurrentView = CreateMainScreenViewModel());
             NavigateVillageCommand = new RelayCommand(() => CurrentView = new VillageViewModel(_gameService, NavigateToIndustryDevelopment, NavigateToMerchantTrade));
             NavigateVassalListCommand = new RelayCommand(NavigateToVassalList);
             NavigateMarriageCommand = new RelayCommand(NavigateToMarriage);
             NavigateFamilyCommand = new RelayCommand(NavigateToFamily);
+            NavigateMilitaryCommand = new RelayCommand(NavigateToMilitaryFormation);
+        }
+
+        private MainScreenViewModel CreateMainScreenViewModel()
+        {
+            return new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily);
         }
 
         private void NavigateToMarriage()
@@ -86,13 +91,92 @@ namespace SengokuSLG.ViewModels
         {
             CurrentView = new MarriageNegotiationViewModel(_gameService, offer,
                 NavigateToMarriage,
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+                (success) => {
+                    var log = _gameService.DailyLogs[0];
+                    DialogViewModel = new ActionResultViewModel(log, () => {
+                        DialogViewModel = null;
+                        _gameService.AdvanceDay();
+                    });
+                    CurrentView = CreateMainScreenViewModel();
+                });
         }
 
         private void NavigateToFamily()
         {
             CurrentView = new FamilyViewModel(_gameService,
                 () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+        }
+
+        private void NavigateToMilitaryFormation()
+        {
+            CurrentView = new MilitaryFormationViewModel(_gameService,
+                () => CurrentView = CreateMainScreenViewModel(),
+                NavigateToBattalionManagement,
+                NavigateToSquadStatusPanel,
+                NavigateToBattlefield);
+        }
+
+        private void NavigateToBattalionManagement()
+        {
+            CurrentView = new BattalionManagementViewModel(_gameService,
+                NavigateToMilitaryFormation,
+                company => NavigateToCompanyManagement(company));
+        }
+
+        private void NavigateToCompanyManagement(object? companyObj)
+        {
+            var company = companyObj as BattleCompany;
+            if (company == null) return;
+            
+            CurrentView = new CompanyManagementViewModel(_gameService,
+                NavigateToBattalionManagement,
+                NavigateToSquadDetail,
+                company);
+        }
+
+        private void NavigateToSquadDetail()
+        {
+            CurrentView = new SquadDetailViewModel(_gameService,
+                NavigateToBattalionManagement);
+        }
+
+        private void NavigateToSquadStatusPanel()
+        {
+            CurrentView = new SquadStatusPanelViewModel(_gameService,
+                NavigateToMilitaryFormation,
+                NavigateToSquadDetail);
+        }
+
+        private void NavigateToBattlefield()
+        {
+            CurrentView = new BattlefieldUIViewModel(_gameService,
+                NavigateToMilitaryFormation,
+                NavigateToPursuitDecision,
+                NavigateToCasualtyReport);
+        }
+
+        private void NavigateToPursuitDecision()
+        {
+            CurrentView = new PursuitDecisionViewModel(_gameService,
+                NavigateToBattlefield);
+        }
+
+        private void NavigateToCasualtyReport()
+        {
+            CurrentView = new CasualtyReportViewModel(_gameService,
+                () => CurrentView = CreateMainScreenViewModel());
+        }
+
+        private void NavigateToMeritReport()
+        {
+            CurrentView = new MeritReportViewModel(_gameService,
+                () => CurrentView = CreateMainScreenViewModel());
+        }
+
+        private void NavigateToBattleResultSummary()
+        {
+            CurrentView = new BattleResultSummaryViewModel(_gameService,
+                () => CurrentView = CreateMainScreenViewModel());
         }
 
         private void NavigateToIndustryDevelopment(Village village)
@@ -110,27 +194,21 @@ namespace SengokuSLG.ViewModels
         private void NavigateToPublicDuty()
         {
             CurrentView = new PublicDutySelectionViewModel(_gameService, 
-            CurrentView = new PublicDutySelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
-                OnActionExecuted);
+                () => CurrentView = CreateMainScreenViewModel(),
                 OnActionExecuted);
         }
 
         private void NavigateToPrivateTask()
         {
             CurrentView = new PrivateTaskSelectionViewModel(_gameService, 
-            CurrentView = new PrivateTaskSelectionViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
-                OnActionExecuted);
+                () => CurrentView = CreateMainScreenViewModel(),
                 OnActionExecuted);
         }
 
         private void NavigateToVassalList()
         {
             CurrentView = new VassalListViewModel(_gameService, 
-            CurrentView = new VassalListViewModel(_gameService, 
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
-                NavigateToVassalDetail);
+                () => CurrentView = CreateMainScreenViewModel(),
                 NavigateToVassalDetail);
         }
 
@@ -138,24 +216,20 @@ namespace SengokuSLG.ViewModels
         {
             CurrentView = new VassalDetailViewModel(_gameService, vassalId,
                 () => CurrentView = new VassalListViewModel(_gameService, 
-                () => CurrentView = new VassalListViewModel(_gameService, 
-                    () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily),
-                    NavigateToVassalDetail));
+                    () => CurrentView = CreateMainScreenViewModel(),
                     NavigateToVassalDetail));
         }
 
         private void NavigateToAdvisorSetting()
         {
             CurrentView = new AdvisorSettingViewModel(_gameService,
-            CurrentView = new AdvisorSettingViewModel(_gameService,
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+                () => CurrentView = CreateMainScreenViewModel());
         }
 
-        private void NavigateToBattleLog(BattleContext context)
+        private void NavigateToBattleLog(BattleContextV09 context)
         {
             CurrentView = new BattleLogViewModel(context,
-            CurrentView = new BattleLogViewModel(context,
-                () => CurrentView = new MainScreenViewModel(_gameService, NavigateToPublicDuty, NavigateToPrivateTask, NavigateToVassalList, NavigateToAdvisorSetting, NavigateToBattleLog, NavigateToMarriage, NavigateToFamily));
+                () => CurrentView = CreateMainScreenViewModel());
         }
 
         private void OnActionExecuted(string taskName, string target)
@@ -208,6 +282,7 @@ namespace SengokuSLG.ViewModels
         public ICommand NavigateVassalListCommand { get; }
         public ICommand NavigateMarriageCommand { get; }
         public ICommand NavigateFamilyCommand { get; }
+        public ICommand NavigateMilitaryCommand { get; }
     }
 
     public class MainScreenViewModel : ViewModelBase
@@ -221,7 +296,7 @@ namespace SengokuSLG.ViewModels
         public ICommand NavigateMarriageCommand { get; }
         public ICommand NavigateFamilyCommand { get; }
 
-        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask, Action onVassalList, Action onAdvisorSetting, Action<BattleContext> onBattleLog, Action onMarriage, Action onFamily)
+        public MainScreenViewModel(GameService service, Action onPublicDuty, Action onPrivateTask, Action onVassalList, Action onAdvisorSetting, Action<BattleContextV09> onBattleLog, Action onMarriage, Action onFamily)
         {
             _gameService = service;
             _gameService.PropertyChanged += OnServicePropertyChanged;
@@ -407,14 +482,14 @@ namespace SengokuSLG.ViewModels
                 var target = p as string;
                 var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
                 _gameService.ExecuteVillageMerchantTrade(village);
-                onActionExecuted("村商人との取引", target);
+                onActionExecuted("村商人との取引", target ?? "");
             });
 
             ExecuteSpecialtyPreparationCommand = new RelayCommandWithParam(p => {
                 var target = p as string;
                 var village = target == "村A" ? _gameService.VillageA : _gameService.VillageB;
                 _gameService.ExecuteSpecialtyPreparation(village);
-                onActionExecuted("名産開発の準備", target);
+                onActionExecuted("名産開発の準備", target ?? "");
             });
         }
     }
@@ -436,19 +511,34 @@ namespace SengokuSLG.ViewModels
             _gameService = service;
             _vassalView = CollectionViewSource.GetDefaultView(_gameService.Vassals);
             
+            // Base filter: Only show Genpuku males who are alive
+            _vassalView.Filter = v => {
+                var vassal = v as Vassal;
+                if (vassal == null) return false;
+                return vassal.IsGenpuku && vassal.Gender == Gender.Male && !vassal.IsDead;
+            };
+            
             BackCommand = new RelayCommand(onBack);
             DetailCommand = new RelayCommandWithParam(id => onDetail((string)id));
             
             FilterCommand = new RelayCommandWithParam(param => {
                 string filter = param as string;
                 _vassalView.Filter = v => {
-                    if (string.IsNullOrEmpty(filter) || filter == "All") return true;
                     var vassal = v as Vassal;
                     if (vassal == null) return false;
                     
+                    // Always apply base filter
+                    if (!vassal.IsGenpuku || vassal.Gender != Gender.Male || vassal.IsDead) return false;
+                    
+                    if (string.IsNullOrEmpty(filter) || filter == "All") return true;
+                    
                     if (filter == "Juboku") return vassal.Rank == Rank.Juboku;
                     if (filter == "Toshi") return vassal.Rank == Rank.Toshi;
+                    if (filter == "Bajoshu") return vassal.Rank == Rank.Bajoshu;
+                    if (filter == "Kogashira") return vassal.Rank == Rank.Kogashira;
                     if (filter == "Kumigashira") return vassal.Rank == Rank.Kumigashira;
+                    if (filter == "AshigaruDaisho") return vassal.Rank == Rank.AshigaruDaisho;
+                    if (filter == "Jidaisho") return vassal.Rank == Rank.Jidaisho;
                     if (filter == "Busho") return vassal.Rank == Rank.Busho;
                     return true;
                 };
@@ -494,7 +584,7 @@ namespace SengokuSLG.ViewModels
     public class AdvisorSettingViewModel : ViewModelBase
     {
         private readonly GameService _gameService;
-        public ObservableCollection<Vassal> Vassals => _gameService.Vassals;
+        public ObservableCollection<Vassal> Vassals { get; }
         public ICommand BackCommand { get; }
         public ICommand AppointCommand { get; }
         public ICommand DismissCommand { get; }
@@ -503,6 +593,10 @@ namespace SengokuSLG.ViewModels
         {
             _gameService = service;
             BackCommand = new RelayCommand(onBack);
+            
+            // Filter to show only Genpuku males who are alive
+            Vassals = new ObservableCollection<Vassal>(
+                _gameService.Vassals.Where(v => v.IsGenpuku && v.Gender == Gender.Male && !v.IsDead));
             
             // Subscribe to Player property changes
             _gameService.Player.PropertyChanged += (s, e) =>
@@ -620,14 +714,14 @@ namespace SengokuSLG.ViewModels
 
     public class BattleLogViewModel : ViewModelBase
     {
-        public BattleContext Context { get; }
+        public BattleContextV09 Context { get; }
         public ObservableCollection<string> Logs { get; }
         public ICommand CloseCommand { get; }
 
-        public BattleLogViewModel(BattleContext context, Action onClose)
+        public BattleLogViewModel(BattleContextV09 context, Action onClose)
         {
             Context = context;
-            Logs = new ObservableCollection<string>(context.BattleLogs);
+            Logs = new ObservableCollection<string>(context.Logs);
             CloseCommand = new RelayCommand(onClose);
         }
     }
@@ -655,15 +749,15 @@ namespace SengokuSLG.ViewModels
         public ICommand BackCommand { get; }
         public ICommand ExecuteCommand { get; }
 
-        public MarriageNegotiationViewModel(GameService service, MarriageOffer offer, Action onBack, Action onExecute)
+        public MarriageNegotiationViewModel(GameService service, MarriageOffer offer, Action onBack, Action<bool> onExecute)
         {
             _gameService = service;
             Offer = offer;
             SuccessProbability = _gameService.CalculateMarriageProbability(offer);
             BackCommand = new RelayCommand(onBack);
             ExecuteCommand = new RelayCommand(() => {
-                _gameService.ProcessMarriage(offer);
-                onExecute();
+                bool success = _gameService.ProcessMarriage(offer);
+                onExecute(success);
             });
         }
     }
@@ -701,5 +795,284 @@ namespace SengokuSLG.ViewModels
                 onConfirm();
             });
         }
+    }
+
+    // ===== v0.9 Military System ViewModels =====
+
+    public class MilitaryFormationViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+        public ICommand NavigateToBattalionCommand { get; }
+        public ICommand NavigateToSquadStatusCommand { get; }
+        public ICommand NavigateToBattlefieldCommand { get; }
+
+        public MilitaryFormationViewModel(GameService service, Action onBack, Action onNavigateToBattalion, Action onNavigateToSquadStatus, Action onNavigateToBattlefield)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+            NavigateToBattalionCommand = new RelayCommand(onNavigateToBattalion);
+            NavigateToSquadStatusCommand = new RelayCommand(onNavigateToSquadStatus);
+            NavigateToBattlefieldCommand = new RelayCommand(onNavigateToBattlefield);
+        }
+
+        public Player Player => _gameService.Player;
+        public ObservableCollection<Vassal> Vassals => _gameService.Vassals;
+        public BattleBattalion Battalion => _gameService.BattleService.CurrentBattalion;
+    }
+
+    public class BattalionManagementViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+        public ICommand NavigateToCompanyCommand { get; }
+
+        public BattalionManagementViewModel(GameService service, Action onBack, Action<object?> onNavigateToCompany)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+            NavigateToCompanyCommand = new RelayCommandWithParam(onNavigateToCompany);
+        }
+
+        public Player Player => _gameService.Player;
+        public BattleBattalion Battalion => _gameService.BattleService.CurrentBattalion;
+    }
+
+    public class CompanyManagementViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+        public ICommand NavigateToSquadCommand { get; }
+
+        public CompanyManagementViewModel(GameService service, Action onBack, Action onNavigateToSquad, BattleCompany selectedCompany)
+        {
+            _gameService = service;
+            SelectedCompany = selectedCompany;
+            BackCommand = new RelayCommand(onBack);
+            NavigateToSquadCommand = new RelayCommand(onNavigateToSquad);
+        }
+
+        public Player Player => _gameService.Player;
+        public BattleCompany SelectedCompany { get; }
+    }
+
+    public class SquadDetailViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+
+        public SquadDetailViewModel(GameService service, Action onBack)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+        }
+
+        public Player Player => _gameService.Player;
+        // For v0.9 sample, just show the first squad of the first company
+        public BattleSquad SelectedSquad => _gameService.BattleService.CurrentBattalion?.Companies.FirstOrDefault()?.Squads.FirstOrDefault();
+    }
+
+    public class SquadStatusPanelViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+        public ICommand NavigateToSquadCommand { get; }
+
+        public SquadStatusPanelViewModel(GameService service, Action onBack, Action onNavigateToSquad)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+            NavigateToSquadCommand = new RelayCommand(onNavigateToSquad);
+        }
+
+        public Player Player => _gameService.Player;
+        public BattleBattalion Battalion => _gameService.BattleService.CurrentBattalion;
+    }
+
+    public class BattlefieldUIViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+        public ICommand NavigateToPursuitCommand { get; }
+        public ICommand NavigateToCasualtyCommand { get; }
+
+        public BattlefieldUIViewModel(GameService service, Action onBack, Action onNavigateToPursuit, Action onNavigateToCasualty)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+            NavigateToPursuitCommand = new RelayCommand(onNavigateToPursuit);
+            NavigateToCasualtyCommand = new RelayCommand(onNavigateToCasualty);
+        }
+
+        public Player Player => _gameService.Player;
+        public BattleContextV09 Context 
+        {
+            get
+            {
+                if (_gameService.BattleService.CurrentContext == null)
+                {
+                    _gameService.BattleService.InitializeBattle();
+                }
+                return _gameService.BattleService.CurrentContext;
+            }
+        }
+    }
+
+    public class CasualtySummaryItem
+    {
+        public string Name { get; set; }
+        public string Position { get; set; }
+        public int Dead { get; set; }
+        public int Disabled { get; set; }
+        public int Wounded { get; set; }
+        public int Deserted { get; set; }
+        public int Total => Dead + Disabled + Wounded + Deserted;
+        public int Remaining { get; set; }
+    }
+
+    public class CasualtyReportViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+
+        public CasualtyReportViewModel(GameService service, Action onBack)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+        }
+
+        public BattleContextV09 Context => _gameService.BattleService.CurrentContext;
+
+        public int PlayerDeaths => Context?.Casualties.Count(c => c.IsOwn && c.CasualtyType == CasualtyType.Death) ?? 0;
+        public int PlayerDisabled => Context?.Casualties.Count(c => c.IsOwn && c.CasualtyType == CasualtyType.Disabled) ?? 0;
+        public int PlayerInjured => Context?.Casualties.Count(c => c.IsOwn && c.CasualtyType == CasualtyType.Injury) ?? 0;
+        public int PlayerFleeing => Context?.Casualties.Count(c => c.IsOwn && c.CasualtyType == CasualtyType.Fleeing) ?? 0;
+        public int PlayerTotal => PlayerDeaths + PlayerDisabled + PlayerInjured + PlayerFleeing;
+
+        public int EnemyDeaths => Context?.Casualties.Count(c => !c.IsOwn && c.CasualtyType == CasualtyType.Death) ?? 0;
+        public int EnemyDisabled => Context?.Casualties.Count(c => !c.IsOwn && c.CasualtyType == CasualtyType.Disabled) ?? 0;
+        public int EnemyInjured => Context?.Casualties.Count(c => !c.IsOwn && c.CasualtyType == CasualtyType.Injury) ?? 0;
+        public int EnemyFleeing => Context?.Casualties.Count(c => !c.IsOwn && c.CasualtyType == CasualtyType.Fleeing) ?? 0;
+        public int EnemyTotal => EnemyDeaths + EnemyDisabled + EnemyInjured + EnemyFleeing;
+
+        public List<CasualtySummaryItem> Casualties
+        {
+            get
+            {
+                if (Context == null) return new List<CasualtySummaryItem>();
+                
+                var summary = new List<CasualtySummaryItem>();
+                
+                if (Context.PlayerBattalion != null)
+                {
+                    foreach(var company in Context.PlayerBattalion.Companies)
+                    {
+                        foreach(var squad in company.Squads)
+                        {
+                            var squadCasualties = Context.Casualties.Where(c => c.SquadId == squad.Id).ToList();
+                            // Only add if there are casualties or it's a player squad
+                            if (squadCasualties.Any() || true) 
+                            {
+                                summary.Add(new CasualtySummaryItem
+                                {
+                                    Name = squad.CommanderName,
+                                    Position = "小頭",
+                                    Dead = squadCasualties.Count(c => c.CasualtyType == CasualtyType.Death),
+                                    Disabled = squadCasualties.Count(c => c.CasualtyType == CasualtyType.Disabled),
+                                    Wounded = squadCasualties.Count(c => c.CasualtyType == CasualtyType.Injury),
+                                    Deserted = squadCasualties.Count(c => c.CasualtyType == CasualtyType.Fleeing),
+                                    Remaining = squad.CurrentSoldierCount
+                                });
+                            }
+                        }
+                    }
+                }
+                return summary;
+            }
+        }
+
+        public Player Player => _gameService.Player;
+    }
+
+    public class PursuitDecisionViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+        public ICommand ExecutePursuitCommand { get; }
+
+        public PursuitDecisionViewModel(GameService service, Action onBack)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+            ExecutePursuitCommand = new RelayCommand(() => {
+                // TODO: Execute pursuit logic
+                onBack();
+            });
+        }
+
+        public Player Player => _gameService.Player;
+        public BattleContextV09 Context => _gameService.BattleService.CurrentContext;
+    }
+
+    public class MeritReportViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+
+        public MeritReportViewModel(GameService service, Action onBack)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+        }
+
+        public BattleContextV09 Context => _gameService.BattleService.CurrentContext;
+        public Player Player => _gameService.Player;
+
+        public List<MeritItem> Merits
+        {
+            get
+            {
+                if (Context == null || Context.Merits == null) return new List<MeritItem>();
+                
+                return Context.Merits.Select(m => new MeritItem
+                {
+                    Name = m.VassalName,
+                    Position = m.Rank.ToString(),
+                    MoraleDamage = m.MoraleDamageScore,
+                    Collapse = m.CollapseBonusScore,
+                    Pursuit = m.PursuitDamageScore,
+                    Efficiency = m.EfficiencyBonusScore,
+                    Modifier = m.BattleModifier.ToString("F1"),
+                    Total = m.TotalScore
+                }).ToList();
+            }
+        }
+    }
+
+    public class MeritItem
+    {
+        public string Name { get; set; } = "";
+        public string Position { get; set; } = "";
+        public int MoraleDamage { get; set; }
+        public int Collapse { get; set; }
+        public int Pursuit { get; set; }
+        public int Efficiency { get; set; }
+        public string Modifier { get; set; } = "";
+        public int Total { get; set; }
+    }
+
+    public class BattleResultSummaryViewModel : ViewModelBase
+    {
+        private readonly GameService _gameService;
+        public ICommand BackCommand { get; }
+
+        public BattleResultSummaryViewModel(GameService service, Action onBack)
+        {
+            _gameService = service;
+            BackCommand = new RelayCommand(onBack);
+        }
+
+        public BattleContextV09 Context => _gameService.BattleService.CurrentContext;
+        public Player Player => _gameService.Player;
     }
 }

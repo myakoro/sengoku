@@ -1,0 +1,138 @@
+<UserControl x:Class="SengokuSLG.Views.MeritReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1080">
+    <Grid Background="{StaticResource BrushBgBase}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource BrushBgHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,2" Padding="20,15">
+            <Grid>
+                <TextBlock Text="🏆 家臣戦功レポート" FontSize="24" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="戻る" Command="{Binding BackCommand}" Style="{StaticResource ButtonSecondary}" Width="100" Margin="0,0,10,0"/>
+                    <Button Content="CSV" Style="{StaticResource ButtonSecondary}" Width="100"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel>
+                <!-- 戦功サマリー -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock FontSize="14" FontWeight="Bold" Margin="0,0,0,5">戦功サマリー:</TextBlock>
+                            <TextBlock FontSize="11" Foreground="#666">
+                                <Run Text="士気+450 / 崩壊+320 / 追撃+280 / 効率+200 = 1,250点 × 1.3（大勝）= 1,625点 − 35（借兵ペナ）= 1,590点"/>
+                            </TextBlock>
+                        </StackPanel>
+                        <Border Background="#d4edda" CornerRadius="6" Padding="8,20" HorizontalAlignment="Right">
+                            <TextBlock Text="確定: 1,590点" FontSize="20" FontWeight="Bold" Foreground="#155724"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- 家臣別戦功一覧 -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="家臣別戦功一覧" FontSize="14" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" Margin="0,0,0,10"/>
+                        <DataGrid ItemsSource="{Binding Merits}" AutoGenerateColumns="False" 
+                                  Background="White" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1"
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal" 
+                                  RowBackground="White" AlternatingRowBackground="#f9f9f9"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="名前" Binding="{Binding Name}" Width="120"/>
+                                <DataGridTextColumn Header="役職" Binding="{Binding Position}" Width="100"/>
+                                <DataGridTextColumn Header="士気ダメージ" Binding="{Binding MoraleDamage}" Width="100"/>
+                                <DataGridTextColumn Header="崩壊" Binding="{Binding Collapse}" Width="80"/>
+                                <DataGridTextColumn Header="追撃" Binding="{Binding Pursuit}" Width="80"/>
+                                <DataGridTextColumn Header="効率" Binding="{Binding Efficiency}" Width="80"/>
+                                <DataGridTextColumn Header="補正" Binding="{Binding Modifier}" Width="80"/>
+                                <DataGridTemplateColumn Header="合計" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Total}" FontSize="15" FontWeight="Bold" Foreground="#c73940"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button Content="詳細" Style="{StaticResource ButtonSecondary}" Margin="0,0,10,0"/>
+                            <Button Content="ソート" Style="{StaticResource ButtonSecondary}" Margin="0,0,10,0"/>
+                            <Button Content="フィルター" Style="{StaticResource ButtonSecondary}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- 4軸戦功の詳細 -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="4軸戦功の詳細" FontSize="14" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" Margin="0,0,0,10"/>
+                        <DataGrid AutoGenerateColumns="False" 
+                                  Background="White" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1"
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal" 
+                                  RowBackground="White" AlternatingRowBackground="#f9f9f9"
+                                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="軸" Width="150">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="小隊" Width="*"/>
+                                <DataGridTextColumn Header="中隊" Width="*"/>
+                                <DataGridTextColumn Header="大隊" Width="*"/>
+                            </DataGrid.Columns>
+                            <DataGrid.Items>
+                                <x:Array Type="{x:Type sys:Object}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                                    <!-- Static data would go here in actual implementation -->
+                                </x:Array>
+                            </DataGrid.Items>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- 個人戦功 → 主人公集約 -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock FontSize="14" FontWeight="Bold" Margin="0,0,0,5">個人戦功 → 主人公集約:</TextBlock>
+                                <TextBlock FontSize="11" Foreground="#666">
+                                    <Run Text="山田481 + 佐藤241 + 鈴木221 + 田中260 + 伊藤120 = 1,323点 → 主人公へ集約"/>
+                                </TextBlock>
+                            </StackPanel>
+                            <Border HorizontalAlignment="Right">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#c73940" Offset="0"/>
+                                        <GradientStop Color="#A02F17" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border CornerRadius="6" Padding="8,20">
+                                    <TextBlock Text="主人公: 1,590点" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                </Border>
+                            </Border>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="戦功を確定" Style="{StaticResource ButtonPrimary}" Margin="0,0,10,0"/>
+                            <Button Content="主人公ステータスへ" Style="{StaticResource ButtonSecondary}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

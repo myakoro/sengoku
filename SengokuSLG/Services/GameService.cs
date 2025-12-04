@@ -41,6 +41,7 @@ namespace SengokuSLG.Services
         public House PlayerHouse { get; private set; }
         public SuccessionContext PendingSuccession { get; private set; }
         public ObservableCollection<MonthlyEvent> MonthlyEvents { get; private set; }
+        public BattleService BattleService { get; private set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null) => 
@@ -75,7 +76,7 @@ namespace SengokuSLG.Services
                 AchievementPolitical = 0,
                 AchievementSecret = 0,
                 Favor = 0,
-                Rank = Rank.Toshi,
+                Rank = Rank.Bajoshu,
                 AbilityCombat = 60,
                 AbilityLeadership = 40,
                 AbilityPolitics = 60,
@@ -123,6 +124,308 @@ namespace SengokuSLG.Services
                 Player.JubokuIds.Add(v.Id);
             }
 
+            // --- Comprehensive Sample Data for Marriage & Family ---
+            
+            // Player setup
+            Player.MaritalStatus = MaritalStatus.Married;
+            Player.SpouseId = "SPOUSE_01";
+            Player.FatherId = "FATHER_01";
+            Player.MotherId = "MOTHER_01";
+            
+            // Spouse (Wife)
+            Vassals.Add(new Vassal 
+            { 
+                Id = "SPOUSE_01", 
+                Name = "お市", 
+                Age = 25, 
+                Gender = Gender.Female,
+                Origin = "一門", 
+                Rank = Rank.Juboku,
+                Loyalty = 100,
+                IsAdult = true,
+                IsGenpuku = true,
+                MaritalStatus = MaritalStatus.Married,
+                SpouseId = Player.Id,
+                BirthYear = 1562
+            });
+
+            // Father (Alive)
+            Vassals.Add(new Vassal
+            {
+                Id = "FATHER_01",
+                Name = "田中一郎",
+                Age = 55,
+                Gender = Gender.Male,
+                Origin = "一門",
+                Rank = Rank.Toshi,
+                Loyalty = 100,
+                IsAdult = true,
+                IsGenpuku = true,
+                MaritalStatus = MaritalStatus.Married,
+                SpouseId = "MOTHER_01",
+                BirthYear = 1532,
+                AbilityCombat = 70,
+                AbilityLeadership = 60,
+                AbilityPolitics = 50,
+                AbilityIntrigue = 40
+            });
+
+            // Mother (Alive)
+            Vassals.Add(new Vassal
+            {
+                Id = "MOTHER_01",
+                Name = "田中花",
+                Age = 52,
+                Gender = Gender.Female,
+                Origin = "一門",
+                Rank = Rank.Juboku,
+                Loyalty = 100,
+                IsAdult = true,
+                IsGenpuku = true,
+                MaritalStatus = MaritalStatus.Married,
+                SpouseId = "FATHER_01",
+                BirthYear = 1535
+            });
+
+            // Son (Genpuku済み)
+            Vassals.Add(new Vassal
+            {
+                Id = "SON_01",
+                Name = "田中太郎",
+                Age = 16,
+                Gender = Gender.Male,
+                Rank = Rank.Juboku,
+                IsAdult = true,
+                IsGenpuku = true,
+                FatherId = Player.Id,
+                MotherId = "SPOUSE_01",
+                BirthYear = 1571,
+                Origin = "一門",
+                Loyalty = 100,
+                AbilityCombat = 55,
+                AbilityLeadership = 45,
+                AbilityPolitics = 30,
+                AbilityIntrigue = 25
+            });
+
+            // Son (元服前)
+            Vassals.Add(new Vassal
+            {
+                Id = "SON_02",
+                Name = "田中次郎",
+                Age = 12,
+                Gender = Gender.Male,
+                Rank = Rank.Juboku,
+                IsAdult = false,
+                IsGenpuku = false,
+                FatherId = Player.Id,
+                MotherId = "SPOUSE_01",
+                BirthYear = 1575,
+                Origin = "一門",
+                Loyalty = 100,
+                AbilityCombat = 40,
+                AbilityLeadership = 35,
+                AbilityPolitics = 45,
+                AbilityIntrigue = 30
+            });
+
+            // Daughter
+            Vassals.Add(new Vassal
+            {
+                Id = "DAUGHTER_01",
+                Name = "田中花子",
+                Age = 10,
+                Gender = Gender.Female,
+                Rank = Rank.Juboku,
+                IsAdult = false,
+                IsGenpuku = false,
+                FatherId = Player.Id,
+                MotherId = "SPOUSE_01",
+                BirthYear = 1577,
+                Origin = "一門",
+                Loyalty = 100,
+                AbilityCombat = 10,
+                AbilityLeadership = 30,
+                AbilityPolitics = 50,
+                AbilityIntrigue = 45
+            });
+
+            // 譜代家臣
+            Vassals.Add(new Vassal
+            {
+                Id = "VASSAL_01",
+                Name = "佐藤忠信",
+                Age = 40,
+                Gender = Gender.Male,
+                Origin = "譜代",
+                Rank = Rank.Toshi,
+                Loyalty = 95,
+                IsAdult = true,
+                IsGenpuku = true,
+                MaritalStatus = MaritalStatus.Single,
+                BirthYear = 1547,
+                AbilityCombat = 75,
+                AbilityLeadership = 65,
+                AbilityPolitics = 40,
+                AbilityIntrigue = 30
+            });
+
+            Vassals.Add(new Vassal
+            {
+                Id = "VASSAL_02",
+                Name = "鈴木重秀",
+                Age = 35,
+                Gender = Gender.Male,
+                Origin = "譜代",
+                Rank = Rank.Toshi,
+                Loyalty = 90,
+                IsAdult = true,
+                IsGenpuku = true,
+                MaritalStatus = MaritalStatus.Single,
+                BirthYear = 1552,
+                AbilityCombat = 80,
+                AbilityLeadership = 70,
+                AbilityPolitics = 30,
+                AbilityIntrigue = 50
+            });
+
+            // 新参家臣
+            Vassals.Add(new Vassal
+            {
+                Id = "VASSAL_03",
+                Name = "高橋紹運",
+                Age = 28,
+                Gender = Gender.Male,
+                Origin = "新参",
+                Rank = Rank.Juboku,
+                Loyalty = 80,
+                IsAdult = true,
+                IsGenpuku = true,
+                MaritalStatus = MaritalStatus.Single,
+                BirthYear = 1559,
+                AbilityCombat = 85,
+                AbilityLeadership = 75,
+                AbilityPolitics = 60,
+                AbilityIntrigue = 55
+            });
+
+            // Brother (Alive, Genpuku済み)
+            Vassals.Add(new Vassal
+            {
+                Id = "BROTHER_01",
+                Name = "田中三郎",
+                Age = 23,
+                Gender = Gender.Male,
+                Rank = Rank.Toshi,
+                IsAdult = true,
+                IsGenpuku = true,
+                FatherId = "FATHER_01",
+                MotherId = "MOTHER_01",
+                BirthYear = 1564,
+                Origin = "一門",
+                Loyalty = 95,
+                AbilityCombat = 65,
+                AbilityLeadership = 55,
+                AbilityPolitics = 40,
+                AbilityIntrigue = 35
+            });
+
+            // Sister
+            Vassals.Add(new Vassal
+            {
+                Id = "SISTER_01",
+                Name = "田中春",
+                Age = 20,
+                Gender = Gender.Female,
+                Rank = Rank.Juboku,
+                IsAdult = true,
+                IsGenpuku = true,
+                FatherId = "FATHER_01",
+                MotherId = "MOTHER_01",
+                BirthYear = 1567,
+                Origin = "一門",
+                Loyalty = 100,
+                MaritalStatus = MaritalStatus.Single
+            });
+
+            // Grandfather (Deceased)
+            Vassals.Add(new Vassal
+            {
+                Id = "GRANDFATHER_01",
+                Name = "田中源蔵",
+                Age = 78,
+                Gender = Gender.Male,
+                Rank = Rank.Busho,
+                IsAdult = true,
+                IsGenpuku = true,
+                IsDead = true,
+                BirthYear = 1509,
+                Origin = "一門",
+                Loyalty = 100,
+                AbilityCombat = 80,
+                AbilityLeadership = 75,
+                AbilityPolitics = 60,
+                AbilityIntrigue = 50
+            });
+
+            // Grandmother (Deceased)
+            Vassals.Add(new Vassal
+            {
+                Id = "GRANDMOTHER_01",
+                Name = "田中梅",
+                Age = 75,
+                Gender = Gender.Female,
+                Rank = Rank.Juboku,
+                IsAdult = true,
+                IsGenpuku = true,
+                IsDead = true,
+                BirthYear = 1512,
+                Origin = "一門",
+                Loyalty = 100
+            });
+
+            // Add marriage offers to PlayerHouse
+            PlayerHouse.MarriageCandidates.Add(new MarriageOffer
+            {
+                SourceHouseName = "織田家分家",
+                TargetPersonId = "SON_01",
+                TargetPersonName = "田中太郎",
+                CandidatePersonId = Guid.NewGuid().ToString(),
+                CandidatePersonName = "お濃",
+                IsLegalWife = true,
+                Dowry = 300,
+                RankDifference = 0,
+                SuccessProb = 0.75f
+            });
+
+            PlayerHouse.MarriageCandidates.Add(new MarriageOffer
+            {
+                SourceHouseName = "武田家分家",
+                TargetPersonId = "BROTHER_01",
+                TargetPersonName = "田中三郎",
+                CandidatePersonId = Guid.NewGuid().ToString(),
+                CandidatePersonName = "お松",
+                IsLegalWife = true,
+                Dowry = 400,
+                RankDifference = 1,
+                SuccessProb = 0.85f,
+                ConnectionOffer = new List<string> { "Influential Merchant" }
+            });
+
+            PlayerHouse.MarriageCandidates.Add(new MarriageOffer
+            {
+                SourceHouseName = "上杉家分家",
+                TargetPersonId = Player.Id,
+                TargetPersonName = Player.Name,
+                CandidatePersonId = Guid.NewGuid().ToString(),
+                CandidatePersonName = "お菊",
+                IsLegalWife = false, // 側室
+                Dowry = 200,
+                RankDifference = -1,
+                SuccessProb = 0.65f
+            });
+            // ---------------------------------------------------
+
             HasPublicDutyThisMonth = false;
             HasSpecialtyPreparationFlag = false;
             _publicDutyCountThisMonth = 0;
@@ -135,6 +438,10 @@ namespace SengokuSLG.Services
             _villageBIndustryLevelStart = VillageB.IndustrySlots.Sum(s => s.Level);
             _villageAPopulationStart = VillageA.Population;
             _villageBPopulationStart = VillageB.Population;
+
+            // Initialize BattleService with Sample Data
+            BattleService = new BattleService(this);
+            BattleService.InitializeSampleData();
         }
 
         private void InitializeMerchants(Village village)
@@ -186,6 +493,13 @@ namespace SengokuSLG.Services
             var vassal = Vassals.FirstOrDefault(v => v.Id == vassalId);
             if (vassal == null) return;
 
+            // Check if vassal has completed Genpuku
+            if (!vassal.IsGenpuku)
+            {
+                AddLog("人事", "補佐官任命", vassal.Name, "失敗 (元服前)");
+                return;
+            }
+
             // Dismiss current advisor if any
             if (!string.IsNullOrEmpty(Player.AdvisorId))
             {
@@ -193,7 +507,7 @@ namespace SengokuSLG.Services
                 if (current != null)
                 {
                     current.IsAdvisor = false;
-                    current.Loyalty -= 3;
+                    current.Loyalty -= 7;
                 }
             }
 
@@ -212,7 +526,7 @@ namespace SengokuSLG.Services
             if (current != null)
             {
                 current.IsAdvisor = false;
-                current.Loyalty -= 3;
+                current.Loyalty -= 7;
                 AddLog("人事", "補佐官解任", current.Name, "成功");
             }
             Player.AdvisorId = null;
@@ -395,12 +709,25 @@ namespace SengokuSLG.Services
                 village.Population += 5;
                 Player.Money -= 10;
                 _monthlyExpense += 10;
-                AddLog("私事", "産業開発", $"{village.Name}の{slot.Type}", "成功");
+                AddLog("私事", "産業開発", $"{village.Name}の{GetIndustryName(slot.Type)}", "成功");
             }
             else
             {
                 AddLog("私事", "産業開発", village.Name, "産業なし");
             }
+        }
+
+        private string GetIndustryName(IndustryType type)
+        {
+            return type switch
+            {
+                IndustryType.Agriculture => "農業",
+                IndustryType.Smithing => "鍛冶",
+                IndustryType.Weaving => "織物",
+                IndustryType.Brewing => "醸造",
+                IndustryType.Mining => "鉱山",
+                _ => type.ToString()
+            };
         }
 
         public void ExecuteRoadMaintenance(Village village)
@@ -466,6 +793,25 @@ namespace SengokuSLG.Services
             ApplyBattleResultsV09(context);
             
             return context;
+        }
+
+        public BattleContextV09 StartBattleV09()
+        {
+            if (_battleService == null) _battleService = new BattleService(this);
+            if (_battleService.CurrentContext != null) return _battleService.CurrentContext;
+            return _battleService.InitializeBattle();
+        }
+
+        public void ProcessBattleTurnV09(BattleContextV09 context)
+        {
+            if (_battleService == null) _battleService = new BattleService(this);
+            _battleService.ProcessTurn(context);
+            
+            if (context.IsBattleEnded)
+            {
+                _battleService.CalculateWarMerits(context);
+                ApplyBattleResultsV09(context);
+            }
         }
 
         private void ApplyBattleResultsV09(BattleContextV09 context)
@@ -562,10 +908,18 @@ namespace SengokuSLG.Services
             }
         }
 
-        public void ProcessMarriage(MarriageOffer offer)
+        public bool ProcessMarriage(MarriageOffer offer)
         {
-            _marriageService.ProcessMarriage(PlayerHouse, Player, offer);
-            AddLog("家", "婚姻成立", offer.CandidatePersonName, "成功");
+            bool success = _marriageService.ProcessMarriage(PlayerHouse, Player, offer);
+            if (success)
+            {
+                AddLog("家", "婚姻成立", offer.CandidatePersonName, "成功");
+            }
+            else
+            {
+                AddLog("家", "縁談交渉", offer.CandidatePersonName, "破談");
+            }
+            return success;
         }
 
         public float CalculateMarriageProbability(MarriageOffer offer)

@@ -167,7 +167,7 @@
                     <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="8" Padding="15" Margin="0,0,0,20">
                         <StackPanel>
                             <TextBlock Text="■ 補佐官について" FontSize="16" FontWeight="Bold" Foreground="{StaticResource BrushAccentRed}" Margin="0,0,0,12"/>
-                            <TextBlock Text="補佐官は家臣であれば誰でも任命可能です。" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                            <TextBlock Text="補佐官は元服済みの家臣から任命可能です。" TextWrapping="Wrap" Margin="0,0,0,10"/>
                             <TextBlock Text="効果:" FontWeight="Bold" Margin="0,0,0,5"/>
                             <TextBlock Text="・統率・政務・知略能力が補正される" Margin="10,0,0,5"/>
                             <TextBlock Text="・忠誠 +5" Margin="10,0,0,0"/>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XAMLプレビュー: 01_軍事編成画面</title>
+  <link rel="stylesheet" href="css/compact.css">
+  <style>
+    body { margin: 0; padding: 20px; background: #f5f5f5; }
+    .xaml-preview { max-width: 1080px; margin: 0 auto; background: #f9f7f3; }
+  </style>
+</head>
+<body>
+  <div class="xaml-preview">
+    <!-- Header -->
+    <header class="page-header">
+      <h1>🏯 軍事編成</h1>
+      <div class="header-actions">
+        <button class="btn btn-outline">戻る</button>
+        <button class="btn btn-primary">保存</button>
+      </div>
+    </header>
+
+    <div style="padding: 20px;">
+      <!-- 編成モード -->
+      <div class="card">
+        <div class="flex flex-between">
+          <div>
+            <label style="margin-right: 12px;">
+              <input type="radio" name="mode"> 自動編成
+            </label>
+            <label>
+              <input type="radio" name="mode" checked> 手動編成
+            </label>
+          </div>
+          <button class="btn btn-secondary">自動編成実行</button>
+        </div>
+      </div>
+
+      <!-- 階層選択タブ -->
+      <div style="background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 6px 6px 0 0; margin-bottom: 0;">
+        <div style="display: flex;">
+          <button class="btn" style="background: white; padding: 10px 15px; font-size: 14px; font-weight: bold; border-radius: 0;">大隊(300)</button>
+          <button class="btn" style="padding: 10px 15px; font-size: 14px;">中隊(100)</button>
+          <button class="btn" style="padding: 10px 15px; font-size: 14px;">小隊(25)</button>
+        </div>
+      </div>
+
+      <!-- 大隊情報 -->
+      <div style="background: linear-gradient(135deg, var(--accent-shu) 0%, #A02F17 100%); border-radius: 6px; padding: 10px 15px; margin-bottom: 12px;">
+        <div class="flex flex-between">
+          <div>
+            <span style="font-size: 16px; font-weight: bold; color: white;">足軽大将: 山田太郎</span>
+            <span style="font-size: 11px; color: white; margin-left: 10px;">総兵力: 300人</span>
+          </div>
+          <div style="background: white; border-radius: 4px; padding: 8px;">
+            <span style="font-size: 12px; font-weight: bold; color: var(--accent-shu);">指揮上限: 300</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 中隊一覧 -->
+      <div class="grid grid-3">
+        <!-- 中隊A -->
+        <div class="card" style="border-bottom: 4px solid var(--accent-ai);">
+          <div style="font-size: 14px; font-weight: bold; margin-bottom: 4px;">佐藤組 (100人)</div>
+          <div style="font-size: 12px; color: #666; margin-bottom: 6px;">組頭: <strong>佐藤次郎</strong></div>
+          
+          <!-- 小隊ブロック -->
+          <div class="grid grid-4" style="gap: 4px; margin-bottom: 6px;">
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+          </div>
+
+          <!-- ステータス -->
+          <div class="grid grid-3 text-xs" style="margin-bottom: 6px; color: #666;">
+            <div>訓75</div>
+            <div style="text-align: center;">士80</div>
+            <div style="text-align: right;">疲35</div>
+          </div>
+
+          <!-- プログレスバー -->
+          <div class="progress-bar" style="margin-bottom: 4px;">
+            <div class="progress-fill" style="background: var(--training-high); width: 75%;"></div>
+          </div>
+          <div class="progress-bar" style="margin-bottom: 4px;">
+            <div class="progress-fill" style="background: var(--accent-ai); width: 80%;"></div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: var(--accent-shu); width: 35%;"></div>
+          </div>
+        </div>
+
+        <!-- 中隊B -->
+        <div class="card" style="border-bottom: 4px solid var(--accent-ai);">
+          <div style="font-size: 14px; font-weight: bold; margin-bottom: 4px;">鈴木組 (100人)</div>
+          <div style="font-size: 12px; color: #666; margin-bottom: 6px;">組頭: <strong>鈴木三郎</strong></div>
+          
+          <div class="grid grid-4" style="gap: 4px; margin-bottom: 6px;">
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+          </div>
+
+          <div class="grid grid-3 text-xs" style="margin-bottom: 6px; color: #666;">
+            <div>訓70</div>
+            <div style="text-align: center;">士75</div>
+            <div style="text-align: right;">疲40</div>
+          </div>
+
+          <div class="progress-bar" style="margin-bottom: 4px;">
+            <div class="progress-fill" style="background: var(--training-high); width: 70%;"></div>
+          </div>
+          <div class="progress-bar" style="margin-bottom: 4px;">
+            <div class="progress-fill" style="background: var(--accent-ai); width: 75%;"></div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: var(--accent-shu); width: 40%;"></div>
+          </div>
+        </div>
+
+        <!-- 中隊C -->
+        <div class="card" style="border-bottom: 4px solid var(--accent-ai);">
+          <div style="font-size: 14px; font-weight: bold; margin-bottom: 4px;">田中組 (100人)</div>
+          <div style="font-size: 12px; color: #666; margin-bottom: 6px;">組頭: <strong>田中四郎</strong></div>
+          
+          <div class="grid grid-4" style="gap: 4px; margin-bottom: 6px;">
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+            <div style="background: var(--accent-ai); color: white; text-align: center; padding: 4px; border-radius: 3px; font-size: 10px;">25</div>
+          </div>
+
+          <div class="grid grid-3 text-xs" style="margin-bottom: 6px; color: #666;">
+            <div>訓68</div>
+            <div style="text-align: center;">士70</div>
+            <div style="text-align: right;">疲45</div>
+          </div>
+
+          <div class="progress-bar" style="margin-bottom: 4px;">
+            <div class="progress-fill" style="background: var(--training-high); width: 68%;"></div>
+          </div>
+          <div class="progress-bar" style="margin-bottom: 4px;">
+            <div class="progress-fill" style="background: var(--accent-ai); width: 70%;"></div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background: var(--accent-shu); width: 45%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 兵種構成 -->
+      <div class="card">
+        <div class="card-header">兵種構成</div>
+        <div class="grid grid-3">
+          <div class="status-item">
+            <div class="text-xs">⚔ 徒士</div>
+            <div style="font-size: 18px; font-weight: bold;">180人</div>
+            <div class="text-xs">60%</div>
+          </div>
+          <div class="status-item">
+            <div class="text-xs">🐴 馬上衆</div>
+            <div style="font-size: 18px; font-weight: bold;">90人</div>
+            <div class="text-xs">30%</div>
+          </div>
+          <div class="status-item">
+            <div class="text-xs">👤 従僕</div>
+            <div style="font-size: 18px; font-weight: bold;">30人</div>
+            <div class="text-xs">10%</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary mt-1">兵種バランス調整</button>
+      </div>
+
+      <!-- 情報メッセージ -->
+      <div style="background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 6px; padding: 12px;">
+        <div class="flex">
+          <span style="font-size: 16px; margin-right: 8px;">ℹ️</span>
+          <span style="font-size: 12px; color: #0c5460;">中隊カードクリックで中隊詳細、小隊ブロッククリックで小隊詳細へ遷移</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>XAMLプレビュー: MilitaryFormationView.xaml</p>
+  </footer>
+</body>
+</html>

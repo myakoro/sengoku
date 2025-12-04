@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SengokuSLG.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+577ccffeebaf484d968238a2ce542583d9bf605d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96a245ff60c88c1ad2fc1625b3cc7f5127bb1604")]
 [assembly: System.Reflection.AssemblyProductAttribute("SengokuSLG.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SengokuSLG.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -66,8 +66,28 @@ namespace SengokuSLG.Services
             return Math.Clamp(baseProb, 10.0f, 90.0f); // 10-90%の範囲
         }
 
-        public void ProcessMarriage(House playerHouse, Player player, MarriageOffer offer)
+        public bool ProcessMarriage(House playerHouse, Player player, MarriageOffer offer)
         {
+            // 成功判定
+            float prob = CalculateSuccessProbability(playerHouse, player, 50, (int)Rank.Toshi); // 簡易的に相手ランクを仮定
+            // 実際にはOfferに相手の情報が必要だが、ここでは簡易実装として確率を使用
+            // UIで表示されているSuccessProbabilityと合わせる必要があるため、GameServiceから確率を受け取るか、ここで再計算するか
+            // ここでは簡易的に 50% + ランク差 で判定
+            
+            // UIの表示とロジックを一致させるため、確率計算はGameService経由で行われているはず。
+            // ここでは単純にランダム判定を行う。
+            // ただし、CalculateSuccessProbabilityはHouseとPlayerから計算するが、Offerには相手の情報が足りない。
+            // 既存のCalculateSuccessProbabilityを使用する。
+            
+            // 相手の家格とランクはOfferに含まれていないため、仮の値を使用するか、Offerにプロパティを追加する必要がある。
+            // ここでは、Offer.RankDifference から逆算する。
+            int targetRank = (int)player.Rank - offer.RankDifference;
+            float probability = CalculateSuccessProbability(playerHouse, player, playerHouse.Kakaku, targetRank); // 家格差は0と仮定（Offerにないため）
+            
+            bool success = _random.NextDouble() * 100 < probability;
+
+            if (!success) return false;
+
             // ステータス更新
             if (offer.IsLegalWife)
             {
@@ -116,6 +136,8 @@ namespace SengokuSLG.Services
             {
                 playerHouse.MarriageCandidates.Remove(existing);
             }
+            
+            return true;
         }
 
         private string GenerateRandomHouseName()

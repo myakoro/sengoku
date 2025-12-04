@@ -8,11 +8,14 @@ namespace SengokuSLG.Models
 {
     public enum Rank
     {
-        Juboku,
-        Toshi,
-        Kumigashira,
-        Busho,
-        Jidaisho
+        Juboku,          // 従僕
+        Toshi,           // 徒士
+        Bajoshu,         // 馬上衆
+        Kogashira,       // 小頭 - 25人小隊長
+        Kumigashira,     // 組頭 - 100人中隊長
+        AshigaruDaisho,  // 足軽大将 - 300人大隊長
+        Jidaisho,        // 侍大将
+        Busho            // 部将
     }
 
     public enum PersonalRole
@@ -40,6 +43,28 @@ namespace SengokuSLG.Models
         Genpuku,
         Birth,
         Info
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female
+    }
+
+    public enum RelationshipType
+    {
+        Self,
+        Spouse,
+        Father,
+        Mother,
+        Son,
+        Daughter,
+        Brother,
+        Sister,
+        Grandfather,
+        Grandmother,
+        Grandson,
+        Granddaughter
     }
 
     public class BaseModel : INotifyPropertyChanged
@@ -83,7 +108,11 @@ namespace SengokuSLG.Models
         public int Loyalty
         {
             get => _loyalty;
-            set { _loyalty = value; OnPropertyChanged(); }
+            set 
+            { 
+                _loyalty = value > 100 ? 100 : value; 
+                OnPropertyChanged(); 
+            }
         }
 
         public int Achievement
@@ -122,6 +151,8 @@ namespace SengokuSLG.Models
         public string FatherId { get; set; }
         public string MotherId { get; set; }
         public int BirthYear { get; set; }
+        public Gender Gender { get; set; } = Gender.Male;
+        public bool IsDead { get; set; }
         
         public int Salary
         {
@@ -131,8 +162,12 @@ namespace SengokuSLG.Models
                 {
                     case Rank.Juboku: return 0;
                     case Rank.Toshi: return 50;
+                    case Rank.Bajoshu: return 80;
+                    case Rank.Kogashira: return 120;
                     case Rank.Kumigashira: return 150;
-                    case Rank.Busho: return 400;
+                    case Rank.AshigaruDaisho: return 250;
+                    case Rank.Jidaisho: return 400;
+                    case Rank.Busho: return 600;
                     default: return 50;
                 }
             }
@@ -179,6 +214,8 @@ namespace SengokuSLG.Models
         public string FatherId { get; set; }
         public string MotherId { get; set; }
         public int BirthYear { get; set; } = 1560;
+        public Gender Gender { get; set; } = Gender.Male;
+        public bool IsDead { get; set; }
         
         public Rank Rank
         {

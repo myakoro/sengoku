@@ -15,15 +15,108 @@ namespace SengokuSLG.Services
             _gameService = gameService;
         }
 
+        public BattleContextV09 CurrentContext { get; private set; } = null!;
+        public BattleBattalion CurrentBattalion { get; private set; } = null!; // Player's persistent battalion
+
+        public void InitializeSampleData()
+        {
+            // Generate a persistent player battalion for the military screens
+            CurrentBattalion = GenerateMockBattalion(true);
+        }
+
+        private BattleBattalion GenerateMockBattalion(bool isPlayer)
+        {
+            var battalion = new BattleBattalion
+            {
+                CommanderName = isPlayer ? "田中 太郎" : "敵軍大将", // Default player commander
+                IsPlayer = isPlayer,
+                IsEnemy = !isPlayer
+            };
+            battalion.Name = isPlayer ? "田中隊" : "敵軍大隊";
+
+            // Company commander names (組頭)
+            string[] companyCommanderNames = new[] { "山田太郎", "鈴木次郎", "佐藤三郎" };
+
+            // Squad commander names (小頭)
+            string[] squadCommanderNames = new[]
+            {
+                "伊藤勘助", "加藤源三", "斎藤平八", "渡辺孫六",
+                "木村弥七", "中村権兵衛", "林半左衛門", "松本甚五郎",
+                "石川新助", "山本忠兵衛", "小林市之丞", "吉田藤太"
+            };
+
+            int squadCommanderIndex = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                var companyName = $"{(isPlayer ? "自" : "敵")}中隊{i+1}";
+                var commanderName = isPlayer ? companyCommanderNames[i] : $"敵組頭{i+1}";
+                
+                if (isPlayer)
+                {
+                    var surname = commanderName.Substring(0, 2); // Assuming 2-char surname for simplicity
+                    companyName = $"{surname}組";
+                }
+
+                var company = new BattleCompany
+                {
+                    Name = companyName,
+                    CommanderName = commanderName,
+                    Personality = (CommanderPersonality)_random.Next(0, 3)
+                };
+
+                for (int j = 0; j < 4; j++)
+                {
+                    var squadName = $"{(isPlayer ? "自" : "敵")}小隊{i+1}-{j+1}";
+                    var squadCommander = isPlayer ? squadCommanderNames[squadCommanderIndex++ % squadCommanderNames.Length] : $"敵小頭{i+1}-{j+1}";
+                    
+                    if (isPlayer)
+                    {
+                        var surname = squadCommander.Substring(0, 2); // Assuming 2-char surname
+                        squadName = $"{surname}衆";
+                    }
+
+                    var squad = new BattleSquad
+                    {
+                        Name = squadName,
+                        CommanderName = squadCommander,
+                        Training = _random.Next(40, 90),
+                        Experience = _random.Next(10, 60),
+                        Fatigue = 0,
+                        Morale = 100,
+                        Position = SquadPosition.Forward
+                    };
+
+                    // Add soldiers
+                    int ashigaruCount = 15;
+                    int mountedCount = 8;
+                    int servantCount = 25;
+
+                    for (int k = 0; k < ashigaruCount; k++)
+                        squad.Soldiers.Add(new BattleSoldier { Type = SoldierType.Ashigaru, Name = $"徒士{k+1}", CombatPower = 11, MaxCombatPower = 11 });
+                    
+                    for (int k = 0; k < mountedCount; k++)
+                        squad.Soldiers.Add(new BattleSoldier { Type = SoldierType.Mounted, Name = $"馬上{k+1}", CombatPower = 17, MaxCombatPower = 17 });
+                    
+                    for (int k = 0; k < servantCount; k++)
+                        squad.Soldiers.Add(new BattleSoldier { Type = SoldierType.Servant, Name = $"従僕{k+1}", CombatPower = 2, MaxCombatPower = 2 });
+
+                    company.Squads.Add(squad);
+                }
+                battalion.Companies.Add(company);
+            }
+            return battalion;
+        }
+
         public BattleContextV09 InitializeBattle()
         {
             var context = new BattleContextV09();
             
-            // Generate Mock Data for v0.9
+            // Always generate fresh battalion to ensure updated commander names
             context.PlayerBattalion = GenerateMockBattalion(true);
             context.EnemyBattalion = GenerateMockBattalion(false);
             
             context.AddLog("戦闘開始 (v0.9 Logic)");
+            CurrentContext = context;
             return context;
         }
 
@@ -552,57 +645,6 @@ namespace SengokuSLG.Services
 
         // --- Helpers ---
 
-        private BattleBattalion GenerateMockBattalion(bool isPlayer)
-        {
-            var battalion = new BattleBattalion
-            {
-                Name = isPlayer ? "自軍大隊" : "敵軍大隊",
-                IsPlayer = isPlayer,
-                IsEnemy = !isPlayer
-            };
 
-            for (int i = 0; i < 3; i++)
-            {
-                var company = new BattleCompany
-                {
-                    Name = $"{(isPlayer ? "自" : "敵")}中隊{i+1}",
-                    Personality = (CommanderPersonality)_random.Next(0, 3)
-                };
-
-                for (int j = 0; j < 4; j++)
-                {
-                    var squad = new BattleSquad
-                    {
-                        Name = $"{(isPlayer ? "自" : "敵")}小隊{i+1}-{j+1}",
-                        Training = _random.Next(40, 90),
-                        Experience = _random.Next(10, 60),
-                        Fatigue = 0,
-                        Morale = 100,
-                        Position = SquadPosition.Forward
-                    };
-
-                    // Soldiers
-                    for (int k = 0; k < 25; k++)
-                    {
-                        var type = SoldierType.Ashigaru;
-                        if (k < 2) type = SoldierType.Mounted;
-                        if (k >= 23) type = SoldierType.Servant;
-
-                        squad.Soldiers.Add(new BattleSoldier
-                        {
-                            Name = $"兵{k}",
-                            Type = type,
-                            CombatPower = type == SoldierType.Mounted ? 15 : (type == SoldierType.Ashigaru ? 10 : 0),
-                            OriginVillageId = isPlayer ? (_random.Next(0, 2) == 0 ? "VILLAGE_A" : "VILLAGE_B") : "ENEMY_VILLAGE",
-                            IsOwn = isPlayer && _random.NextDouble() > 0.3, // 70% Own, 30% Borrowed
-                            SquadId = squad.Id
-                        });
-                    }
-                    company.Squads.Add(squad);
-                }
-                battalion.Companies.Add(company);
-            }
-            return battalion;
-        }
     }
 }

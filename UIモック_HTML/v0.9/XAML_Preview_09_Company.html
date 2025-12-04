@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XAMLプレビュー: 09_中隊管理画面</title>
+  <link rel="stylesheet" href="css/compact.css">
+  <style>
+    body { margin: 0; padding: 20px; background: #f5f5f5; }
+    .xaml-preview { max-width: 1080px; margin: 0 auto; background: #f9f7f3; }
+  </style>
+</head>
+<body>
+  <div class="xaml-preview">
+    <!-- Header -->
+    <header class="page-header">
+      <h1>⚔ 佐藤組 - 中隊管理</h1>
+      <div class="header-actions">
+        <button class="btn btn-outline">戻る</button>
+        <button class="btn btn-primary">詳細</button>
+      </div>
+    </header>
+
+    <div style="padding: 20px;">
+      <!-- Company Summary -->
+      <div class="card">
+        <div style="font-size: 16px; font-weight: bold;">
+          組頭: 佐藤次郎 / <span style="color: #666;">総兵力: 100人 / 性格: 標準</span>
+        </div>
+      </div>
+
+      <!-- Squad List -->
+      <div class="card">
+        <div class="card-header">小隊一覧（4衆）</div>
+        <div class="grid grid-2">
+          <!-- Squad 1 -->
+          <div style="background: #f9f9f9; border-bottom: 3px solid var(--accent-ai); border-radius: 4px; padding: 10px; margin-bottom: 10px;">
+            <div class="flex flex-between" style="margin-bottom: 5px;">
+              <span style="font-size: 14px; font-weight: bold;">伊藤衆</span>
+              <button class="btn btn-secondary" style="padding: 2px 5px; font-size: 10px;">詳細</button>
+            </div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+              小頭: 伊藤一郎 / 兵力: 25
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px; margin-bottom: 2px;">
+              <div style="position: absolute; background: var(--training-high); width: 80%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">士気: 80</span>
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px;">
+              <div style="position: absolute; background: var(--accent-shu); width: 35%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">疲労: 35</span>
+            </div>
+          </div>
+
+          <!-- Squad 2 -->
+          <div style="background: #f9f9f9; border-bottom: 3px solid var(--accent-ai); border-radius: 4px; padding: 10px; margin-bottom: 10px;">
+            <div class="flex flex-between" style="margin-bottom: 5px;">
+              <span style="font-size: 14px; font-weight: bold;">渡辺衆</span>
+              <button class="btn btn-secondary" style="padding: 2px 5px; font-size: 10px;">詳細</button>
+            </div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+              小頭: 渡辺二郎 / 兵力: 25
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px; margin-bottom: 2px;">
+              <div style="position: absolute; background: var(--training-high); width: 75%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">士気: 75</span>
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px;">
+              <div style="position: absolute; background: var(--accent-shu); width: 40%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">疲労: 40</span>
+            </div>
+          </div>
+
+          <!-- Squad 3 -->
+          <div style="background: #f9f9f9; border-bottom: 3px solid var(--accent-ai); border-radius: 4px; padding: 10px; margin-bottom: 10px;">
+            <div class="flex flex-between" style="margin-bottom: 5px;">
+              <span style="font-size: 14px; font-weight: bold;">小林衆</span>
+              <button class="btn btn-secondary" style="padding: 2px 5px; font-size: 10px;">詳細</button>
+            </div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+              小頭: 小林五郎 / 兵力: 25
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px; margin-bottom: 2px;">
+              <div style="position: absolute; background: var(--training-high); width: 78%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">士気: 78</span>
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px;">
+              <div style="position: absolute; background: var(--accent-shu); width: 38%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">疲労: 38</span>
+            </div>
+          </div>
+
+          <!-- Squad 4 -->
+          <div style="background: #f9f9f9; border-bottom: 3px solid var(--accent-ai); border-radius: 4px; padding: 10px; margin-bottom: 10px;">
+            <div class="flex flex-between" style="margin-bottom: 5px;">
+              <span style="font-size: 14px; font-weight: bold;">加藤衆</span>
+              <button class="btn btn-secondary" style="padding: 2px 5px; font-size: 10px;">詳細</button>
+            </div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+              小頭: 加藤六郎 / 兵力: 25
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px; margin-bottom: 2px;">
+              <div style="position: absolute; background: var(--training-high); width: 82%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">士気: 82</span>
+            </div>
+            <div style="position: relative; background: #e0e0e0; height: 16px; border-radius: 3px;">
+              <div style="position: absolute; background: var(--accent-shu); width: 32%; height: 100%; border-radius: 3px;"></div>
+              <span style="position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 16px;">疲労: 32</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center mt-2" style="color: #999; font-size: 11px;">
+    <p>XAMLプレビュー: CompanyManagementView.xaml</p>
+  </footer>
+</body>
+</html>

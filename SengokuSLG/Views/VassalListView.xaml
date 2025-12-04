@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SengokuSLG.Views"
-             xmlns:conv="clr-namespace:SengokuSLG.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1080">
     
@@ -38,8 +36,12 @@
                 <Button Command="{Binding FilterCommand}" CommandParameter="All" Content="すべて" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
                 <Button Command="{Binding FilterCommand}" CommandParameter="Juboku" Content="従僕" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
                 <Button Command="{Binding FilterCommand}" CommandParameter="Toshi" Content="徒士" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
+                <Button Command="{Binding FilterCommand}" CommandParameter="Bajoshu" Content="馬上衆" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
+                <Button Command="{Binding FilterCommand}" CommandParameter="Kogashira" Content="小頭" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
                 <Button Command="{Binding FilterCommand}" CommandParameter="Kumigashira" Content="組頭" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
-                <Button Command="{Binding FilterCommand}" CommandParameter="Busho" Content="武将" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
+                <Button Command="{Binding FilterCommand}" CommandParameter="AshigaruDaisho" Content="足軽大将" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
+                <Button Command="{Binding FilterCommand}" CommandParameter="Jidaisho" Content="侍大将" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
+                <Button Command="{Binding FilterCommand}" CommandParameter="Busho" Content="部将" Style="{StaticResource StyleNavButton}" Margin="0,0,5,0" Background="#ddd"/>
             </StackPanel>
 
             <!-- Vassal List Table -->

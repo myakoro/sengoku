@@ -1,0 +1,190 @@
+<UserControl x:Class="SengokuSLG.Views.MilitaryFormationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1080">
+    <Grid Background="{StaticResource BrushBgBase}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource BrushBgHeader}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="0,0,0,2" Padding="20,15">
+            <Grid>
+                <TextBlock Text="🏯 軍事編成" FontSize="24" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="戻る" Command="{Binding BackCommand}" Style="{StaticResource ButtonSecondary}" Width="100" Margin="0,0,10,0"/>
+                    <Button Content="保存" Style="{StaticResource ButtonPrimary}" Width="100"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel>
+                <!-- 編成モード -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,12">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="自動編成" GroupName="FormationMode" FontSize="12" Margin="0,0,12,0"/>
+                            <RadioButton Content="手動編成" GroupName="FormationMode" IsChecked="True" FontSize="12"/>
+                        </StackPanel>
+                        <Button Content="自動編成実行" Style="{StaticResource ButtonSecondary}" HorizontalAlignment="Right"/>
+                    </Grid>
+                </Border>
+
+                <!-- 階層選択タブ -->
+                <Border Background="{StaticResource BrushBgPanel}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="1" CornerRadius="6,6,0,0" Padding="0" Margin="0,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="大隊(300)" Style="{StaticResource StyleNavButton}" Background="{StaticResource BrushBgCard}" Padding="15,10" FontSize="14" FontWeight="Bold"/>
+                        <Button Content="中隊(100)" Command="{Binding NavigateToBattalionCommand}" Style="{StaticResource StyleNavButton}" Padding="15,10" FontSize="14"/>
+                        <Button Content="小隊(25)" Command="{Binding NavigateToSquadStatusCommand}" Style="{StaticResource StyleNavButton}" Padding="15,10" FontSize="14"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 大隊情報 -->
+                <Border Margin="0,0,0,12">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#c73940" Offset="0"/>
+                            <GradientStop Color="#A02F17" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border CornerRadius="6" Padding="10,15">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="16" FontWeight="Bold" Foreground="White">
+                                    <Run Text="足軽大将: "/>
+                                    <Run Text="{Binding Battalion.CommanderName}"/>
+                                </TextBlock>
+                                <TextBlock Text="総兵力: 300人" FontSize="11" Foreground="White" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Border Background="White" CornerRadius="4" Padding="8,4" HorizontalAlignment="Right">
+                                <TextBlock Text="指揮上限: 300" FontSize="12" FontWeight="Bold" Foreground="#c73940"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <!-- 中隊一覧 - カードグリッド -->
+                <ItemsControl ItemsSource="{Binding Companies}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{StaticResource BrushBgCard}" BorderBrush="#1976d2" BorderThickness="0,0,0,4" CornerRadius="6" Padding="12" Margin="0,0,12,12">
+                                <StackPanel>
+                                    <TextBlock FontSize="14" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}">
+                                        <Run Text="{Binding Name}"/>
+                                        <Run Text=" ("/>
+                                        <Run Text="{Binding CombatantCount, Mode=OneWay}"/>
+                                        <Run Text="人)"/>
+                                    </TextBlock>
+                                    <TextBlock FontSize="12" Foreground="{StaticResource BrushTextSecondary}" Margin="0,4,0,6">
+                                        <Run Text="組頭: "/>
+                                        <Run Text="{Binding CommanderName}" FontWeight="Bold"/>
+                                    </TextBlock>
+
+                                    <!-- 小隊ブロック -->
+                                    <UniformGrid Columns="4" Margin="0,6,0,6">
+                                        <Border Background="#1976d2" CornerRadius="3" Padding="4" Margin="0,0,4,0">
+                                            <TextBlock Text="25" FontSize="10" Foreground="White" TextAlignment="Center"/>
+                                        </Border>
+                                        <Border Background="#1976d2" CornerRadius="3" Padding="4" Margin="0,0,4,0">
+                                            <TextBlock Text="25" FontSize="10" Foreground="White" TextAlignment="Center"/>
+                                        </Border>
+                                        <Border Background="#1976d2" CornerRadius="3" Padding="4" Margin="0,0,4,0">
+                                            <TextBlock Text="25" FontSize="10" Foreground="White" TextAlignment="Center"/>
+                                        </Border>
+                                        <Border Background="#1976d2" CornerRadius="3" Padding="4">
+                                            <TextBlock Text="25" FontSize="10" Foreground="White" TextAlignment="Center"/>
+                                        </Border>
+                                    </UniformGrid>
+
+                                    <!-- ステータス表示 -->
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" FontSize="11" Foreground="{StaticResource BrushTextSecondary}">
+                                            <Run Text="訓"/>
+                                            <Run Text="{Binding AverageTraining, StringFormat=N0}"/>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" FontSize="11" Foreground="{StaticResource BrushTextSecondary}" TextAlignment="Center">
+                                            <Run Text="士"/>
+                                            <Run Text="{Binding AverageMorale, StringFormat=N0}"/>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="2" FontSize="11" Foreground="{StaticResource BrushTextSecondary}" TextAlignment="Right">
+                                            <Run Text="疲"/>
+                                            <Run Text="{Binding AverageFatigue, StringFormat=N0}"/>
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <!-- プログレスバー -->
+                                    <Border Background="#e0e0e0" Height="8" CornerRadius="4" Margin="0,0,0,4">
+                                        <Border Background="#2d7a3e" Width="{Binding TrainingBarWidth}" HorizontalAlignment="Left" CornerRadius="4"/>
+                                    </Border>
+                                    <Border Background="#e0e0e0" Height="8" CornerRadius="4" Margin="0,0,0,4">
+                                        <Border Background="#1976d2" Width="{Binding MoraleBarWidth}" HorizontalAlignment="Left" CornerRadius="4"/>
+                                    </Border>
+                                    <Border Background="#e0e0e0" Height="8" CornerRadius="4">
+                                        <Border Background="#c73940" Width="{Binding FatigueBarWidth}" HorizontalAlignment="Left" CornerRadius="4"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- 兵種構成 -->
+                <Border Background="{StaticResource BrushBgCard}" BorderBrush="{StaticResource BrushBorder}" BorderThickness="2" CornerRadius="6" Padding="15" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="兵種構成" FontSize="14" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                <TextBlock Text="🐴 馬上衆" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                <TextBlock Text="5人" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="1.7%" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                <TextBlock Text="⚔ 徒士" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                <TextBlock Text="15人" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="5%" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                <TextBlock Text="👤 足軽" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                                <TextBlock Text="280人" FontSize="18" FontWeight="Bold" Foreground="{StaticResource BrushTextMain}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="93.3%" FontSize="11" Foreground="#666" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        <Button Content="兵種バランス調整" Style="{StaticResource ButtonSecondary}" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 情報メッセージ -->
+                <Border Background="#d1ecf1" BorderBrush="#bee5eb" BorderThickness="1" CornerRadius="6" Padding="12">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="ℹ️" FontSize="16" Margin="0,0,8,0"/>
+                        <TextBlock Text="中隊カードクリックで中隊詳細、小隊ブロッククリックで小隊詳細へ遷移" FontSize="12" Foreground="#0c5460" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

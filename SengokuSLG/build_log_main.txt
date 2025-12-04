@@ -1,0 +1,37 @@
+  復元対象のプロジェクトを決定しています...
+  復元対象のすべてのプロジェクトは最新です。
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(115,34): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(116,33): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(116,33): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(124,34): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(125,33): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(125,33): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(133,40): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(134,39): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(134,39): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(143,45): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(144,43): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(144,43): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(151,227): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(158,227): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+
+ビルドに失敗しました。
+
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(115,34): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(116,33): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(116,33): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(124,34): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(125,33): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(125,33): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(133,40): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(134,39): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(134,39): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(143,45): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(144,43): error CS1002: ; が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(144,43): error CS1513: } が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(151,227): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\ViewModels\ViewModels.cs(158,227): error CS1026: ) が必要です [C:\Users\takuy\Desktop\戦国出世ゲーム\SengokuSLG\SengokuSLG_tk5xx4nr_wpftmp.csproj]
+    0 個の警告
+    14 エラー
+
+経過時間 00:00:02.36
